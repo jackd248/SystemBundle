@@ -1,0 +1,86 @@
+{% extends 'bundles/SonataAdminBundle/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/systeminformation/css/base.css') }}">
+{% endblock %}
+
+{% block sonata_page_content_header %}
+    <div class="page-header">
+        <h2>Log viewer</h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    <div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="icon-info" aria-hidden="true"></i> Log detail
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-xl-5">
+                            <a href="{{ path('kmi_system_information_overview') }}">
+                                Back to system overview
+                            </a>
+                        </div>
+                        <div class="col-xl-1 text-right">
+                            <label for="log-filter-form-limit">Limit</label>
+                        </div>
+                        <div class="col-xl-2">
+                            <input type="number" id="log-filter-form-limit" class="form-control"
+                                   value="{{ app.request.get('limit')|default(100) }}" name="limit"/>
+                        </div>
+                        <div class="col-xl-1 text-right">
+                            <label for="log-filter-form-level">Level</label>
+                        </div>
+                        <div class="col-xl-2">
+                            <select name="level" id="log-filter-form-level">
+                                <option value="">ALL</option>
+                                {% for level in levels %}
+                                    <option value="{{ level }}">{{ level }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xl-1">
+                            <button type="submit" class="btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr/>
+            <table class="table table-condensed">
+                {% for log in logs %}
+                    {% if log.level == 'WARNING' %}
+                        {% set context = 'warning' %}
+                    {% elseif log.level == 'ERROR' %}
+                        {% set context = 'danger' %}
+                    {% elseif log.level == 'ALERT' %}
+                        {% set context = 'danger' %}
+                    {% elseif log.level == 'CRITICAL' %}
+                        {% set context = 'danger' %}
+                    {% elseif log.level == 'EMERGENCY' %}
+                        {% set context = 'danger' %}
+                    {% else %}
+                        {% set context = 'light' %}
+                    {% endif %}
+                    <tr class="table-{{ context }}">
+                        <td>
+                            <span class="label label-default">{{ log.dateTime|format_datetime() }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-pill badge-{{ context }}">{{ log.level }}</span>
+                        </td>
+                        <td>{{ log.channel }}</td>
+                        <td>{{ log.message }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

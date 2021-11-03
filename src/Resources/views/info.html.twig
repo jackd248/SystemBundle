@@ -1,0 +1,16 @@
+{% extends 'bundles/SonataAdminBundle/standard_layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="page-header">
+        <h2>Php info</h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 col-xl-6">
+        <h3>Info</h3>
+        {{ info }}
+    </div>
+</div>
+{% endblock %}

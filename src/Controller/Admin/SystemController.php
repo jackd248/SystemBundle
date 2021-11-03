@@ -35,7 +35,8 @@ class SystemController extends AbstractController
     {
         $checks = $this->getLiipMonitorChecks();
         $status = $this->getMonitorCheckStatus($checks);
-        return $this->render('system/index.html.twig', [
+
+        return $this->render('@SystemInformationBundle/index.html.twig', [
             'checks' => $this->getLiipMonitorChecks(),
             'logs' => $this->logList->getLogList(),
             'information' => $this->getSystemInformation(),
@@ -98,7 +99,7 @@ class SystemController extends AbstractController
 
         }
         $logs = $this->filterLogEntryList($logs, $limit, $page, $level);
-        return $this->render('system/logView.html.twig', [
+        return $this->render('@SystemInformationBundle/logView.html.twig', [
             'logs' => $logs,
             'levels' => $log->getLevels()
         ]);
@@ -112,7 +113,7 @@ class SystemController extends AbstractController
      */
     public function info()
     {
-        return $this->render('system/info.html.twig', [
+        return $this->render('@SystemInformationBundle/info.html.twig', [
             'info' => phpinfo()
         ]);
     }
@@ -140,36 +141,43 @@ class SystemController extends AbstractController
     {
         $information = [];
         $information[] = [
-            'value' => \json_decode(file_get_contents($this->getParameter('kernel.root_dir') . '/../composer.json'),true)['version'],
-            'description' => 'Application version'
+            'value' => \json_decode(file_get_contents($this->getParameter('kernel.root_dir') . '/../composer.json'), true)['version'],
+            'description' => 'App version',
+            'icon' => 'icon-command'
         ];
 
         if ($_ENV['SYMFONY_ENVIRONMENT']) {
             $information[] = [
                 'value' => $_ENV['SYMFONY_ENVIRONMENT'],
-                'description' => 'Application environment'
+                'description' => 'App environment',
+                'icon' => 'icon-git-branch'
             ];
         }
+
+        $information[] = [
+            'value' => phpversion(),
+            'description' => 'PHP version',
+            'icon' => 'icon-command'
+        ];
+        $information[] = [
+            'value' => \Symfony\Component\HttpKernel\Kernel::VERSION,
+            'description' => 'Symfony version',
+            'icon' => 'icon-command'
+        ];
 
         if ($_ENV['APP_ENV']) {
             $information[] = [
                 'value' => $_ENV['APP_ENV'],
-                'description' => 'Symfony environment'
+                'description' => 'Symfony environment',
+                'icon' => 'icon-package'
             ];
         }
 
-        return array_merge($information,[
-            [
-                'value' => phpversion(),
-                'description' => 'PHP version'
-            ],
-            [
-                'value' => \Symfony\Component\HttpKernel\Kernel::VERSION,
-                'description' => 'Symfony version'
-            ],
+        return array_merge($information, [
             [
                 'value' => PHP_OS,
-                'description' => 'Operating system'
+                'description' => 'Operating system',
+                'icon' => 'icon-hard-drive'
             ]
         ]);
     }
@@ -222,7 +230,8 @@ class SystemController extends AbstractController
      * @param $checks
      * @return int
      */
-    private function getMonitorCheckStatus($checks) {
+    private function getMonitorCheckStatus($checks)
+    {
         $status = 0;
         foreach ($checks as $check) {
             if (intval($check->status) > $status) {
@@ -230,5 +239,27 @@ class SystemController extends AbstractController
             }
         }
         return $status;
+    }
+
+    /**
+     * https://stackoverflow.com/a/2510459
+     *
+     * @param $bytes
+     * @param int $precision
+     * @return string
+     */
+    private function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        // Uncomment one of the following alternatives
+        // $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }

@@ -1,9 +1,19 @@
 services:
-  Kmi\SystemBundle\:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Kmi\SystemInformationBundle\:
     resource: '../../*'
     exclude: '../../{Entity,Admin}'
 
-  Kmi\SystemBundle\Controller\Admin\SystemController:
-    class: Kmi\SystemBundle\Controller\Admin\SystemController
+  Kmi\SystemInformationBundle\Controller\Admin\SystemController:
+    class: Kmi\SystemInformationBundle\Controller\Admin\SystemController
     tags: ['controller.service_arguments']
     public: true
+
+  Kmi\SystemInformationBundle\Twig\FormatBytesExtension:
+    class: Kmi\SystemInformationBundle\Twig\FormatBytesExtension
+    tags:
+      - { name: twig.extension }
