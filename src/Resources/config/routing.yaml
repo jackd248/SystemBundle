@@ -1,0 +1,16 @@
+kmi_system_overview:
+  path: /admin/system
+  defaults: {_controller: Kmi\SystemBundle\Controller\Admin\SystemController:index}
+  methods:  [GET]
+
+kmi_system_log_view:
+  path: /admin/system/log/{id}
+  defaults: {_controller: Kmi\SystemBundle\Controller\Admin\SystemController:logView}
+  methods:  [GET]
+  requirements:
+    id: \d+
+
+kmi_system_info:
+  path: /admin/system/info
+  defaults: {_controller: Kmi\SystemBundle\Controller\Admin\SystemController:info}
+  methods:  [GET]

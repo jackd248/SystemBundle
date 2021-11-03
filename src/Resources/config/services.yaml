@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  kmi.system.services.system_controller:
+    class: Kmi\SystemBundle\Controller\Admin\SystemController
+    tags: ['controller.service_arguments']

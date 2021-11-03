@@ -1,0 +1,36 @@
+{
+  "name": "kmi/system-bundle",
+  "description": "Simple sonata admin bundle for system information",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Konrad Michalik",
+      "email": "hello@konradmichalik.eu"
+    }
+  ],
+  "require": {
+    "php": "^7.4"
+  },
+  "require-dev": {
+    "ext-json": "*",
+    "symfony/config": "^4.4 || ^5.3",
+    "symfony/dependency-injection": "^4.4 || ^5.3",
+    "symfony/http-kernel": "^4.4 || ^5.3",
+    "symfony/framework-bundle": "^4.4 || ^5.3",
+    "symfony/phpunit-bridge": "^4.4 || ^5.3",
+    "symfony/browser-kit": "^4.4 || ^5.3",
+    "evotodi/log-viewer-bundle": "^1.4",
+    "liip/monitor-bundle": "^2.16"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kmi\\SystemBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kmi\\SystemBundle\\Tests\\": "tests/"
+    }
+  }
+}
