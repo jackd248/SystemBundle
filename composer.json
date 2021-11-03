@@ -1,5 +1,5 @@
 {
-  "name": "kmi/system-bundle",
+  "name": "kmi/system-information-bundle",
   "description": "Simple sonata admin bundle for system information",
   "type": "symfony-bundle",
   "license": "MIT",
@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^7.4"
+    "php": "^7.4 || ^8.0"
   },
   "require-dev": {
     "ext-json": "*",
@@ -25,12 +25,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Kmi\\SystemBundle\\": "src/"
+      "Kmi\\SystemInformationBundle\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Kmi\\SystemBundle\\Tests\\": "tests/"
+      "Kmi\\SystemInformationBundle\\Tests\\": "tests/"
     }
   }
 }

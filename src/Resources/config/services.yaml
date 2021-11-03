@@ -1,9 +1,9 @@
 services:
-  _defaults:
-    public: false
-    autowire: true
-    autoconfigure: true
+  Kmi\SystemBundle\:
+    resource: '../../*'
+    exclude: '../../{Entity,Admin}'
 
-  kmi.system.services.system_controller:
+  Kmi\SystemBundle\Controller\Admin\SystemController:
     class: Kmi\SystemBundle\Controller\Admin\SystemController
     tags: ['controller.service_arguments']
+    public: true

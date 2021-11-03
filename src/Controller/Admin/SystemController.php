@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Kmi\SystemBundle\Controller\Admin;
+namespace Kmi\SystemInformationBundle\Controller\Admin;
 
 use DateTime;
 use Evotodi\LogViewerBundle\Reader\LogReader;
