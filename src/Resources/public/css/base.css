@@ -28,6 +28,12 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-php:before {
+    content: "\e926";
+}
+.icon-symfony:before {
+    content: "\e927";
+}
 .icon-activity:before {
     content: "\e900";
 }
@@ -154,7 +160,7 @@
     border: 1px solid #ccc;
     padding: 5px;
     box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .system-box i {
     padding: 20px 10px;

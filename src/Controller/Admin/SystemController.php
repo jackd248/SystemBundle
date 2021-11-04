@@ -157,12 +157,12 @@ class SystemController extends AbstractController
         $information[] = [
             'value' => phpversion(),
             'description' => 'PHP version',
-            'icon' => 'icon-command'
+            'icon' => 'icon-php'
         ];
         $information[] = [
             'value' => \Symfony\Component\HttpKernel\Kernel::VERSION,
             'description' => 'Symfony version',
-            'icon' => 'icon-command'
+            'icon' => 'icon-symfony'
         ];
 
         if ($_ENV['APP_ENV']) {

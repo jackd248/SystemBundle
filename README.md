@@ -2,6 +2,13 @@
 
 Simple Sonata Admin bundle to get a system information overview. 
 
+![Screenshot](docs/img/screenshot.png "Screenshot")
+
+This bundle combines the functionalities of the following bundles and displays the aggregated information within the backend:
+
+- [LiipMonitorBundle](https://github.com/liip/LiipMonitorBundle)
+- [log-viewer-bundle](https://github.com/evotodi/log-viewer-bundle)
+
 ## Install
 
 Install bundle via composer
