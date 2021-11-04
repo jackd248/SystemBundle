@@ -14,7 +14,8 @@
     "php": "^7.4 || ^8.0",
     "sonata-project/admin-bundle": "^3.0",
     "evotodi/log-viewer-bundle": "^1.4",
-    "liip/monitor-bundle": "^2.16"
+    "liip/monitor-bundle": "^2.16",
+    "enlightn/security-checker": "^1.9"
   },
   "require-dev": {
     "ext-json": "*",
