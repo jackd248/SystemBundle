@@ -2,7 +2,7 @@
   "name": "kmi/system-information-bundle",
   "description": "Simple sonata admin bundle for system information",
   "type": "symfony-bundle",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "authors": [
     {
@@ -12,7 +12,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "sonata-project/admin-bundle": "^3.0",
+    "sonata-project/admin-bundle": "^3.0 || ^4.0",
     "evotodi/log-viewer-bundle": "^1.4",
     "liip/monitor-bundle": "^2.16",
     "enlightn/security-checker": "^1.9"
