@@ -23,6 +23,17 @@ class LogService
         ]
     ];
 
+    const LOG_LEVEL = [
+        'DEBUG',
+        'INFO',
+        'NOTICE',
+        'WARNING',
+        'ERROR',
+        'ALERT',
+        'CRITICAL',
+        'EMERGENCY'
+    ];
+
     /**
      * @var \Evotodi\LogViewerBundle\Service\LogList
      */
@@ -105,16 +116,20 @@ class LogService
     {
         $offset = ($page - 1) * $limit;
 
-        // Filter by level
+        // Filter upwards by level
         if ($level) {
             $logs = array_filter($logs, function ($log) use ($level) {
-                return $log['level'] == $level;
+                return array_search($log['level'], self::LOG_LEVEL) >= array_search($level, self::LOG_LEVEL);
             });
         }
+        $resultCount = count($logs);
         // Slice array
         $logs = array_slice($logs, $offset, $limit);
 
-        return $logs;
+        return [
+            'result' => $logs,
+            'count' => $resultCount
+        ];
     }
 
     /**

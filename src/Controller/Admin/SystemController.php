@@ -88,11 +88,14 @@ class SystemController extends AbstractController
         if ($request->query->has('level')) {
             $level = $request->query->get('level');
         }
+
         $logs = $this->logService->getLogsById($id);
         $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level);
         return $this->render('@SystemInformationBundle/logView.html.twig', [
-            'logs' => $logs,
-            'levels' => $log->getLevels()
+            'logs' => $logs['result'],
+            'levels' => $log->getLevels(),
+            'id' => $id,
+            'resultCount' => $logs['count']
         ]);
     }
 

@@ -17,17 +17,20 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <i class="icon-info" aria-hidden="true"></i> Log detail
+                <i class="icon-info mr-5" aria-hidden="true"></i> Log detail
             </h3>
         </div>
         <div class="panel-body">
-            <form>
+            <form id="log-filter-form" class="mb-15">
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-xl-5">
+                        <div class="col-xl-4">
                             <a href="{{ path('kmi_system_information_overview') }}">
                                 Back to system overview
                             </a>
+                        </div>
+                        <div class="col-xl-1">
+                            <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> log results
                         </div>
                         <div class="col-xl-1 text-right">
                             <label for="log-filter-form-limit">Limit</label>
@@ -43,19 +46,20 @@
                             <select name="level" id="log-filter-form-level">
                                 <option value="">ALL</option>
                                 {% for level in levels %}
-                                    <option value="{{ level }}">{{ level }}</option>
+                                    <option value="{{ level }}" {{ app.request.get('level') == level ? 'selected' : '' }}>{{ level }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col-xl-1">
                             <button type="submit" class="btn">Submit</button>
+                            <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">Reset</a>
                         </div>
                     </div>
                 </div>
             </form>
-            <hr/>
             <table class="table table-condensed table-striped">
-                {% for log in logs %}
+                {% if logs %}
+                    {% for log in logs %}
                     {% if log.message is not null %}
                     {% if log.level == 'WARNING' %}
                         {% set context = 'warning' %}
@@ -85,8 +89,34 @@
                         <td>{{ log.message }}</td>
                     </tr>
                     {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No logs available
+                        </td>
+                    </tr>
+                {% endif %}
             </table>
+            <div class="text-center">
+                <ul class="pagination">
+                    {% set page = app.request.get('page')|default(1) %}
+                    {% set limit = app.request.get('limit')|default(100) %}
+                    {% if page > 1 %}
+                        <li>
+                            <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page-1, 'level':app.request.get('level') }) }}" title="Vorherige">‹</a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page, 'level':app.request.get('level') }) }}">{{ page }}</a>
+                    </li>
+                    {% if (page + 1) * limit < resultCount %}
+                    <li>
+                        <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}" title="Nächste">›</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 {% endblock %}
