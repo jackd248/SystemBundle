@@ -176,6 +176,12 @@
 .mb-15 {
     margin-bottom: 15px;
 }
+.color-warning {
+    color: orange;
+}
+.color-error {
+    color: red;
+}
 
 /* Tables */
 .table td, .table th {

@@ -54,8 +54,9 @@
                 </div>
             </form>
             <hr/>
-            <table class="table table-condensed">
+            <table class="table table-condensed table-striped">
                 {% for log in logs %}
+                    {% if log.message is not null %}
                     {% if log.level == 'WARNING' %}
                         {% set context = 'warning' %}
                     {% elseif log.level == 'ERROR' %}
@@ -71,14 +72,19 @@
                     {% endif %}
                     <tr class="table-{{ context }}">
                         <td>
-                            <span class="label label-default">{{ log.dateTime|format_datetime() }}</span>
+                            <span class="label label-default">
+                                {% if log.dateTime is not null %}
+                                    {{ log.dateTime|format_datetime() }}
+                                {% endif %}
+                            </span>
                         </td>
+                        <td>{{ log.channel }}</td>
                         <td>
                             <span class="badge badge-pill badge-{{ context }}">{{ log.level }}</span>
                         </td>
-                        <td>{{ log.channel }}</td>
                         <td>{{ log.message }}</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
         </div>
