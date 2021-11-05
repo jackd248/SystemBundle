@@ -13,6 +13,19 @@ services:
     tags: ['controller.service_arguments']
     public: true
 
+  Kmi\SystemInformationBundle\Service\CheckService:
+    class: Kmi\SystemInformationBundle\Service\CheckService
+    arguments:
+      - '@service_container'
+
+  Kmi\SystemInformationBundle\Service\LogService:
+    class: Kmi\SystemInformationBundle\Service\LogService
+
+  Kmi\SystemInformationBundle\Service\InformationService:
+    class: Kmi\SystemInformationBundle\Service\InformationService
+    arguments:
+      - '@service_container'
+
   Kmi\SystemInformationBundle\Twig\FormatBytesExtension:
     class: Kmi\SystemInformationBundle\Twig\FormatBytesExtension
     tags:
