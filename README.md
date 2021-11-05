@@ -35,14 +35,6 @@ _monitor:
   prefix: /monitor/health
 ```
 
-### Services 
-
-Add a service entry in `config/services.yaml`
-```yaml
-imports:
-    - { resource: "@SystemInformationBundle/Resources/config/services.yaml" }
-```
-
 ### Templates
 
 Add a twig entry in `config/packages/twig.yaml`
@@ -55,15 +47,17 @@ paths:
 
 Add a sonata admin menu entry in `config/packages/sonata_admin.yaml`
 ```yaml
-groups:
-    app.admin.group.system:
-        label: 'System'
-        icon: '<i class="fa fa-cogs" aria-hidden="true"></i>'
-        roles: ['ROLE_SUPER_ADMIN']
-        on_top: true
-        items:
-            - route: kmi_system_information_overview
-              label: System
+sonata_admin:
+    dashboards:
+        groups:
+            app.admin.group.system:
+                label: 'System'
+                icon: '<i class="fa fa-cogs" aria-hidden="true"></i>'
+                roles: ['ROLE_SUPER_ADMIN']
+                on_top: true
+                items:
+                    - route: kmi_system_information_overview
+                      label: System
 ```
 
 ### 
