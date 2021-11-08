@@ -1,0 +1,94 @@
+dashboard:
+  general:
+    heading: System overview
+  monitoring:
+    heading: Monitoring
+    description: |
+      <p>
+          This service performs user defined health checks for the various services that compose an
+          application.
+      </p>
+      <p>
+          See <a href="https://github.com/liip/LiipMonitorBundle">LiipMonitorBundle</a> for further check
+          configuration.
+      </p>
+    table:
+      check: Check
+      description: Description
+  log:
+    heading: Log overview
+    description: |
+      <p>
+          The log viewer based on the <a href="https://github.com/evotodi/log-viewer-bundle">log-viewer-bundle</a> for viewing
+          application logs. The log directory is located at <code>logDir</code>.
+      </p>
+    table:
+      name: Filename
+      anomalies: last 24h
+      changed: Changed
+      size: Size
+  information:
+    heading: General information
+    description: |
+      <p>
+          See <a href="phpInfoPath">php_info</a> for further information.
+      </p>
+
+viewer:
+  general:
+    heading: Log viewer
+  detail:
+    heading: Log detail
+    back: Back to system overview
+  filter:
+    limit: Limit
+    level: Level
+    all: ALL
+    submit: Submit
+    reset: Reset
+  list:
+    results: log results
+    empty: No log entries available
+
+system:
+  items:
+    check:
+      value: checks
+      description: with warnings or failures
+    logs:
+      value: anomalies
+      description: in logs within last 24h
+    app_version:
+      description: App version
+    php:
+      description: PHP version
+    symfony:
+      description: Symfony version
+    app_env:
+      description: Symfony environment
+    symfony_env:
+      description: App environment
+    os:
+      description: Operating system
+  information:
+    server:
+      ip: Server IP
+      name: Server name
+      protocol: Server protocol
+      software: Server software
+      operating:  Operating system
+      os: OS
+    php:
+      version: PHP
+      interface: Interface
+      locale: Intl locale
+    date:
+      now: Date
+      timezone: Timezone
+    app:
+      version: App version
+      environment: App environment
+    symfony:
+      version: Symfony version
+      environment: Symfony environment
+

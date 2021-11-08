@@ -7,7 +7,7 @@
 
 {% block sonata_page_content_header %}
     <div class="page-header">
-        <h2>Log viewer</h2>
+        <h2>{{ 'viewer.general.heading'|trans({}, 'SystemInformationBundle') }}</h2>
     </div>
 {% endblock %}
 
@@ -17,36 +17,36 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <i class="icon-info mr-5" aria-hidden="true"></i> Log detail
+                <i class="icon-info mr-5" aria-hidden="true"></i> {{ 'viewer.detail.heading'|trans({}, 'SystemInformationBundle') }}
             </h3>
         </div>
         <div class="panel-body">
             <form id="log-filter-form" class="mb-15 form-item">
                 <div class="item m-10">
                     <a href="{{ path('kmi_system_information_overview') }}">
-                        Back to system overview
+                        {{ 'viewer.detail.back'|trans({}, 'SystemInformationBundle') }}
                     </a>
                 </div>
                 <div class="item m-10 log-results">
-                    <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> log results
+                    <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> {{ 'viewer.list.results'|trans({}, 'SystemInformationBundle') }}
                 </div>
                 <div class="item form-item m-10">
-                    <label for="log-filter-form-limit" class="mr-5">Limit</label>
+                    <label for="log-filter-form-limit" class="mr-5">{{ 'viewer.filter.limit'|trans({}, 'SystemInformationBundle') }}</label>
                     <input type="number" id="log-filter-form-limit" class="mw-200 form-control"
                            value="{{ app.request.get('limit')|default(100) }}" name="limit"/>
                 </div>
                 <div class="item form-item m-10">
-                    <label for="log-filter-form-level" class="mr-5">Level</label>
+                    <label for="log-filter-form-level" class="mr-5">{{ 'viewer.filter.level'|trans({}, 'SystemInformationBundle') }}</label>
                     <select name="level" id="log-filter-form-level" class="mw-200">
-                        <option value="">ALL</option>
+                        <option value="">{{ 'viewer.filter.all'|trans({}, 'SystemInformationBundle') }}</option>
                         {% for level in levels %}
                             <option value="{{ level }}" {{ app.request.get('level') == level ? 'selected' : '' }}>{{ level }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="item form-item m-10">
-                    <button type="submit" class="btn">Submit</button>
-                    <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">Reset</a>
+                    <button type="submit" class="btn">{{ 'viewer.filter.submit'|trans({}, 'SystemInformationBundle') }}</button>
+                    <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">{{ 'viewer.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
                 </div>
             </form>
             <table class="table table-condensed table-striped">
@@ -85,7 +85,7 @@
                     {% else %}
                     <tr>
                         <td colspan="4" class="text-center">
-                            No logs available
+                            {{ 'viewer.list.empty'|trans({}, 'SystemInformationBundle') }}
                         </td>
                     </tr>
                 {% endif %}
@@ -96,7 +96,7 @@
                     {% set limit = app.request.get('limit')|default(100) %}
                     {% if page > 1 %}
                         <li>
-                            <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page-1, 'level':app.request.get('level') }) }}" title="Vorherige">‹</a>
+                            <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page-1, 'level':app.request.get('level') }) }}">‹</a>
                         </li>
                     {% endif %}
                     <li>
@@ -104,7 +104,7 @@
                     </li>
                     {% if (page + 1) * limit < resultCount %}
                     <li>
-                        <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}" title="Nächste">›</a>
+                        <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}">›</a>
                     </li>
                     {% endif %}
                 </ul>

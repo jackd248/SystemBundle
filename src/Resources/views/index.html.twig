@@ -7,7 +7,7 @@
 
 {% block sonata_page_content_header %}
     <div class="page-header">
-        <h2>System overview</h2>
+        <h2>{{ 'dashboard.general.heading'|trans({}, 'SystemInformationBundle') }}</h2>
     </div>
 {% endblock %}
 
@@ -32,23 +32,16 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-monitor mr-5" aria-hidden="true"></i> Monitoring
+                    <i class="icon-monitor mr-5" aria-hidden="true"></i> {{ 'dashboard.monitoring.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">
-                <p>
-                    This service performs user defined health checks for the various services that compose an
-                    application.
-                </p>
-                <p>
-                    See <a href="https://github.com/liip/LiipMonitorBundle">LiipMonitorBundle</a> for further check
-                    configuration.
-                </p>
+                {{ 'dashboard.monitoring.description'|trans({}, 'SystemInformationBundle')|raw }}
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th scope="col">Check</th>
-                        <th scope="col">Description</th>
+                        <th scope="col">{{ 'dashboard.monitoring.table.check'|trans({}, 'SystemInformationBundle') }}</th>
+                        <th scope="col">{{ 'dashboard.monitoring.table.description'|trans({}, 'SystemInformationBundle') }}</th>
                     </tr>
                     </thead>
                     {% for check in checks %}
@@ -76,30 +69,27 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-info mr-5" aria-hidden="true"></i> Log overview
+                    <i class="icon-info mr-5" aria-hidden="true"></i> {{ 'dashboard.log.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">
-                <p>
-                    The log viewer based on the <a href="https://github.com/evotodi/log-viewer-bundle">log-viewer-bundle</a> for viewing
-                    application logs. The log directory is located at <code>{{ logDir }}</code>.
-                </p>
+                {{ 'dashboard.log.description'|trans({'logDir': logDir}, 'SystemInformationBundle')|raw }}
                 <table class="table table-condensed">
                     <thead>
-                    <tr>
-                        <th>
-                            Logname
-                        </th>
-                        <th>
-                            Last 24h
-                        </th>
-                        <th>
-                            Changed
-                        </th>
-                        <th>
-                            Size
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                {{ 'dashboard.log.table.name'|trans({}, 'SystemInformationBundle') }}
+                            </th>
+                            <th>
+                                {{ 'dashboard.log.table.anomalies'|trans({}, 'SystemInformationBundle') }}
+                            </th>
+                            <th>
+                                {{ 'dashboard.log.table.changed'|trans({}, 'SystemInformationBundle') }}
+                            </th>
+                            <th>
+                                {{ 'dashboard.log.table.size'|trans({}, 'SystemInformationBundle') }}
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for log in logs %}
@@ -140,13 +130,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-layers mr-5" aria-hidden="true"></i> General information
+                    <i class="icon-layers mr-5" aria-hidden="true"></i> {{ 'dashboard.information.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">
-                <p>
-                    See <a href="{{ path('kmi_system_information_info') }}">php_info</a> for further information.
-                </p>
+                {{ 'dashboard.information.description'|trans({'phpInfoPath': path('kmi_system_information_info')}, 'SystemInformationBundle')|raw }}
                 <table class="table table-condensed">
                     {% for key, info in infos %}
                         <tr>

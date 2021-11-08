@@ -5,6 +5,7 @@ namespace Kmi\SystemInformationBundle\Service;
 use DateTime;
 use Locale;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  *
@@ -15,6 +16,11 @@ class InformationService {
      * @var Container
      */
     private $container;
+
+    /**
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private TranslatorInterface $translator;
 
     /**
      * @var \Kmi\SystemInformationBundle\Service\CheckService
@@ -28,12 +34,14 @@ class InformationService {
 
     /**
      * @param \Symfony\Component\DependencyInjection\Container $container
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      */
-    public function __construct(Container $container, CheckService $checkService, LogService $logService)
+    public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService)
     {
         $this->container = $container;
+        $this->translator = $translator;
         $this->checkService = $checkService;
         $this->logService = $logService;
     }
@@ -50,8 +58,8 @@ class InformationService {
 
         if ($this->checkService->getMonitorCheckStatus($checks)) {
             $information[] = [
-                'value' => $this->checkService->getMonitorCheckCount($checks) . ' checks',
-                'description' => 'resulted in a warning or failure',
+                'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
+                'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-alert-triangle',
                 'class' => 'color-error'
             ];
@@ -59,49 +67,49 @@ class InformationService {
 
         if ($errorCount = $this->logService->getErrorCount()) {
             $information[] = [
-                'value' => $errorCount . ' anomalies',
-                'description' => 'in logs within last 24h',
+                'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
+                'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-alert-circle',
                 'class' => 'color-error'
             ];
         }
 
         $information[] = [
-            'value' => \json_decode(file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json'), true)['version'],
-            'description' => 'App version',
+            'value' => $this->getAppVersion(),
+            'description' => $this->translator->trans('system.items.app_version.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-command'
         ];
 
         $information[] = [
             'value' => phpversion(),
-            'description' => 'PHP version',
+            'description' => $this->translator->trans('system.items.php.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-php'
         ];
         $information[] = [
             'value' => \Symfony\Component\HttpKernel\Kernel::VERSION,
-            'description' => 'Symfony version',
+            'description' => $this->translator->trans('system.items.symfony.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-symfony'
         ];
 
-        if ($_ENV['APP_ENV']) {
+        if ($appEnv = $_ENV['APP_ENV']) {
             $information[] = [
-                'value' => $_ENV['APP_ENV'],
-                'description' => 'Symfony environment',
+                'value' => $appEnv,
+                'description' => $this->translator->trans('system.items.app_env.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-package'
             ];
         }
 
-        if ($_ENV['SYMFONY_ENVIRONMENT']) {
+        if ($symfonyEnv = $_ENV['SYMFONY_ENVIRONMENT']) {
             $information[] = [
-                'value' => $_ENV['SYMFONY_ENVIRONMENT'],
-                'description' => 'App environment',
+                'value' => $symfonyEnv,
+                'description' => $this->translator->trans('system.items.symfony_env.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-git-branch'
             ];
         }
 
         $information[] = [
             'value' => PHP_OS,
-            'description' => 'Operating system',
+            'description' => $this->translator->trans('system.items.os.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-hard-drive'
         ];
 
@@ -116,21 +124,21 @@ class InformationService {
     public function getFurtherSystemInformation(): array
     {
         return [
-            'Server IP' => $_SERVER['SERVER_ADDR'],
-            'Server name' => gethostname(),
-            'Server protocol' => $_SERVER['SERVER_PROTOCOL'],
-            'Server software' => $_SERVER['SERVER_SOFTWARE'],
-            'Operating system' => PHP_OS,
-            'OS' => php_uname(),
-            'PHP' => phpversion(),
-            'Interface' => php_sapi_name(),
-            'Intl locale' => Locale::getDefault(),
-            'Timezone' => date_default_timezone_get(),
-            'Date' => (new DateTime())->format('Y-m-d H:i:s'),
-            'App version' => \json_decode(file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json'), true)['version'],
-            'App environment' => $_ENV['SYMFONY_ENVIRONMENT'],
-            'Symfony version' => \Symfony\Component\HttpKernel\Kernel::VERSION,
-            'Symfony environment' => $_ENV['APP_ENV']
+            $this->translator->trans('system.information.server.ip', [], 'SystemInformationBundle') => $_SERVER['SERVER_ADDR'],
+            $this->translator->trans('system.information.server.name', [], 'SystemInformationBundle') => gethostname(),
+            $this->translator->trans('system.information.server.protocol', [], 'SystemInformationBundle') => $_SERVER['SERVER_PROTOCOL'],
+            $this->translator->trans('system.information.server.software', [], 'SystemInformationBundle') => $_SERVER['SERVER_SOFTWARE'],
+            $this->translator->trans('system.information.server.operating', [], 'SystemInformationBundle') => PHP_OS,
+            $this->translator->trans('system.information.server.os', [], 'SystemInformationBundle') => php_uname(),
+            $this->translator->trans('system.information.php.version', [], 'SystemInformationBundle') => phpversion(),
+            $this->translator->trans('system.information.php.interface', [], 'SystemInformationBundle') => php_sapi_name(),
+            $this->translator->trans('system.information.php.locale', [], 'SystemInformationBundle') => Locale::getDefault(),
+            $this->translator->trans('system.information.date.timezone', [], 'SystemInformationBundle') => date_default_timezone_get(),
+            $this->translator->trans('system.information.date.now', [], 'SystemInformationBundle') => (new DateTime())->format('Y-m-d H:i:s'),
+            $this->translator->trans('system.information.app.version', [], 'SystemInformationBundle') => $this->getAppVersion(),
+            $this->translator->trans('system.information.app.environment', [], 'SystemInformationBundle') => $_ENV['SYMFONY_ENVIRONMENT'],
+            $this->translator->trans('system.information.symfony.version', [], 'SystemInformationBundle') => \Symfony\Component\HttpKernel\Kernel::VERSION,
+            $this->translator->trans('system.information.symfony.environment', [], 'SystemInformationBundle') => $_ENV['APP_ENV']
         ];
     }
 
@@ -145,5 +153,19 @@ class InformationService {
             $countWarningsAndErrosInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
         }
         return $countWarningsAndErrosInLogs || $this->checkService->getMonitorCheckStatus($this->checkService->getLiipMonitorChecks());
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getAppVersion() {
+        $composerFile = file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json');
+        if ($composerFile) {
+            $composerArray = \json_decode($composerFile, true);
+            if (array_key_exists('version', $composerArray)) {
+                return $composerArray['version'];
+            }
+        }
+        return null;
     }
 }

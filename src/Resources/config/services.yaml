@@ -30,3 +30,8 @@ services:
     class: Kmi\SystemInformationBundle\Twig\SystemExtension
     tags:
       - { name: twig.extension }
+
+  Kmi\SystemInformationBundle\Twig\VersionExtension:
+    class: Kmi\SystemInformationBundle\Twig\VersionExtension
+    tags:
+      - { name: twig.extension }
