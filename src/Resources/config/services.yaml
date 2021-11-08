@@ -26,7 +26,7 @@ services:
     arguments:
       - '@service_container'
 
-  Kmi\SystemInformationBundle\Twig\FormatBytesExtension:
-    class: Kmi\SystemInformationBundle\Twig\FormatBytesExtension
+  Kmi\SystemInformationBundle\Twig\SystemExtension:
+    class: Kmi\SystemInformationBundle\Twig\SystemExtension
     tags:
       - { name: twig.extension }
