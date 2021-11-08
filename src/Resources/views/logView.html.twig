@@ -21,40 +21,32 @@
             </h3>
         </div>
         <div class="panel-body">
-            <form id="log-filter-form" class="mb-15">
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-xl-4">
-                            <a href="{{ path('kmi_system_information_overview') }}">
-                                Back to system overview
-                            </a>
-                        </div>
-                        <div class="col-xl-1">
-                            <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> log results
-                        </div>
-                        <div class="col-xl-1 text-right">
-                            <label for="log-filter-form-limit">Limit</label>
-                        </div>
-                        <div class="col-xl-2">
-                            <input type="number" id="log-filter-form-limit" class="form-control"
-                                   value="{{ app.request.get('limit')|default(100) }}" name="limit"/>
-                        </div>
-                        <div class="col-xl-1 text-right">
-                            <label for="log-filter-form-level">Level</label>
-                        </div>
-                        <div class="col-xl-2">
-                            <select name="level" id="log-filter-form-level">
-                                <option value="">ALL</option>
-                                {% for level in levels %}
-                                    <option value="{{ level }}" {{ app.request.get('level') == level ? 'selected' : '' }}>{{ level }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-xl-1">
-                            <button type="submit" class="btn">Submit</button>
-                            <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">Reset</a>
-                        </div>
-                    </div>
+            <form id="log-filter-form" class="mb-15 form-item">
+                <div class="item m-10">
+                    <a href="{{ path('kmi_system_information_overview') }}">
+                        Back to system overview
+                    </a>
+                </div>
+                <div class="item m-10 log-results">
+                    <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> log results
+                </div>
+                <div class="item form-item m-10">
+                    <label for="log-filter-form-limit" class="mr-5">Limit</label>
+                    <input type="number" id="log-filter-form-limit" class="mw-200 form-control"
+                           value="{{ app.request.get('limit')|default(100) }}" name="limit"/>
+                </div>
+                <div class="item form-item m-10">
+                    <label for="log-filter-form-level" class="mr-5">Level</label>
+                    <select name="level" id="log-filter-form-level" class="mw-200">
+                        <option value="">ALL</option>
+                        {% for level in levels %}
+                            <option value="{{ level }}" {{ app.request.get('level') == level ? 'selected' : '' }}>{{ level }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="item form-item m-10">
+                    <button type="submit" class="btn">Submit</button>
+                    <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">Reset</a>
                 </div>
             </form>
             <table class="table table-condensed table-striped">

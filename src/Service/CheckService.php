@@ -62,4 +62,19 @@ class CheckService {
         }
         return $status;
     }
+
+    /**
+     * @param $checks
+     * @return int
+     */
+    public function getMonitorCheckCount($checks)
+    {
+        $count = 0;
+        foreach ($checks as $check) {
+            if (intval($check->status) > 0) {
+                $count++;
+            }
+        }
+        return $count;
+    }
 }

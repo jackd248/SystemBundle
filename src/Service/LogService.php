@@ -133,6 +133,19 @@ class LogService
     }
 
     /**
+     * @return int|mixed
+     * @throws \Exception
+     */
+    public function getErrorCount() {
+        $countWarningsAndErrosInLogs = 0;
+        $logList = $this->getLogList();
+        foreach ($logList as $log) {
+            $countWarningsAndErrosInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
+        }
+        return $countWarningsAndErrosInLogs;
+    }
+
+    /**
      * @param $logs
      * @param string[] $type
      * @param string $period

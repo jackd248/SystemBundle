@@ -17,7 +17,7 @@
             <div class="col-md-6 col-lg-4 col-xl-2">
                 <div class="system-box">
                     <div>
-                        <i class="{{ info.icon }}"></i>
+                        <i class="{{ info.icon }} {{ info.class is defined ? info.class }}"></i>
                     </div>
                     <div>
                         <h4><strong>{{ info.value }}</strong></h4>

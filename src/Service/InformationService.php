@@ -17,34 +17,60 @@ class InformationService {
     private $container;
 
     /**
-     * Constructor
-     *
-     * @param Container $container
+     * @var \Kmi\SystemInformationBundle\Service\CheckService
      */
-    public function __construct(Container $container)
+    private CheckService $checkService;
+
+    /**
+     * @var \Kmi\SystemInformationBundle\Service\LogService
+     */
+    private LogService $logService;
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
+     * @param \Kmi\SystemInformationBundle\Service\LogService $logService
+     */
+    public function __construct(Container $container, CheckService $checkService, LogService $logService)
     {
         $this->container = $container;
+        $this->checkService = $checkService;
+        $this->logService = $logService;
     }
 
     /**
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getSystemInformation(): array
     {
         $information = [];
+
+        $checks = $this->checkService->getLiipMonitorChecks();
+
+        if ($this->checkService->getMonitorCheckStatus($checks)) {
+            $information[] = [
+                'value' => $this->checkService->getMonitorCheckCount($checks) . ' checks',
+                'description' => 'resulted in a warning or failure',
+                'icon' => 'icon-alert-triangle',
+                'class' => 'color-error'
+            ];
+        }
+
+        if ($errorCount = $this->logService->getErrorCount()) {
+            $information[] = [
+                'value' => $errorCount . ' anomalies',
+                'description' => 'in logs within last 24h',
+                'icon' => 'icon-alert-circle',
+                'class' => 'color-error'
+            ];
+        }
+
         $information[] = [
             'value' => \json_decode(file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json'), true)['version'],
             'description' => 'App version',
             'icon' => 'icon-command'
         ];
-
-        if ($_ENV['SYMFONY_ENVIRONMENT']) {
-            $information[] = [
-                'value' => $_ENV['SYMFONY_ENVIRONMENT'],
-                'description' => 'App environment',
-                'icon' => 'icon-git-branch'
-            ];
-        }
 
         $information[] = [
             'value' => phpversion(),
@@ -65,13 +91,21 @@ class InformationService {
             ];
         }
 
-        return array_merge($information, [
-            [
-                'value' => PHP_OS,
-                'description' => 'Operating system',
-                'icon' => 'icon-hard-drive'
-            ]
-        ]);
+        if ($_ENV['SYMFONY_ENVIRONMENT']) {
+            $information[] = [
+                'value' => $_ENV['SYMFONY_ENVIRONMENT'],
+                'description' => 'App environment',
+                'icon' => 'icon-git-branch'
+            ];
+        }
+
+        $information[] = [
+            'value' => PHP_OS,
+            'description' => 'Operating system',
+            'icon' => 'icon-hard-drive'
+        ];
+
+        return array_splice($information, 0, 6);
     }
 
 
@@ -98,5 +132,18 @@ class InformationService {
             'Symfony version' => \Symfony\Component\HttpKernel\Kernel::VERSION,
             'Symfony environment' => $_ENV['APP_ENV']
         ];
+    }
+
+    /**
+     * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getSystemStatus() {
+        $countWarningsAndErrosInLogs = 0;
+        $logList = $this->logService->getLogList();
+        foreach ($logList as $log) {
+            $countWarningsAndErrosInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
+        }
+        return $countWarningsAndErrosInLogs || $this->checkService->getMonitorCheckStatus($this->checkService->getLiipMonitorChecks());
     }
 }
