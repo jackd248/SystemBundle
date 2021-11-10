@@ -77,3 +77,40 @@ See an example in [monitor.yaml](docs/examples/monitor.yaml)
 ### Ready
 
 Access the system overview page `/admin/system`.
+
+## Functions
+
+### System Overview
+
+_ToDo_
+
+### App Version
+
+_ToDo_
+
+### Environment Indicator
+
+Extend the Sonata Admin `standard_layout.html.twig` to enable the twig function in the backend header:
+
+```html
+{% extends '@!SonataAdmin/standard_layout.html.twig' %}
+{% block sonata_breadcrumb %}
+    <ul class="nav navbar-nav" style="float:left">
+        {{ environment()|raw }}
+    </ul>
+    {{ parent() }}
+{% endblock %}
+```
+
+Extend the Sonata User `login.html.twig` to enable the twig function in the login screen:
+
+```html
+{% extends '@!SonataUser/Admin/Security/login.html.twig' %}
+
+{% block sonata_wrapper %}
+    {{ parent() }}
+    <ul style="position: absolute;top: 10px;left: 10px;">
+        {{ environment()|raw }}
+    </ul>
+{% endblock sonata_wrapper %}
+```
