@@ -2,9 +2,9 @@
 
 namespace Kmi\SystemInformationBundle\Service;
 
-use Evotodi\LogViewerBundle\Reader\LogReader;
-use Evotodi\LogViewerBundle\Service\LogList;
+use DateTime;
 use Kmi\SystemInformationBundle\SystemInformationBundle;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -38,9 +38,9 @@ class LogService
     ];
 
     /**
-     * @var \Evotodi\LogViewerBundle\Service\LogList
+     * @var ContainerInterface
      */
-    public LogList $logList;
+    private ContainerInterface $container;
 
     /**
      * @var \Symfony\Contracts\Cache\CacheInterface
@@ -48,12 +48,12 @@ class LogService
     protected CacheInterface $cachePool;
 
     /**
-     * @param \Evotodi\LogViewerBundle\Service\LogList $logList
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
      */
-    public function __construct(LogList $logList, CacheInterface $cachePool)
+    public function __construct(ContainerInterface $container, CacheInterface $cachePool)
     {
-        $this->logList = $logList;
+        $this->container = $container;
         $this->cachePool = $cachePool;
     }
 
@@ -62,57 +62,68 @@ class LogService
      * @return array
      * @throws \Exception
      */
-    public function getLogList(): array
+    public function getLogs(): array
     {
-        $logs = [];
-        foreach ($this->logList->getLogList() as $log) {
-            $logs[] = [
-                'log' => $log,
-                'warningCountByPeriod' => $this->countLogTypeByPeriod($this->getLogsById($log->getId()), self::LOG_TYPE['WARNING']),
-                'errorCountByPeriod' => $this->countLogTypeByPeriod($this->getLogsById($log->getId())),
-                'size' => $this->formatBytes($log->getSize()),
-                'readable' => str_ends_with($log->getName(), '.gz') ? 0 : 1
-            ];
+        $files = [];
+        $logDir = $this->container->getParameter('kernel.logs_dir');
+        $fileList = array_diff(scandir($logDir), ['..', '.', '.DS_Store']);
+        foreach ($fileList as $fileEntry) {
+            $file['fileName'] = $fileEntry;
+            $file['absolutePath'] = $logDir . '/' . $fileEntry;
+            $file['fileSize'] = $this->formatBytes(filesize($file['absolutePath']));
+            $file['changeDate'] = (new DateTime())->setTimestamp(filemtime($file['absolutePath']));
+            $file['readable'] = str_ends_with($fileEntry, '.gz') ? 0 : 1;
+            $file['warningCountByPeriod'] = $file['changeDate'] > new \DateTime('-1 day') ? $this->countLogTypeByPeriod($this->getLog($fileEntry), self::LOG_TYPE['WARNING']) : 0;
+            $file['errorCountByPeriod'] = $file['changeDate'] > new \DateTime('-1 day') ? $this->countLogTypeByPeriod($this->getLog($fileEntry)) : 0;
+            $files[$fileEntry] = $file;
         }
-        return $logs;
+
+        usort($files, function($a, $b) {
+            return $a['changeDate'] < $b['changeDate'];
+        });
+        return $files;
     }
 
     /**
      * @param $id
      * @return array
      */
-    public function getLogsById($id): array
+    public function getLog($id): array
     {
-        $logs = $this->logList->getLogList();
-        $log = $logs[$id];
+        $logDir = $this->container->getParameter('kernel.logs_dir');
+        $absolutePath = $logDir . '/' . $id;
 
-        if (!file_exists($log->getPath())) {
-            throw new FileNotFoundException(sprintf("Log file \"%s\" was not found!", $log['path']));
+        if (!file_exists($absolutePath)) {
+            throw new FileNotFoundException();
         }
 
-        $reader = new LogReader($log);
+        $fn = fopen($absolutePath, "r");
+        $lines = [];
 
-        if (!is_null($log->getPattern())) {
-            $reader->getParser()->registerPattern('NewPattern', $log->getPattern());
-            $reader->setPattern('NewPattern');
-        }
+        while (!feof($fn)) {
+            $result = fgets($fn);
 
-        $logs = [];
-        foreach ($reader as $line) {
-            try {
-                $logs[] = [
-                    'dateTime' => $line['date'],
-                    'channel' => $line['channel'],
-                    'level' => $line['level'],
-                    'message' => $line['message'],
-                ];
-            } catch (\Exception $e) {
+            if (!$result) {
                 continue;
             }
+
+            preg_match('/\[(?P<date>.*)\] (?P<channel>\w+).(?P<level>\w+): (?P<message>[^\[\{].*[\]\}])/', $result, $data);
+
+            if (!isset($data['date'])) {
+                continue;
+            }
+            $array = array(
+                'date'    => DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
+                'channel'  => $data['channel'],
+                'level'   => $data['level'],
+                'message' => $data['message']
+            );
+
+            $lines[] = $array;
         }
+        fclose($fn);
         // Default ordering by date
-        $logs = array_reverse($logs);
-        return $logs;
+        return array_reverse($lines);
     }
 
     /**
@@ -147,7 +158,8 @@ class LogService
      * @return mixed
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getErrorCount(bool $forceUpdate = false) {
+    public function getErrorCount(bool $forceUpdate = false)
+    {
 
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -158,7 +170,7 @@ class LogService
             $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME);
 
             $countWarningsAndErrorsInLogs = 0;
-            $logList = $this->getLogList();
+            $logList = $this->getLogs();
             foreach ($logList as $log) {
                 $countWarningsAndErrorsInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
             }
@@ -168,16 +180,16 @@ class LogService
 
     /**
      * @param $logs
-     * @param string[] $type
+     * @param array|string[] $type
      * @param string $period
      * @return int
      * @throws \Exception
      */
-    private function countLogTypeByPeriod($logs, $type = self::LOG_TYPE['ERROR'], $period = '-1 day'): int
+    private function countLogTypeByPeriod($logs, array $type = self::LOG_TYPE['ERROR'], string $period = '-1 day'): int
     {
         $count = 0;
         foreach ($logs as $log) {
-            if ($log['dateTime'] < new \DateTime($period)) {
+            if ($log['date'] < new \DateTime($period)) {
                 break;
             }
             if (in_array($log['level'], $type)) {
@@ -196,7 +208,7 @@ class LogService
      */
     private function formatBytes($bytes, $precision = 2): string
     {
-        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));

@@ -7,10 +7,6 @@ use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 /**
  * Class SystemController
@@ -46,8 +42,6 @@ class SystemController extends AbstractController
     }
 
     /**
-     * @Route("/admin/system")
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \GuzzleHttp\Exception\GuzzleException|\Psr\Cache\InvalidArgumentException
      */
@@ -55,7 +49,7 @@ class SystemController extends AbstractController
     {
         $checks = $this->checkService->getLiipMonitorChecks();
         $status = $this->checkService->getMonitorCheckStatus($checks);
-        $logs = $this->logService->getLogList();
+        $logs = $this->logService->getLogs();
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
             'checks' => $checks,
@@ -68,16 +62,12 @@ class SystemController extends AbstractController
     }
 
     /**
-     * @Route("/admin/system/log/{id}", requirements={"id"="\d+"})
-     *
-     * @param int id
+     * @param string id
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function logView($id, Request $request): \Symfony\Component\HttpFoundation\Response
+    public function logView(string $id, Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $logs = $this->logService->logList->getLogList();
-        $log = $logs[$id];
         $limit = 100;
         if ($request->query->has('limit')) {
             $limit = intval($request->query->get('limit'));
@@ -93,19 +83,17 @@ class SystemController extends AbstractController
             $level = $request->query->get('level');
         }
 
-        $logs = $this->logService->getLogsById($id);
+        $logs = $this->logService->getLog($id);
         $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level);
         return $this->render('@SystemInformationBundle/logView.html.twig', [
             'logs' => $logs['result'],
-            'levels' => $log->getLevels(),
+            'levels' => LogService::LOG_LEVEL,
             'id' => $id,
             'resultCount' => $logs['count']
         ]);
     }
 
     /**
-     * @Route("/admin/system/info")
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -119,8 +107,6 @@ class SystemController extends AbstractController
     }
 
     /**
-     * @Route("/admin/system/phpinfo")
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function phpInfo(): \Symfony\Component\HttpFoundation\Response

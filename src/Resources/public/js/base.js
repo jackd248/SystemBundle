@@ -4,7 +4,6 @@ $(document).ready(function() {
      */
     let $el = $('#system-indicator-extension');
     let url = $el.data('url');
-    console.log(url);
     $.get(url, function (data, status) {
         $el.html(data);
 

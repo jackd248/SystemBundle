@@ -96,9 +96,9 @@
                         <tr>
                             <td>
                                 {% if log['readable'] %}
-                                    <a href="{{ path('kmi_system_information_log_view', {'id':log['log'].id}) }}">{{ log['log'].name }}</a>
+                                    <a href="{{ path('kmi_system_information_log_view', {'id':log.fileName}) }}">{{ log.fileName }}</a>
                                 {% else %}
-                                    {{ log['log'].name }}
+                                    {{ log.fileName }}
                                 {% endif %}
                             </td>
                             <td>
@@ -114,10 +114,10 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="label label-default">{{ log['log'].mtime|format_datetime() }}</span>
+                                <span class="label label-default">{{ log.changeDate|format_datetime }}</span>
                             </td>
                             <td>
-                                <span class="badge badge-pill badge-info">{{ log['size'] }}</span>
+                                <span class="badge badge-pill badge-info">{{ log.fileSize }}</span>
                             </td>
                         </tr>
                     {% endfor %}

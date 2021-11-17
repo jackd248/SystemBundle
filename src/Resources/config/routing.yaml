@@ -7,10 +7,13 @@ kmi_system_information_log_view:
   path: /admin/system/log/{id}
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:logView}
   methods:  [GET]
-  requirements:
-    id: \d+
 
 kmi_system_information_info:
   path: /admin/system/info
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:info}
+  methods:  [GET]
+
+kmi_system_information_phpinfo:
+  path: /admin/system/phpinfo
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:phpInfo}
   methods:  [GET]

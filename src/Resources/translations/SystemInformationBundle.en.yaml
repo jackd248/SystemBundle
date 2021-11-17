@@ -19,8 +19,7 @@ dashboard:
     heading: Log overview
     description: |
       <p>
-          The log viewer based on the <a href="https://github.com/evotodi/log-viewer-bundle">log-viewer-bundle</a> for viewing
-          application logs. The log directory is located at <code>logDir</code>.
+          The log viewer is reading the application logs. The log directory is located at <code>logDir</code>.
       </p>
     table:
       name: Filename

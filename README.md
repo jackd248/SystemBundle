@@ -7,7 +7,6 @@ Simple Sonata Admin bundle to get a system information overview.
 This bundle combines the functionalities of the following bundles and displays the aggregated information within the backend:
 
 - [LiipMonitorBundle](https://github.com/liip/LiipMonitorBundle)
-- [log-viewer-bundle](https://github.com/evotodi/log-viewer-bundle)
 
 ## Install
 
@@ -80,13 +79,29 @@ Access the system overview page `/admin/system`.
 
 ## Functions
 
-### System Overview
+### System Indicator
 
-_ToDo_
+Extend the Sonata Admin `standard_layout.html.twig` to enable the twig function in the backend header:
+
+```html
+{% block sonata_top_nav_menu %}
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+            <li>
+                {{ system_information_indicator()|raw }}
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+```
 
 ### App Version
 
-_ToDo_
+Displays the application version defined in the `composer.json` file:
+
+```html
+{{ version() }}
+```
 
 ### Environment Indicator
 
