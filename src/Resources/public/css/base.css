@@ -172,15 +172,15 @@
 .m-10 {
     margin: 10px;
 }
-
 .mr-5 {
     margin-right: 5px;
 }
-
 .mb-15 {
     margin-bottom: 15px;
 }
-
+.mb-0 {
+    margin-bottom: 0;
+}
 .mw-200 {
     min-width: 200px;
 }
@@ -289,4 +289,14 @@
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px
+}
+
+/**
+ * Extension
+ */
+#system-indicator-extension--icon {
+    transition: ease 1s;
+}
+#system-indicator-extension {
+    min-width: 300px
 }

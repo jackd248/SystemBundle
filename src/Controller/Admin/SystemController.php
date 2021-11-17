@@ -8,6 +8,9 @@ use Kmi\SystemInformationBundle\Service\LogService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class SystemController
@@ -32,7 +35,7 @@ class SystemController extends AbstractController
 
     /**
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
-     * @param \Kmi\SystemInformationBundle\Service\CheckService $logService
+     * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      */
     public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService)
@@ -46,9 +49,9 @@ class SystemController extends AbstractController
      * @Route("/admin/system")
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException|\Psr\Cache\InvalidArgumentException
      */
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
         $checks = $this->checkService->getLiipMonitorChecks();
         $status = $this->checkService->getMonitorCheckStatus($checks);
@@ -58,7 +61,7 @@ class SystemController extends AbstractController
             'checks' => $checks,
             'logs' => $logs,
             'logDir' => $this->getParameter('kernel.logs_dir'),
-            'information' => $this->informationService->getSystemInformation(),
+            'information' => $this->informationService->getSystemInformation(true),
             'infos' => $this->informationService->getFurtherSystemInformation(),
             'status' => $status
         ]);
@@ -68,9 +71,10 @@ class SystemController extends AbstractController
      * @Route("/admin/system/log/{id}", requirements={"id"="\d+"})
      *
      * @param int id
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function logView($id, Request $request)
+    public function logView($id, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $logs = $this->logService->logList->getLogList();
         $log = $logs[$id];
@@ -103,11 +107,25 @@ class SystemController extends AbstractController
      * @Route("/admin/system/info")
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function info()
+    public function info(): \Symfony\Component\HttpFoundation\Response
     {
+        $systemInformation = $this->informationService->getSystemInformation();
+
         return $this->render('@SystemInformationBundle/info.html.twig', [
+            'information' => $systemInformation
+        ]);
+    }
+
+    /**
+     * @Route("/admin/system/phpinfo")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function phpInfo(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('@SystemInformationBundle/phpInfo.html.twig', [
             'info' => phpinfo()
         ]);
     }

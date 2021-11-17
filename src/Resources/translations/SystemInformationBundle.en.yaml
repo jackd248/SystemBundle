@@ -53,11 +53,11 @@ viewer:
 system:
   items:
     check:
-      value: checks
-      description: with warnings or failures
+      value: anomalies
+      description: Monitoring checks
     logs:
       value: anomalies
-      description: in logs within last 24h
+      description: Application logs
     app_version:
       description: App version
     php:
@@ -91,4 +91,7 @@ system:
     symfony:
       version: Symfony version
       environment: Symfony environment
-
+extension:
+  indicator:
+    description: |
+      This is a short application information. For advanced information please head to the <a href="infoPath">system overview</a>.

@@ -4,7 +4,10 @@ namespace Kmi\SystemInformationBundle\Service;
 
 use Evotodi\LogViewerBundle\Reader\LogReader;
 use Evotodi\LogViewerBundle\Service\LogList;
+use Kmi\SystemInformationBundle\SystemInformationBundle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  *
@@ -40,11 +43,18 @@ class LogService
     public LogList $logList;
 
     /**
-     * @param \Evotodi\LogViewerBundle\Service\LogList $logList
+     * @var \Symfony\Contracts\Cache\CacheInterface
      */
-    public function __construct(LogList $logList)
+    protected CacheInterface $cachePool;
+
+    /**
+     * @param \Evotodi\LogViewerBundle\Service\LogList $logList
+     * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
+     */
+    public function __construct(LogList $logList, CacheInterface $cachePool)
     {
         $this->logList = $logList;
+        $this->cachePool = $cachePool;
     }
 
 
@@ -52,7 +62,7 @@ class LogService
      * @return array
      * @throws \Exception
      */
-    public function getLogList()
+    public function getLogList(): array
     {
         $logs = [];
         foreach ($this->logList->getLogList() as $log) {
@@ -71,7 +81,7 @@ class LogService
      * @param $id
      * @return array
      */
-    public function getLogsById($id)
+    public function getLogsById($id): array
     {
         $logs = $this->logList->getLogList();
         $log = $logs[$id];
@@ -133,16 +143,27 @@ class LogService
     }
 
     /**
-     * @return int|mixed
-     * @throws \Exception
+     * @param bool $forceUpdate
+     * @return mixed
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getErrorCount() {
-        $countWarningsAndErrosInLogs = 0;
-        $logList = $this->getLogList();
-        foreach ($logList as $log) {
-            $countWarningsAndErrosInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
+    public function getErrorCount(bool $forceUpdate = false) {
+
+        $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
+        if ($forceUpdate) {
+            $this->cachePool->delete($cacheKey);
         }
-        return $countWarningsAndErrosInLogs;
+
+        return $this->cachePool->get($cacheKey, function (ItemInterface $item) {
+            $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME);
+
+            $countWarningsAndErrorsInLogs = 0;
+            $logList = $this->getLogList();
+            foreach ($logList as $log) {
+                $countWarningsAndErrorsInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
+            }
+            return $countWarningsAndErrorsInLogs;
+        });
     }
 
     /**
@@ -152,7 +173,7 @@ class LogService
      * @return int
      * @throws \Exception
      */
-    private function countLogTypeByPeriod($logs, $type = self::LOG_TYPE['ERROR'], $period = '-1 day')
+    private function countLogTypeByPeriod($logs, $type = self::LOG_TYPE['ERROR'], $period = '-1 day'): int
     {
         $count = 0;
         foreach ($logs as $log) {
@@ -173,7 +194,7 @@ class LogService
      * @param int $precision
      * @return string
      */
-    private function formatBytes($bytes, $precision = 2)
+    private function formatBytes($bytes, $precision = 2): string
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 

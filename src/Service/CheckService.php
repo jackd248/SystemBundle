@@ -2,16 +2,11 @@
 
 namespace Kmi\SystemInformationBundle\Service;
 
-use DateTime;
-use Evotodi\LogViewerBundle\Reader\LogReader;
-use Evotodi\LogViewerBundle\Service\LogList;
-use Locale;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Kmi\SystemInformationBundle\SystemInformationBundle;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  *
@@ -21,31 +16,46 @@ class CheckService {
     /**
      * @var Container
      */
-    private $container;
+    private Container $container;
 
     /**
-     * Constructor
-     *
-     * @param Container $container
+     * @var \Symfony\Contracts\Cache\CacheInterface
      */
-    public function __construct(Container $container)
+    protected CacheInterface $cachePool;
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\Container $container
+     * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
+     */
+    public function __construct(Container $container, CacheInterface $cachePool)
     {
         $this->container = $container;
+        $this->cachePool = $cachePool;
     }
 
     /**
-     * @return null
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @param false $forceUpdate
+     * @return mixed
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getLiipMonitorChecks()
+    public function getLiipMonitorChecks(bool $forceUpdate = false)
     {
-        $url = $this->container->get('router')->generate('liip_monitor_run_all_checks', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $client = new \GuzzleHttp\Client();
-        $response = $client->get($url);
-        if ($response->getStatusCode() === 200) {
-            return \GuzzleHttp\json_decode($response->getBody()->getContents())->checks;
+        $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
+        if ($forceUpdate) {
+            $this->cachePool->delete($cacheKey);
         }
-        return null;
+
+        return $this->cachePool->get($cacheKey, function (ItemInterface $item) {
+            $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME);
+
+            $url = $this->container->get('router')->generate('liip_monitor_run_all_checks', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get($url);
+            if ($response->getStatusCode() === 200) {
+                return \GuzzleHttp\json_decode($response->getBody()->getContents())->checks;
+            }
+            return null;
+        });
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle;
 
@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class SystemInformationBundle extends Bundle
 {
     const BUNDLE_CONFIG_NAME = 'kmi_system';
+    const CACHE_KEY = 'SystemInformationBundle';
+    const CACHE_LIFETIME = 300;
 
     /**
      * @inheritdoc

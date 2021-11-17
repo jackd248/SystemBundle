@@ -134,7 +134,7 @@
                 </h3>
             </div>
             <div class="panel-body">
-                {{ 'dashboard.information.description'|trans({'phpInfoPath': path('kmi_system_information_info')}, 'SystemInformationBundle')|raw }}
+                {{ 'dashboard.information.description'|trans({'phpInfoPath': path('kmi_system_information_phpinfo')}, 'SystemInformationBundle')|raw }}
                 <table class="table table-condensed">
                     {% for key, info in infos %}
                         <tr>

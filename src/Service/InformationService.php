@@ -15,7 +15,7 @@ class InformationService {
     /**
      * @var Container
      */
-    private $container;
+    private Container $container;
 
     /**
      * @var \Symfony\Contracts\Translation\TranslatorInterface
@@ -47,17 +47,18 @@ class InformationService {
     }
 
     /**
+     * @param false $forceUpdate
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getSystemInformation(): array
+    public function getSystemInformation($forceUpdate = false): array
     {
         $information = [];
 
-        $checks = $this->checkService->getLiipMonitorChecks();
+        $checks = $this->checkService->getLiipMonitorChecks($forceUpdate);
 
         if ($this->checkService->getMonitorCheckStatus($checks)) {
-            $information[] = [
+            $information['checks'] = [
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-alert-triangle',
@@ -65,8 +66,8 @@ class InformationService {
             ];
         }
 
-        if ($errorCount = $this->logService->getErrorCount()) {
-            $information[] = [
+        if ($errorCount = $this->logService->getErrorCount($forceUpdate)) {
+            $information['logs'] = [
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-alert-circle',
@@ -74,25 +75,25 @@ class InformationService {
             ];
         }
 
-        $information[] = [
+        $information['appVersion'] = [
             'value' => $this->getAppVersion(),
             'description' => $this->translator->trans('system.items.app_version.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-command'
         ];
 
-        $information[] = [
+        $information['phpVersion'] = [
             'value' => phpversion(),
             'description' => $this->translator->trans('system.items.php.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-php'
         ];
-        $information[] = [
+        $information['symfonyVersion'] = [
             'value' => \Symfony\Component\HttpKernel\Kernel::VERSION,
             'description' => $this->translator->trans('system.items.symfony.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-symfony'
         ];
 
         if ($appEnv = $_ENV['APP_ENV']) {
-            $information[] = [
+            $information['appEnvironment'] = [
                 'value' => $appEnv,
                 'description' => $this->translator->trans('system.items.app_env.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-package'
@@ -100,14 +101,14 @@ class InformationService {
         }
 
         if ($symfonyEnv = $_ENV['SYMFONY_ENVIRONMENT']) {
-            $information[] = [
+            $information['symfonyEnvironment'] = [
                 'value' => $symfonyEnv,
                 'description' => $this->translator->trans('system.items.symfony_env.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-git-branch'
             ];
         }
 
-        $information[] = [
+        $information['os'] = [
             'value' => PHP_OS,
             'description' => $this->translator->trans('system.items.os.description', [], 'SystemInformationBundle'),
             'icon' => 'icon-hard-drive'
@@ -147,12 +148,12 @@ class InformationService {
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getSystemStatus() {
-        $countWarningsAndErrosInLogs = 0;
+        $countWarningsAndErrorsInLogs = 0;
         $logList = $this->logService->getLogList();
         foreach ($logList as $log) {
-            $countWarningsAndErrosInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
+            $countWarningsAndErrorsInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
         }
-        return $countWarningsAndErrosInLogs || $this->checkService->getMonitorCheckStatus($this->checkService->getLiipMonitorChecks());
+        return $countWarningsAndErrorsInLogs || $this->checkService->getMonitorCheckStatus($this->checkService->getLiipMonitorChecks());
     }
 
     /**
@@ -162,8 +163,10 @@ class InformationService {
         $composerFile = file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json');
         if ($composerFile) {
             $composerArray = \json_decode($composerFile, true);
-            if (array_key_exists('version', $composerArray)) {
-                return $composerArray['version'];
+            if ($composerArray) {
+                if (array_key_exists('version', $composerArray)) {
+                    return $composerArray['version'];
+                }
             }
         }
         return null;

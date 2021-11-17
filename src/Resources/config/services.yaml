@@ -40,3 +40,8 @@ services:
     class: Kmi\SystemInformationBundle\Twig\EnvironmentExtension
     tags:
       - { name: twig.extension }
+
+  Kmi\SystemInformationBundle\Twig\SystemIndicatorExtension:
+    class: Kmi\SystemInformationBundle\Twig\SystemIndicatorExtension
+    tags:
+      - { name: twig.extension }

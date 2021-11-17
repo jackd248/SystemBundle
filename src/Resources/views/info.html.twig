@@ -1,1 +1,17 @@
-{{ info }}
+<div>
+    <p class="m-10">
+        {{ 'extension.indicator.description'|trans({'infoPath': path('kmi_system_information_overview')}, 'SystemInformationBundle')|raw }}
+    </p>
+    <table class="table mb-0">
+        {% for info in information %}
+            <tr>
+                <td>
+                    <i class="{{ info.icon }} {{ info.class is defined ? info.class }} text-muted mr-5"></i> {{ info.description }}
+                </td>
+                <td>
+                    {{ info.value }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
