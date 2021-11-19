@@ -37,6 +37,9 @@ class LogService
         'EMERGENCY'
     ];
 
+    const PERIOD = '-1 day';
+    const MAX_FILE_SIZE = 20000000; // 20MB
+
     /**
      * @var ContainerInterface
      */
@@ -72,9 +75,10 @@ class LogService
             $file['absolutePath'] = $logDir . '/' . $fileEntry;
             $file['fileSize'] = $this->formatBytes(filesize($file['absolutePath']));
             $file['changeDate'] = (new DateTime())->setTimestamp(filemtime($file['absolutePath']));
-            $file['readable'] = str_ends_with($fileEntry, '.gz') ? 0 : 1;
-            $file['warningCountByPeriod'] = $file['changeDate'] > new \DateTime('-1 day') ? $this->countLogTypeByPeriod($this->getLog($fileEntry), self::LOG_TYPE['WARNING']) : 0;
-            $file['errorCountByPeriod'] = $file['changeDate'] > new \DateTime('-1 day') ? $this->countLogTypeByPeriod($this->getLog($fileEntry)) : 0;
+            $file['readable'] = $this->isReadable($file['absolutePath']) ? 1 : 0;
+            $file['tooLarge'] = $this->fileSizeTooLarge($file['absolutePath']) ? 1 : 0;
+            $file['warningCountByPeriod'] = $this->isCountable($file['absolutePath']) ? $this->countLogTypeByPeriod($this->getLog($fileEntry), self::LOG_TYPE['WARNING']) : 0;
+            $file['errorCountByPeriod'] = $this->isCountable($file['absolutePath']) ? $this->countLogTypeByPeriod($this->getLog($fileEntry)) : 0;
             $files[$fileEntry] = $file;
         }
 
@@ -185,7 +189,7 @@ class LogService
      * @return int
      * @throws \Exception
      */
-    private function countLogTypeByPeriod($logs, array $type = self::LOG_TYPE['ERROR'], string $period = '-1 day'): int
+    private function countLogTypeByPeriod($logs, array $type = self::LOG_TYPE['ERROR'], string $period = self::PERIOD): int
     {
         $count = 0;
         foreach ($logs as $log) {
@@ -219,5 +223,38 @@ class LogService
         // $bytes /= (1 << (10 * $pow));
 
         return round($bytes, $precision) . ' ' . $units[$pow];
+    }
+
+    /**
+     * @param $absoluteFilePath
+     * @return bool
+     */
+    private function isReadable($absoluteFilePath): bool
+    {
+        if (!is_readable($absoluteFilePath)) return false;
+        if (str_ends_with($absoluteFilePath, '.gz')) return false;
+        if ($this->fileSizeTooLarge($absoluteFilePath)) return false;
+
+        return true;
+    }
+
+    /**
+     * @param $absoluteFilePath
+     * @return bool
+     */
+    private function isCountable($absoluteFilePath): bool
+    {
+        if ($this->fileSizeTooLarge($absoluteFilePath)) return false;
+        if ((new DateTime())->setTimestamp(filemtime($absoluteFilePath)) <= new \DateTime(self::PERIOD)) return false;
+        return true;
+    }
+
+    /**
+     * @param $absoluteFilePath
+     * @return bool
+     */
+    private function fileSizeTooLarge($absoluteFilePath): bool
+    {
+        return filesize($absoluteFilePath) > self::MAX_FILE_SIZE;
     }
 }

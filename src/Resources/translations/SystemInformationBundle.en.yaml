@@ -26,6 +26,8 @@ dashboard:
       anomalies: last 24h
       changed: Changed
       size: Size
+    warning:
+      too_large: File size too large
   information:
     heading: General information
     description: |
