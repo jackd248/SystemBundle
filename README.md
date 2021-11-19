@@ -77,7 +77,7 @@ See an example in [monitor.yaml](docs/examples/monitor.yaml)
 
 Access the system overview page `/admin/system`.
 
-## Functions
+## Twig Extensions
 
 ### System Indicator
 
