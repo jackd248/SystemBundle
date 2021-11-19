@@ -8,7 +8,7 @@ $(document).ready(function() {
         $el.html(data);
 
         if ($el.find('.color-error').length !== 0) {
-            $('#system-indicator-extension--icon').addClass('color-error');
+            $('#system-indicator-extension--icon').addClass('icon-hint');
         }
     });
 });
