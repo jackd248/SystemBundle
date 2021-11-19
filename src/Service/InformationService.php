@@ -160,7 +160,7 @@ class InformationService {
      * @return mixed|null
      */
     public function getAppVersion() {
-        $composerFile = file_get_contents($this->container->getParameter('kernel.root_dir') . '/../composer.json');
+        $composerFile = file_get_contents($this->container->getParameter('kernel.project_dir') . '/composer.json');
         if ($composerFile) {
             $composerArray = \json_decode($composerFile, true);
             if ($composerArray) {

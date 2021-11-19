@@ -21,6 +21,6 @@ liip_monitor:
             critical: 90
         doctrine_dbal: [default]
         security_advisory:
-            lock_file: '%kernel.root_dir%/../composer.lock'
+            lock_file: '%kernel.project_dir%/composer.lock'
         symfony_version: ~
 
