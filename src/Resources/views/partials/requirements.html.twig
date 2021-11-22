@@ -1,0 +1,96 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="icon-package mr-10"
+               aria-hidden="true"></i> {{ 'dashboard.requirements.heading'|trans({}, 'SystemInformationBundle') }}
+        </h3>
+    </div>
+    <div class="panel-body">
+        {{ 'dashboard.requirements.description'|trans({}, 'SystemInformationBundle')|raw }}
+        <h4>
+            {{ 'dashboard.requirements.requirements.heading'|trans({}, 'SystemInformationBundle')|raw }}
+        </h4>
+        <div class="system-list">
+            {% if requirements.requirements.error is empty %}
+                <div class="system-list_item">
+                    <div class="system-list_item-element">
+                        <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="system-list_item-element">
+                        {{ 'dashboard.requirements.requirements.empty'|trans({}, 'SystemInformationBundle')|raw }}
+                    </div>
+                </div>
+            {% endif %}
+            {% for req in requirements.requirements.error %}
+                <div class="system-list_item system-list_item--icon bg-color-error--light">
+                    <div class="system-list_item-element">
+                        <i class="icon-x icon-box-round bg-color-error mr-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="system-list_item-element">
+                        {{ req.test }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a class="collapse-btn" data-toggle="collapse" href="#requirements-requirements-success" role="button" aria-expanded="false" aria-controls="requirements-requirements-success">
+            {{ 'dashboard.requirements.requirements.collapse'|trans({}, 'SystemInformationBundle')|raw }}
+        </a>
+        <div class="collapse" id="requirements-requirements-success">
+            <div class="system-list">
+                {% for req in requirements.requirements.success %}
+                    <div class="system-list_item">
+                        <div class="system-list_item-element">
+                            <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                        </div>
+                        <div class="system-list_item-element">
+                            {{ req.help }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <h4>
+            {{ 'dashboard.requirements.recommendations.heading'|trans({}, 'SystemInformationBundle')|raw }}
+        </h4>
+        <div class="system-list">
+            {% if requirements.recommendations.warning is empty %}
+                <div class="system-list_item">
+                    <div class="system-list_item-element">
+                        <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="system-list_item-element">
+                        {{ 'dashboard.requirements.recommendations.empty'|trans({}, 'SystemInformationBundle')|raw }}
+                    </div>
+                </div>
+            {% endif %}
+            {% for req in requirements.recommendations.warning %}
+                <div class="system-list_item system-list_item--icon bg-color-warning--light">
+                    <div class="system-list_item-element">
+                        <i class="icon-x icon-box-round bg-color-warning mr-10" aria-hidden="true"></i>
+                    </div>
+                    <div class="system-list_item-element">
+                        {{ req.test }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a class="collapse-btn" data-toggle="collapse" href="#requirements-recommendations-success" role="button" aria-expanded="false" aria-controls="requirements-recommendations-success">
+            {{ 'dashboard.requirements.recommendations.collapse'|trans({}, 'SystemInformationBundle')|raw }}
+        </a>
+        <div class="collapse" id="requirements-recommendations-success">
+            <div class="system-list">
+                {% for req in requirements.recommendations.success %}
+                    <div class="system-list_item">
+                        <div class="system-list_item-element">
+                            <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                        </div>
+                        <div class="system-list_item-element">
+                            {{ req.help }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

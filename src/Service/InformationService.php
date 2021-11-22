@@ -68,7 +68,7 @@ class InformationService {
             $information['checks'] = [
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-alert-triangle',
+                'icon' => 'icon-monitor',
                 'class' => 'color-error'
             ];
         }
@@ -77,7 +77,7 @@ class InformationService {
             $information['logs'] = [
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-alert-circle',
+                'icon' => 'icon-info',
                 'class' => 'color-error'
             ];
         }
@@ -87,14 +87,14 @@ class InformationService {
                 $information['requirements'] = [
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
-                    'icon' => 'icon-alert-octagon',
+                    'icon' => 'icon-package',
                     'class' => 'color-error'
                 ];
             }
             $information['requirements'] = [
                 'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-alert-octagon',
+                'icon' => 'icon-package',
                 'class' => 'color-warning'
             ];
         }
@@ -142,12 +142,14 @@ class InformationService {
     }
 
 
-
     /**
      * @return array
+     * @throws \Exception
      */
     public function getFurtherSystemInformation(): array
     {
+        $entityManager = $this->container->get('doctrine')->getManager();
+        /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
         return [
             $this->translator->trans('system.information.server.ip', [], 'SystemInformationBundle') => $_SERVER['SERVER_ADDR'],
             $this->translator->trans('system.information.server.name', [], 'SystemInformationBundle') => gethostname(),
@@ -163,7 +165,12 @@ class InformationService {
             $this->translator->trans('system.information.app.version', [], 'SystemInformationBundle') => $this->getAppVersion(),
             $this->translator->trans('system.information.app.environment', [], 'SystemInformationBundle') => $_ENV['SYMFONY_ENVIRONMENT'],
             $this->translator->trans('system.information.symfony.version', [], 'SystemInformationBundle') => \Symfony\Component\HttpKernel\Kernel::VERSION,
-            $this->translator->trans('system.information.symfony.environment', [], 'SystemInformationBundle') => $_ENV['APP_ENV']
+            $this->translator->trans('system.information.symfony.environment', [], 'SystemInformationBundle') => $_ENV['APP_ENV'],
+            $this->translator->trans('system.information.database.platform', [], 'SystemInformationBundle') => $entityManager->getConnection()->getDatabasePlatform()->getName(),
+            $this->translator->trans('system.information.database.host', [], 'SystemInformationBundle') => $entityManager->getConnection()->getParams()['host'],
+            $this->translator->trans('system.information.database.name', [], 'SystemInformationBundle') => $entityManager->getConnection()->getDatabase(),
+            $this->translator->trans('system.information.database.user', [], 'SystemInformationBundle') => $entityManager->getConnection()->getParams()['user'],
+            $this->translator->trans('system.information.database.port', [], 'SystemInformationBundle') => $entityManager->getConnection()->getParams()['port'],
         ];
     }
 
@@ -171,7 +178,8 @@ class InformationService {
      * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getSystemStatus() {
+    public function getSystemStatus(): bool
+    {
         $countWarningsAndErrorsInLogs = 0;
         $logList = $this->logService->getLogs();
         foreach ($logList as $log) {

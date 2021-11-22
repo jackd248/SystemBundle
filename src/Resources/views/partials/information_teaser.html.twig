@@ -1,0 +1,15 @@
+<div class="row">
+    {% for info in information %}
+        <div class="col-md-6 col-lg-4 col-xl-2">
+            <div class="system-box">
+                <div>
+                    <i class="{{ info.icon }} {{ info.class is defined ? info.class }}"></i>
+                </div>
+                <div>
+                    <h4><strong>{{ info.value }}</strong></h4>
+                    <h5 class="mb-2 text-muted">{{ info.description }}</h5>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

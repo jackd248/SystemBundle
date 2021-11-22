@@ -164,13 +164,14 @@
     content: "\e1032";
 }
 .icon-box-round {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: inline-block;
-    line-height: 30px;
+    line-height: 40px;
     text-align: center;
-    border-radius: 15px;
+    border-radius: 20px;
     color: #fff;
+    font-size: 20px;
 }
 
 /*
@@ -192,20 +193,51 @@
     color: #ccc;
 }
 
+.system-list {
+    margin-bottom: 10px;
+}
+.system-list_item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.system-list_item.system-list_item--icon {
+    margin-left: 20px;
+    border-radius: 20px;
+}
+.system-list_item.system-list_item--icon .system-list_item-element:first-child {
+    margin-left: -15px;
+}
+.flex-grow {
+    flex-grow: 1;
+}
+
 .m-10 {
     margin: 10px;
+}
+.my-10 {
+    margin: 10px 0;
 }
 .mr-5 {
     margin-right: 5px;
 }
+.mr-10 {
+    margin-right: 10px;
+}
 .ml-5 {
      margin-left: 5px;
+}
+.mb-10 {
+    margin-bottom: 10px;
 }
 .mb-15 {
     margin-bottom: 15px;
 }
 .mb-0 {
     margin-bottom: 0;
+}
+.mx-5 {
+    margin: 0 15px;
 }
 .mw-200 {
     min-width: 200px;
@@ -229,6 +261,15 @@
 .bg-color-error {
     background-color: #D65B32 !important;
 }
+.bg-color-success--light {
+    background-color: #E8F5E9 !important;
+}
+.bg-color-warning--light {
+    background-color: #FFF8E1 !important;
+}
+.bg-color-error--light {
+    background-color: #FBE9E7 !important;
+}
 .icon-hint:after {
     content: '';
     display: block;
@@ -240,11 +281,10 @@
     border-radius: 3px;
     transition: fadeIn 2s;
 }
-
 .pill {
     display: inline-block;
-    padding: 5px;
-    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
     border-radius: 25px;
     color: #aaa;
     margin: 0 5px;
@@ -252,6 +292,42 @@
     background: #fff;
     text-align: center;
     min-width: 25px;
+}
+.pill.bg-color-warning {
+    border-color: #E3A550;
+    color: #fff;
+}
+.pill.bg-color-error {
+    border-color: #D65B32;
+    color: #fff;
+}
+.collapse-btn {
+    width: 100%;
+    text-align: left;
+    border: 1px solid#eee;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.text-right {
+    text-align: right;
+}
+.text-disabled {
+    color: #777;
+}
+.text-disabled:hover {
+    cursor: not-allowed;
+}
+.panel-body h4 {
+    margin: 30px 0 20px 0;
+    font-size: 16px;
+}
+[data-toggle="tooltip"][title]:hover {
+    cursor: help;
+}
+.page-header {
+    border-bottom: 0;
 }
 
 /* Tables */

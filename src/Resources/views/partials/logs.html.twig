@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="icon-info mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.log.heading'|trans({}, 'SystemInformationBundle') }}
+        </h3>
+    </div>
+    <div class="panel-body">
+        {{ 'dashboard.log.description'|trans({'logDir': logDir}, 'SystemInformationBundle')|raw }}
+        <div class="system-list">
+            {% for log in logs %}
+                <div class="system-list_item mb-10">
+                    <div class="system-list_item-element">
+                        {% if log['readable'] and not log['tooLarge'] %}
+                            <a href="{{ path('kmi_system_information_log_view', {'id':log.fileName}) }}">{{ log.fileName }}</a>
+                        {% else %}
+                            <span class="text-disabled">{{ log.fileName }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="system-list_item-element text-right flex-grow">
+                        {% if log['warningCountByPeriod'] > 0 %}
+                            <span class="pill bg-color-warning" data-toggle="tooltip" title="{{ 'dashboard.log.warning.warnings_per_period.description'|trans({}, 'SystemInformationBundle') }}">
+                                {{ log['warningCountByPeriod'] }} {{ 'dashboard.log.warning.warnings_per_period.hint'|trans({}, 'SystemInformationBundle') }}
+                            </span>
+                        {% endif %}
+                        {% if log['errorCountByPeriod'] > 0 %}
+                            <span class="pill bg-color-error" data-toggle="tooltip" title="{{ 'dashboard.log.warning.errors_per_period.description'|trans({}, 'SystemInformationBundle') }}">
+                                {{ log['errorCountByPeriod'] }} {{ 'dashboard.log.warning.errors_per_period.hint'|trans({}, 'SystemInformationBundle') }}
+                            </span>
+                        {% endif %}
+                        <span class="pill" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
+                            {{ log.changeDate|format_datetime }}
+                        </span>
+                        <span class="pill {{ log['tooLarge'] ? 'bg-color-warning' : '' }}" data-toggle="tooltip" title="{{ 'dashboard.log.list.size'|trans({}, 'SystemInformationBundle') }}">
+                            {{ log.fileSize }}
+                        </span>
+                        {% if log['tooLarge'] %}
+                            <span class="pill bg-color-warning ml-5" data-toggle="tooltip" title="{{ 'dashboard.log.warning.too_large.description'|trans({}, 'SystemInformationBundle') }}">
+                                {{ 'dashboard.log.warning.too_large.hint'|trans({}, 'SystemInformationBundle') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -19,7 +19,7 @@ dashboard:
     heading: Requirements
     description: |
       <p>
-        See <a href="https://github.com/symfony/requirements-checker">symfony checker</a>
+        The <a href="https://github.com/symfony/requirements-checker">requirements checker</a> displays the the necessary symfony requirements and the optional recommendations for the application.
       </p>
     requirements:
       heading: Symfony requirements
@@ -35,13 +35,20 @@ dashboard:
       <p>
           The log viewer is reading the application logs. The log directory is located at <code>logDir</code>.
       </p>
-    table:
-      name: Filename
-      anomalies: last 24h
-      changed: Changed
-      size: Size
+    list:
+      name: Log filename
+      changed: Change date
+      size: File size
     warning:
-      too_large: File size too large
+      errors_per_period:
+        hint: errors
+        description: Errors in log within the last 24 hours
+      warnings_per_period:
+        hint: warnings
+        description: Warnings in log within the last 24 hours
+      too_large:
+        hint: File size too large
+        description: File size is too large for log viewer and analyzer
   information:
     heading: General information
     description: |
@@ -109,6 +116,12 @@ system:
     symfony:
       version: Symfony version
       environment: Symfony environment
+    database:
+      platform: Database platform
+      host: Database host
+      name: Database name
+      user: Database user
+      port: Database port
 extension:
   indicator:
     description: |
