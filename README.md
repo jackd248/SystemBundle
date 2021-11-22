@@ -1,12 +1,15 @@
-# System Information Bundle
+<h1 align="center">System Information Bundle</h1>
+
+<p align="center"><img src="./docs/img/settings.svg" alt="Settings" width="150"></p>
 
 Simple Sonata Admin bundle to get a system information overview. 
 
-![Screenshot](docs/img/screenshot.png "Screenshot")
+![Screenshot](docs/img/screenshot-system-overview.png "Screenshot")
 
 This bundle combines the functionalities of the following bundles and displays the aggregated information within the backend:
 
 - [LiipMonitorBundle](https://github.com/liip/LiipMonitorBundle)
+- [Symfony Requirements Checker](https://github.com/symfony/requirements-checker)
 
 ## Install
 
@@ -44,7 +47,7 @@ paths:
 
 ### Sonata Admin Menu
 
-Add a sonata admin menu entry in `config/packages/sonata_admin.yaml`
+Add optionally a sonata admin menu entry in `config/packages/sonata_admin.yaml` or use the system indicator twig extension (see below)
 ```yaml
 sonata_admin:
     dashboards:
@@ -59,9 +62,9 @@ sonata_admin:
                       label: System
 ```
 
-### 
+### Assets
 
-Install assets
+Install the bundle assets
 ```bash
 $ php bin/console assets:install
 $ php bin/console cache:clear
@@ -79,7 +82,13 @@ Access the system overview page `/admin/system`.
 
 ## Twig Extensions
 
+The bundle comes with several twig extensions
+
 ### System Indicator
+
+The system indicator twig extension gives you a short overview about the system status in the sonata header:
+
+![Screenshot](docs/img/screenshot-system-indicator.png "Screenshot System Indicator")
 
 Extend the Sonata Admin `standard_layout.html.twig` to enable the twig function in the backend header:
 
@@ -104,6 +113,12 @@ Displays the application version defined in the `composer.json` file:
 ```
 
 ### Environment Indicator
+
+The environment indicator gives you a fast indicator about the current environment:
+
+
+![Screenshot](docs/img/screenshot-environment.png "Screenshot Environment")
+
 
 Extend the Sonata Admin `standard_layout.html.twig` to enable the twig function in the backend header:
 
