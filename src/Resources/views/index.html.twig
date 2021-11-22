@@ -32,7 +32,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-monitor mr-5" aria-hidden="true"></i> {{ 'dashboard.monitoring.heading'|trans({}, 'SystemInformationBundle') }}
+                    <i class="icon-monitor mr-5"
+                       aria-hidden="true"></i> {{ 'dashboard.monitoring.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">
@@ -64,32 +65,133 @@
                 </table>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="icon-package mr-5"
+                       aria-hidden="true"></i> {{ 'dashboard.requirements.heading'|trans({}, 'SystemInformationBundle') }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ 'dashboard.requirements.description'|trans({}, 'SystemInformationBundle')|raw }}
+                <h4>
+                    {{ 'dashboard.requirements.requirements.heading'|trans({}, 'SystemInformationBundle')|raw }}
+                </h4>
+                <table class="table table-bordered table-condensed">
+                    {% if requirements.requirements.error is empty %}
+                        <tr>
+                            <td>
+                                <i class="icon-check icon-box-round bg-color-success mr-5" aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                {{ 'dashboard.requirements.requirements.empty'|trans({}, 'SystemInformationBundle')|raw }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% for req in requirements.requirements.error %}
+                        <tr>
+                            <td>
+                                <i class="icon-x icon-box-round bg-color-error mr-5" aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                {{ req.test }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <a class="btn" data-toggle="collapse" href="#requirements-requirements-success" role="button" aria-expanded="false" aria-controls="requirements-requirements-success">
+                    {{ 'dashboard.requirements.requirements.collapse'|trans({}, 'SystemInformationBundle')|raw }}
+                </a>
+                <div class="collapse" id="requirements-requirements-success">
+                    <table class="table table-bordered table-condensed">
+                        <tbody>
+                        {% for req in requirements.requirements.success %}
+                            <tr>
+                                <td>
+                                    <i class="icon-check icon-box-round bg-color-success mr-5" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    {{ req.help }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <h4>
+                    {{ 'dashboard.requirements.recommendations.heading'|trans({}, 'SystemInformationBundle')|raw }}
+                </h4>
+                <table class="table table-bordered table-condensed">
+                    {% if requirements.recommendations.warning is empty %}
+                        <tr>
+                            <td>
+                                <i class="icon-check icon-box-round bg-color-success mr-5" aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                {{ 'dashboard.requirements.recommendations.empty'|trans({}, 'SystemInformationBundle')|raw }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% for req in requirements.recommendations.warning %}
+                        <tr>
+                            <td>
+                                <i class="icon-x icon-box-round bg-color-warning mr-5" aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                {{ req.test }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <a class="btn" data-toggle="collapse" href="#requirements-recommendations-success" role="button" aria-expanded="false" aria-controls="requirements-recommendations-success">
+                    {{ 'dashboard.requirements.recommendations.collapse'|trans({}, 'SystemInformationBundle')|raw }}
+                </a>
+                <div class="collapse" id="requirements-recommendations-success">
+                    <table class="table table-bordered table-condensed">
+                        <tbody>
+                        {% for req in requirements.recommendations.success %}
+                            <tr>
+                                <td>
+                                    <i class="icon-check icon-box-round bg-color-success mr-5" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    {{ req.help }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-12 col-xl-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-info mr-5" aria-hidden="true"></i> {{ 'dashboard.log.heading'|trans({}, 'SystemInformationBundle') }}
+                    <i class="icon-info mr-5"
+                       aria-hidden="true"></i> {{ 'dashboard.log.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">
                 {{ 'dashboard.log.description'|trans({'logDir': logDir}, 'SystemInformationBundle')|raw }}
                 <table class="table table-condensed">
                     <thead>
-                        <tr>
-                            <th>
-                                {{ 'dashboard.log.table.name'|trans({}, 'SystemInformationBundle') }}
-                            </th>
-                            <th>
-                                {{ 'dashboard.log.table.anomalies'|trans({}, 'SystemInformationBundle') }}
-                            </th>
-                            <th>
-                                {{ 'dashboard.log.table.changed'|trans({}, 'SystemInformationBundle') }}
-                            </th>
-                            <th>
-                                {{ 'dashboard.log.table.size'|trans({}, 'SystemInformationBundle') }}
-                            </th>
-                        </tr>
+                    <tr>
+                        <th>
+                            {{ 'dashboard.log.table.name'|trans({}, 'SystemInformationBundle') }}
+                        </th>
+                        <th>
+                            {{ 'dashboard.log.table.anomalies'|trans({}, 'SystemInformationBundle') }}
+                        </th>
+                        <th>
+                            {{ 'dashboard.log.table.changed'|trans({}, 'SystemInformationBundle') }}
+                        </th>
+                        <th>
+                            {{ 'dashboard.log.table.size'|trans({}, 'SystemInformationBundle') }}
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for log in logs %}
@@ -104,12 +206,14 @@
                             <td>
                                 {% if log['warningCountByPeriod'] > 0 %}
                                     <span class="color-warning mr-5">
-                                        {{ log['warningCountByPeriod'] }} <i class="icon-alert-triangle" aria-hidden="true"></i>
+                                        {{ log['warningCountByPeriod'] }} <i class="icon-alert-triangle"
+                                                                             aria-hidden="true"></i>
                                     </span>
                                 {% endif %}
                                 {% if log['errorCountByPeriod'] > 0 %}
                                     <span class="color-error">
-                                        {{ log['errorCountByPeriod'] }} <i class="icon-alert-circle" aria-hidden="true"></i>
+                                        {{ log['errorCountByPeriod'] }} <i class="icon-alert-circle"
+                                                                           aria-hidden="true"></i>
                                     </span>
                                 {% endif %}
                             </td>
@@ -122,7 +226,8 @@
                                 </span>
                                 {% if log['tooLarge'] %}
                                     <span class="color-warning ml-5">
-                                            <i class="icon-alert-triangle" aria-hidden="true"></i> {{ 'dashboard.log.warning.too_large'|trans({}, 'SystemInformationBundle') }}
+                                            <i class="icon-alert-triangle"
+                                               aria-hidden="true"></i> {{ 'dashboard.log.warning.too_large'|trans({}, 'SystemInformationBundle') }}
                                         </span>
                                 {% endif %}
                             </td>
@@ -132,12 +237,11 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="col-md-12 col-xl-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="icon-layers mr-5" aria-hidden="true"></i> {{ 'dashboard.information.heading'|trans({}, 'SystemInformationBundle') }}
+                    <i class="icon-layers mr-5"
+                       aria-hidden="true"></i> {{ 'dashboard.information.heading'|trans({}, 'SystemInformationBundle') }}
                 </h3>
             </div>
             <div class="panel-body">

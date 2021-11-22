@@ -148,7 +148,30 @@
 .icon-triangle:before {
     content: "\e1019";
 }
-
+.icon-alert-octagon:before {
+    content: "\e1028";
+}
+.icon-x:before {
+    content: "\e1029";
+}
+.icon-x-circle:before {
+    content: "\e1030";
+}
+.icon-x-octagon:before {
+    content: "\e1031";
+}
+.icon-x-square:before {
+    content: "\e1032";
+}
+.icon-box-round {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    color: #fff;
+}
 
 /*
  * Layout
@@ -188,11 +211,17 @@
     min-width: 200px;
 }
 
+.color-success {
+    color: #81C784 !important;
+}
 .color-warning {
     color: #E3A550 !important;
 }
 .color-error {
     color: #D65B32 !important;
+}
+.bg-color-success {
+    background-color: #81C784 !important;
 }
 .bg-color-warning {
     background-color: #E3A550 !important;
@@ -210,6 +239,19 @@
     height: 6px;
     border-radius: 3px;
     transition: fadeIn 2s;
+}
+
+.pill {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    color: #aaa;
+    margin: 0 5px;
+    font-size: 12px;
+    background: #fff;
+    text-align: center;
+    min-width: 25px;
 }
 
 /* Tables */

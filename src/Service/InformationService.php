@@ -33,25 +33,32 @@ class InformationService {
     private LogService $logService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\SymfonyService
+     */
+    private SymfonyService $symfonyService;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
+     * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      */
-    public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService)
+    public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService, SymfonyService $symfonyService)
     {
         $this->container = $container;
         $this->translator = $translator;
         $this->checkService = $checkService;
         $this->logService = $logService;
+        $this->symfonyService = $symfonyService;
     }
 
     /**
-     * @param false $forceUpdate
+     * @param bool $forceUpdate
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getSystemInformation($forceUpdate = false): array
+    public function getSystemInformation(bool $forceUpdate = false): array
     {
         $information = [];
 
@@ -72,6 +79,23 @@ class InformationService {
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-alert-circle',
                 'class' => 'color-error'
+            ];
+        }
+
+        if ($requirementsCount = $this->symfonyService->getRequirementsCount()['requirements'] || $recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
+            if ($requirementsCount) {
+                $information['requirements'] = [
+                    'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
+                    'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
+                    'icon' => 'icon-alert-octagon',
+                    'class' => 'color-error'
+                ];
+            }
+            $information['requirements'] = [
+                'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
+                'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
+                'icon' => 'icon-alert-octagon',
+                'class' => 'color-warning'
             ];
         }
 
@@ -149,7 +173,7 @@ class InformationService {
      */
     public function getSystemStatus() {
         $countWarningsAndErrorsInLogs = 0;
-        $logList = $this->logService->getLogList();
+        $logList = $this->logService->getLogs();
         foreach ($logList as $log) {
             $countWarningsAndErrorsInLogs += $log['warningCountByPeriod'] + $log['errorCountByPeriod'];
         }

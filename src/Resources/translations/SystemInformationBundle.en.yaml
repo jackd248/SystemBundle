@@ -15,6 +15,20 @@ dashboard:
     table:
       check: Check
       description: Description
+  requirements:
+    heading: Requirements
+    description: |
+      <p>
+        See <a href="https://github.com/symfony/requirements-checker">symfony checker</a>
+      </p>
+    requirements:
+      heading: Symfony requirements
+      empty: All requirements are fulfilled
+      collapse: See all requirements
+    recommendations:
+      heading: Symfony recommendations
+      empty: All recommendations are fulfilled
+      collapse: See all recommendations
   log:
     heading: Log overview
     description: |
@@ -59,6 +73,9 @@ system:
     logs:
       value: anomalies
       description: Application logs
+    requirements:
+      value: notes
+      description: Requirements
     app_version:
       description: App version
     php:

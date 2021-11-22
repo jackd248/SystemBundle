@@ -5,6 +5,7 @@ namespace Kmi\SystemInformationBundle\Controller\Admin;
 use Kmi\SystemInformationBundle\Service\CheckService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
+use Kmi\SystemInformationBundle\Service\SymfonyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,15 +31,22 @@ class SystemController extends AbstractController
     private InformationService $informationService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\SymfonyService
+     */
+    private SymfonyService $symfonyService;
+
+    /**
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
+     * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
         $this->informationService = $informationService;
+        $this->symfonyService = $symfonyService;
     }
 
     /**
@@ -47,6 +55,7 @@ class SystemController extends AbstractController
      */
     public function index(): \Symfony\Component\HttpFoundation\Response
     {
+        $requirements = $this->symfonyService->checkRequirements(true);
         $checks = $this->checkService->getLiipMonitorChecks();
         $status = $this->checkService->getMonitorCheckStatus($checks);
         $logs = $this->logService->getLogs();
@@ -57,6 +66,7 @@ class SystemController extends AbstractController
             'logDir' => $this->getParameter('kernel.logs_dir'),
             'information' => $this->informationService->getSystemInformation(true),
             'infos' => $this->informationService->getFurtherSystemInformation(),
+            'requirements' => $requirements,
             'status' => $status
         ]);
     }
