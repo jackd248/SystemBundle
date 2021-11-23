@@ -15,7 +15,6 @@
     "sonata-project/admin-bundle": "^3.0 || ^4.0",
     "liip/monitor-bundle": "^2.16",
     "enlightn/security-checker": "^1.9",
-    "twig/intl-extra": "^3.0",
     "symfony/requirements-checker": "^2.0"
   },
   "require-dev": {

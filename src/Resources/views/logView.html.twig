@@ -55,28 +55,32 @@
                     {% if log.message is not null %}
                     {% if log.level == 'WARNING' %}
                         {% set context = 'warning' %}
+                        {% set class = 'bg-color-warning' %}
                     {% elseif log.level == 'ERROR' %}
                         {% set context = 'danger' %}
+                        {% set class = 'bg-color-error' %}
                     {% elseif log.level == 'ALERT' %}
                         {% set context = 'danger' %}
+                        {% set class = 'bg-color-error' %}
                     {% elseif log.level == 'CRITICAL' %}
                         {% set context = 'danger' %}
+                        {% set class = 'bg-color-error' %}
                     {% elseif log.level == 'EMERGENCY' %}
                         {% set context = 'danger' %}
+                        {% set class = 'bg-color-error' %}
                     {% else %}
                         {% set context = 'light' %}
+                        {% set class = '' %}
                     {% endif %}
                     <tr class="table-{{ context }}">
                         <td>
-                            <span class="label label-default">
-                                {% if log.date is not null %}
-                                    {{ log.date|format_datetime() }}
-                                {% endif %}
-                            </span>
+                            {% if log.date is not null %}
+                                <span class="pill">{{ log.date }}</span>
+                            {% endif %}
                         </td>
-                        <td>{{ log.channel }}</td>
+                        <td><span class="pill">{{ log.channel }}</span></td>
                         <td>
-                            <span class="badge badge-pill badge-{{ context }}">{{ log.level }}</span>
+                            <span class="pill {{ class }}">{{ log.level }}</span>
                         </td>
                         <td>{{ log.message }}</td>
                     </tr>

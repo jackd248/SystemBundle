@@ -29,7 +29,7 @@
                             </span>
                         {% endif %}
                         <span class="pill" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
-                            {{ log.changeDate|format_datetime }}
+                            {{ log.changeDateFormat }}
                         </span>
                         <span class="pill {{ log['tooLarge'] ? 'bg-color-warning' : '' }}" data-toggle="tooltip" title="{{ 'dashboard.log.list.size'|trans({}, 'SystemInformationBundle') }}">
                             {{ log.fileSize }}

@@ -75,6 +75,7 @@ class LogService
             $file['absolutePath'] = $logDir . '/' . $fileEntry;
             $file['fileSize'] = $this->formatBytes(filesize($file['absolutePath']));
             $file['changeDate'] = (new DateTime())->setTimestamp(filemtime($file['absolutePath']));
+            $file['changeDateFormat'] = $file['changeDate']->format('d.m.Y H:i:s');
             $file['readable'] = $this->isReadable($file['absolutePath']) ? 1 : 0;
             $file['tooLarge'] = $this->fileSizeTooLarge($file['absolutePath']) ? 1 : 0;
             $file['warningCountByPeriod'] = $this->isCountable($file['absolutePath']) ? $this->countLogTypeByPeriod($this->getLog($fileEntry), self::LOG_TYPE['WARNING']) : 0;
@@ -117,7 +118,7 @@ class LogService
                 continue;
             }
             $array = array(
-                'date'    => DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
+                'date'    => DateTime::createFromFormat('Y-m-d H:i:s', $data['date'])->format('d.m.Y H:i:s'),
                 'channel'  => $data['channel'],
                 'level'   => $data['level'],
                 'message' => $data['message']
