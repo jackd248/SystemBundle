@@ -38,6 +38,7 @@ class LogService
     ];
 
     const PERIOD = '-1 day';
+    const DATE_FORMAT = 'd.m.Y H:i:s';
     const MAX_FILE_SIZE = 20000000; // 20MB
 
     /**
@@ -75,7 +76,7 @@ class LogService
             $file['absolutePath'] = $logDir . '/' . $fileEntry;
             $file['fileSize'] = $this->formatBytes(filesize($file['absolutePath']));
             $file['changeDate'] = (new DateTime())->setTimestamp(filemtime($file['absolutePath']));
-            $file['changeDateFormat'] = $file['changeDate']->format('d.m.Y H:i:s');
+            $file['changeDateFormat'] = $file['changeDate']->format(self::DATE_FORMAT);
             $file['readable'] = $this->isReadable($file['absolutePath']) ? 1 : 0;
             $file['tooLarge'] = $this->fileSizeTooLarge($file['absolutePath']) ? 1 : 0;
             $file['warningCountByPeriod'] = $this->isCountable($file['absolutePath']) ? $this->countLogTypeByPeriod($this->getLog($fileEntry), self::LOG_TYPE['WARNING']) : 0;
@@ -118,7 +119,7 @@ class LogService
                 continue;
             }
             $array = array(
-                'date'    => date('d.m.Y H:i:s', strtotime($data['date'])),
+                'date'    => date(self::DATE_FORMAT, strtotime($data['date'])),
                 'channel'  => $data['channel'],
                 'level'   => $data['level'],
                 'message' => $data['message']
@@ -194,7 +195,7 @@ class LogService
     {
         $count = 0;
         foreach ($logs as $log) {
-            if ($log['date'] < new \DateTime($period)) {
+            if (DateTime::createFromFormat(self::DATE_FORMAT,$log['date']) < new \DateTime($period)) {
                 break;
             }
             if (in_array($log['level'], $type)) {
