@@ -2,7 +2,7 @@
   "name": "kmi/system-information-bundle",
   "description": "Simple sonata admin bundle for system information",
   "type": "symfony-bundle",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "authors": [
     {
