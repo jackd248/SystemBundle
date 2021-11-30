@@ -118,7 +118,7 @@ class LogService
                 continue;
             }
             $array = array(
-                'date'    => DateTime::createFromFormat('Y-m-d H:i:s', $data['date'])->format('d.m.Y H:i:s'),
+                'date'    => date('d.m.Y H:i:s', strtotime($data['date'])),
                 'channel'  => $data['channel'],
                 'level'   => $data['level'],
                 'message' => $data['message']
