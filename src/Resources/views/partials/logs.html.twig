@@ -39,8 +39,8 @@
                                 {{ 'dashboard.log.warning.too_large.hint'|trans({}, 'SystemInformationBundle') }}
                             </span>
                         {% endif %}
-                        <a class="pill" href="{{ path('kmi_system_information_removelog', {'id':log.fileName}) }}">
-                            <i class="icon-x color-error"></i>
+                        <a href="{{ path('kmi_system_information_removelog', {'id':log.fileName}) }}" data-toggle="tooltip" title="{{ 'dashboard.log.remove_log'|trans({}, 'SystemInformationBundle') }}">
+                            <i class="icon-trash-2 color-error"></i>
                         </a>
                     </div>
                 </div>

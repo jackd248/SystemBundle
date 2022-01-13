@@ -49,6 +49,7 @@ dashboard:
       too_large:
         hint: File size too large
         description: File size is too large for log viewer and analyzer
+    remove_log: Remove log file
   information:
     heading: General information
     description: |

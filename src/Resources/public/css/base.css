@@ -27,6 +27,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.icon-trash-2:before {
+    content: "\e1032";
+}
 .icon-x:before {
     content: "\e1029";
 }

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * System Indicator Extension
      */
@@ -11,21 +11,26 @@ $(document).ready(function() {
             $('#system-indicator-extension--icon').addClass('icon-hint');
         }
 
-        $el.click(function(e) {
+        $el.click(function (e) {
             e.stopPropagation();
         });
 
-        $('#system-indicator-extension--clear-cache').off('click').click(function( event ) {
+        $('#system-indicator-extension--clear-cache').off('click').click(function (event) {
             event.preventDefault();
-            let ccurl = $(this).attr('href');
+
+            let $this = $(this);
+            let ccurl = $this.attr('href');
             let $spinner = $('#system-indicator-extension--clear-cache--spinner');
+
+            $this.removeAttr('href');
             $spinner.css('display', 'inline');
             $.get(ccurl, function (data, status) {
                 console.log('[SystemInformationBundle] Clear cache command result: ' + data);
             })
-            .always(function() {
-                $spinner.hide();
-            });
+                .always(function () {
+                    $spinner.hide();
+                    $this.setAttribute('href', ccurl);
+                });
         });
     });
 });
