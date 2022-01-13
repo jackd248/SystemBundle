@@ -17,3 +17,8 @@ kmi_system_information_phpinfo:
   path: /admin/system/phpinfo
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:phpInfo}
   methods:  [GET]
+
+kmi_system_information_clearcache:
+  path: /admin/system/clearcache
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:clearCache}
+  methods:  [GET]

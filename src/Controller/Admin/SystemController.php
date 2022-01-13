@@ -6,8 +6,13 @@ use Kmi\SystemInformationBundle\Service\CheckService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
 use Kmi\SystemInformationBundle\Service\SymfonyService;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class SystemController
@@ -36,17 +41,24 @@ class SystemController extends AbstractController
     private SymfonyService $symfonyService;
 
     /**
+     * @var KernelInterface
+     */
+    private KernelInterface $kernel;
+
+    /**
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
+     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, KernelInterface $kernel)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
         $this->informationService = $informationService;
         $this->symfonyService = $symfonyService;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -124,5 +136,25 @@ class SystemController extends AbstractController
         return $this->render('@SystemInformationBundle/phpInfo.html.twig', [
             'info' => phpinfo()
         ]);
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function clearCache(): JsonResponse
+    {
+        $kernel = $this->kernel;
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'cache:clear'
+        ));
+
+        // Use the NullOutput class instead of BufferedOutput.
+        $output = new NullOutput();
+
+        return new JsonResponse($application->run($input, $output));
     }
 }
