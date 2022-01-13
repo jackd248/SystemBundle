@@ -84,7 +84,7 @@ class LogService
             $files[$fileEntry] = $file;
         }
 
-        usort($files, function($a, $b) {
+        usort($files, function ($a, $b) {
             return $a['changeDate'] < $b['changeDate'];
         });
         return $files;
@@ -119,9 +119,9 @@ class LogService
                 continue;
             }
             $array = array(
-                'date'    => date(self::DATE_FORMAT, strtotime($data['date'])),
-                'channel'  => $data['channel'],
-                'level'   => $data['level'],
+                'date' => date(self::DATE_FORMAT, strtotime($data['date'])),
+                'channel' => $data['channel'],
+                'level' => $data['level'],
                 'message' => $data['message']
             );
 
@@ -130,6 +130,18 @@ class LogService
         fclose($fn);
         // Default ordering by date
         return array_reverse($lines);
+    }
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function removeLogFile(string $id): bool
+    {
+        $logDir = $this->container->getParameter('kernel.logs_dir');
+        $absolutePath = $logDir . '/' . $id;
+
+        return unlink($absolutePath);
     }
 
     /**
@@ -195,7 +207,7 @@ class LogService
     {
         $count = 0;
         foreach ($logs as $log) {
-            if (DateTime::createFromFormat(self::DATE_FORMAT,$log['date']) < new \DateTime($period)) {
+            if (DateTime::createFromFormat(self::DATE_FORMAT, $log['date']) < new \DateTime($period)) {
                 break;
             }
             if (in_array($log['level'], $type)) {

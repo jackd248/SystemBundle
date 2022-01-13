@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -156,5 +157,15 @@ class SystemController extends AbstractController
         $output = new NullOutput();
 
         return new JsonResponse($application->run($input, $output));
+    }
+
+    /**
+     * @param string $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeLog(string $id): RedirectResponse
+    {
+        $this->logService->removeLogFile($id);
+        return $this->redirectToRoute('kmi_system_information_overview');
     }
 }

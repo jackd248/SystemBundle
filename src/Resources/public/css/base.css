@@ -3,11 +3,11 @@
  */
 @font-face {
     font-family: 'icomoon';
-    src:  url('../fonts/icomoon.eot?5ai0pr');
-    src:  url('../fonts/icomoon.eot?5ai0pr#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?5ai0pr') format('truetype'),
-    url('../fonts/icomoon.woff?5ai0pr') format('woff'),
-    url('../fonts/icomoon.svg?5ai0pr#icomoon') format('svg');
+    src:  url('../fonts/icomoon.eot?bi1smt');
+    src:  url('../fonts/icomoon.eot?bi1smt#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?bi1smt') format('truetype'),
+    url('../fonts/icomoon.woff?bi1smt') format('woff'),
+    url('../fonts/icomoon.svg?bi1smt#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -27,7 +27,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-x:before {
+    content: "\e1029";
+}
+.icon-x-circle:before {
+    content: "\e1031";
+}
+.icon-zap:before {
+    content: "\e1030";
+}
 .icon-php:before {
     content: "\e1026";
 }
@@ -151,18 +159,18 @@
 .icon-alert-octagon:before {
     content: "\e1028";
 }
-.icon-x:before {
-    content: "\e1029";
-}
-.icon-x-circle:before {
-    content: "\e1030";
-}
-.icon-x-octagon:before {
-    content: "\e1031";
-}
-.icon-x-square:before {
-    content: "\e1032";
-}
+/*.icon-x:before {*/
+/*    content: "\e1029";*/
+/*}*/
+/*.icon-x-circle:before {*/
+/*    content: "\e1030";*/
+/*}*/
+/*.icon-x-octagon:before {*/
+/*    content: "\e1031";*/
+/*}*/
+/*.icon-x-square:before {*/
+/*    content: "\e1032";*/
+/*}*/
 .icon-box-round {
     width: 40px;
     height: 40px;

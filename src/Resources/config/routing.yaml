@@ -22,3 +22,8 @@ kmi_system_information_clearcache:
   path: /admin/system/clearcache
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:clearCache}
   methods:  [GET]
+
+kmi_system_information_removelog:
+  path: /admin/system/removelog/{id}
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:removeLog}
+  methods:  [GET]
