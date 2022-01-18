@@ -82,8 +82,8 @@ class InformationService {
             ];
         }
 
-        if ($requirementsCount = $this->symfonyService->getRequirementsCount()['requirements'] || $recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
-            if ($requirementsCount) {
+        if ($this->symfonyService->getRequirementsCount()['requirements'] || $this->symfonyService->getRequirementsCount()['recommendations']) {
+            if ($requirementsCount = $this->symfonyService->getRequirementsCount()['requirements']) {
                 $information['requirements'] = [
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
@@ -91,12 +91,14 @@ class InformationService {
                     'class' => 'color-error'
                 ];
             }
-            $information['requirements'] = [
-                'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
-                'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-package',
-                'class' => 'color-warning'
-            ];
+            if ($recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
+                $information['requirements'] = [
+                    'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
+                    'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
+                    'icon' => 'icon-package',
+                    'class' => 'color-warning'
+                ];
+            }
         }
 
         $information['appVersion'] = [
