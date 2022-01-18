@@ -119,6 +119,7 @@ system:
       environment: Symfony environment
     database:
       platform: Database platform
+      version: Database version
       host: Database host
       name: Database name
       user: Database user

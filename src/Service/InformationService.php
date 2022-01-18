@@ -3,6 +3,7 @@
 namespace Kmi\SystemInformationBundle\Service;
 
 use DateTime;
+use Exception;
 use Locale;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -151,6 +152,11 @@ class InformationService {
     public function getFurtherSystemInformation(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
+        $databaseVersion = null;
+        try {
+            $databaseVersion = $entityManager->getConnection()->fetchOne('SELECT @@version;');
+        } catch (Exception $e) {};
+
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
         return [
             $this->translator->trans('system.information.server.ip', [], 'SystemInformationBundle') => $_SERVER['SERVER_ADDR'],
@@ -169,6 +175,7 @@ class InformationService {
             $this->translator->trans('system.information.symfony.version', [], 'SystemInformationBundle') => \Symfony\Component\HttpKernel\Kernel::VERSION,
             $this->translator->trans('system.information.symfony.environment', [], 'SystemInformationBundle') => $_ENV['APP_ENV'],
             $this->translator->trans('system.information.database.platform', [], 'SystemInformationBundle') => $entityManager->getConnection()->getDatabasePlatform()->getName(),
+            $this->translator->trans('system.information.database.version', [], 'SystemInformationBundle') => $databaseVersion,
             $this->translator->trans('system.information.database.host', [], 'SystemInformationBundle') => $entityManager->getConnection()->getParams()['host'],
             $this->translator->trans('system.information.database.name', [], 'SystemInformationBundle') => $entityManager->getConnection()->getDatabase(),
             $this->translator->trans('system.information.database.user', [], 'SystemInformationBundle') => $entityManager->getConnection()->getParams()['user'],
