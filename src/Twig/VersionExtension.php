@@ -39,6 +39,6 @@ class VersionExtension extends AbstractExtension
      */
     public function getComposerVersion()
     {
-        return $this->informationService->getAppVersion();
+        return $this->informationService->readAppVersion();
     }
 }

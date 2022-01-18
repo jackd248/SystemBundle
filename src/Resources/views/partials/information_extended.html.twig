@@ -8,11 +8,16 @@
     <div class="panel-body">
         {{ 'dashboard.information.description'|trans({'phpInfoPath': path('kmi_system_information_phpinfo')}, 'SystemInformationBundle')|raw }}
         <table class="table table-condensed">
-            {% for key, info in infos %}
+            {% for key, values in infos %}
                 <tr>
-                    <td><strong>{{ key }}</strong></td>
-                    <td style="font-family: monospace, monospace;">{{ info }}</td>
+                    <td colspan="2"><strong>{{ key }}</strong></td>
                 </tr>
+                {% for item in values %}
+                    <tr>
+                        <td>{{ item.label }}</td>
+                        <td style="font-family: monospace, monospace;">{{ item.value }}</td>
+                    </tr>
+                {% endfor %}
             {% endfor %}
         </table>
     </div>

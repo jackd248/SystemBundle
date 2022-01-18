@@ -98,26 +98,34 @@ system:
       description: Operating system
   information:
     server:
+      label: Server
       ip: Server IP
       name: Server name
       protocol: Server protocol
       software: Server software
       operating:  Operating system
-      os: OS
+      web: Webserver
+      distribution: Distribution
+      description: Server despcription
     php:
-      version: PHP
+      label: PHP
+      version: PHP Version
       interface: Interface
       locale: Intl locale
     date:
-      now: Date
+      label: Date
+      now: Now
       timezone: Timezone
     app:
+      label: App
       version: App version
       environment: App environment
     symfony:
+      label: Symfony
       version: Symfony version
       environment: Symfony environment
     database:
+      label: Database
       platform: Database platform
       version: Database version
       host: Database host
