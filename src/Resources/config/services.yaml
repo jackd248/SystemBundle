@@ -26,6 +26,11 @@ services:
     arguments:
       - '@service_container'
 
+  Kmi\SystemInformationBundle\Service\BundleService:
+    class: Kmi\SystemInformationBundle\Service\BundleService
+    arguments:
+      - '@service_container'
+
   Kmi\SystemInformationBundle\Twig\SystemExtension:
     class: Kmi\SystemInformationBundle\Twig\SystemExtension
     tags:

@@ -56,6 +56,12 @@ dashboard:
       <p>
           See <a href="phpInfoPath">php_info</a> for further information.
       </p>
+  bundles:
+    heading: Bundles
+    description: |
+      <p>
+          The application contains <strong>bundlesCount</strong> different bundles.
+      </p>
 
 viewer:
   general:

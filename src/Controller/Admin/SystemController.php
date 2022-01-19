@@ -6,6 +6,7 @@ use Kmi\SystemInformationBundle\Service\CheckService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
 use Kmi\SystemInformationBundle\Service\SymfonyService;
+use Kmi\SystemInformationBundle\Service\BundleService;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -42,6 +43,11 @@ class SystemController extends AbstractController
     private SymfonyService $symfonyService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\BundleService
+     */
+    private BundleService $bundleService;
+
+    /**
      * @var KernelInterface
      */
     private KernelInterface $kernel;
@@ -51,20 +57,23 @@ class SystemController extends AbstractController
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
+     * @param \Kmi\SystemInformationBundle\Service\BundleService $bundleService
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, KernelInterface $kernel)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, KernelInterface $kernel)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
         $this->informationService = $informationService;
         $this->symfonyService = $symfonyService;
+        $this->bundleService = $bundleService;
         $this->kernel = $kernel;
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \GuzzleHttp\Exception\GuzzleException|\Psr\Cache\InvalidArgumentException
+     * @throws \Exception
      */
     public function index(): \Symfony\Component\HttpFoundation\Response
     {
@@ -80,7 +89,8 @@ class SystemController extends AbstractController
             'information' => $this->informationService->getSystemInformation(true),
             'infos' => $this->informationService->getFurtherSystemInformation(),
             'requirements' => $requirements,
-            'status' => $status
+            'status' => $status,
+            'bundles' => $this->bundleService->getBundleInformation()
         ]);
     }
 
