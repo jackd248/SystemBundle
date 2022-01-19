@@ -7,13 +7,18 @@
     </div>
     <div class="panel-body">
         {{ 'dashboard.bundles.description'|trans({'bundlesCount': bundles|length}, 'SystemInformationBundle')|raw }}
-        <table class="table table-condensed">
-            {% for key, value in bundles %}
-                <tr>
-                    <td>{{ key }}</td>
-                    <td style="font-family: monospace, monospace;">{{ value }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        <a class="collapse-btn" data-toggle="collapse" href="#bundles" role="button" aria-expanded="false" aria-controls="bundles">
+            {{ 'dashboard.bundles.collapse'|trans({'bundlesCount': bundles|length}, 'SystemInformationBundle')|raw }}
+        </a>
+        <div class="collapse" id="bundles">
+            <table class="table table-condensed">
+                {% for key, value in bundles %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td style="font-family: monospace, monospace;">{{ value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>

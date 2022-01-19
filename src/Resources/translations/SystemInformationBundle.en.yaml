@@ -60,8 +60,9 @@ dashboard:
     heading: Bundles
     description: |
       <p>
-          The application contains <strong>bundlesCount</strong> different bundles.
+          The application contains <strong>bundlesCount</strong> additional bundles.
       </p>
+    collapse: See all bundles
 
 viewer:
   general:
