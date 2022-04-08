@@ -50,19 +50,22 @@ class CheckService {
 
             $url = $this->container->get('router')->generate('liip_monitor_run_all_checks', [], UrlGeneratorInterface::ABSOLUTE_URL);
             $client = new \GuzzleHttp\Client();
-            $response = $client->get($url);
-            if ($response->getStatusCode() === 200) {
-                return \GuzzleHttp\json_decode($response->getBody()->getContents())->checks;
-            }
-            return null;
+
+            try {
+                $response = $client->get($url);
+                if ($response->getStatusCode() === 200) {
+                    return \GuzzleHttp\json_decode($response->getBody()->getContents())->checks;
+                }
+            } catch (\Exception $e) {}
+            return [];
         });
     }
 
     /**
-     * @param $checks
+     * @param array $checks
      * @return int
      */
-    public function getMonitorCheckStatus($checks)
+    public function getMonitorCheckStatus(array $checks = []): int
     {
         $status = 0;
         foreach ($checks as $check) {
@@ -74,10 +77,10 @@ class CheckService {
     }
 
     /**
-     * @param $checks
+     * @param array $checks
      * @return int
      */
-    public function getMonitorCheckCount($checks)
+    public function getMonitorCheckCount(array $checks = []): int
     {
         $count = 0;
         foreach ($checks as $check) {
