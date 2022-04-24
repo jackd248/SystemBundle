@@ -12,7 +12,7 @@
                     Package name
                 </th>
                 <th>
-                    Version
+                    Installed Version / Latest Version
                 </th>
                 <th>
                     Description
@@ -24,27 +24,33 @@
             {% for dependency in dependencies %}
                 <tr>
                     <td>
-                        {% if dependency.homepage is defined %}
+                        {% if dependency.homepage is defined and dependency.homepage is not empty %}
                             <a href="{{ dependency.homepage }}" target="_blank" title="{{ dependency.name }}">
-                                <strong>{{ dependency.name }}</strong>
+                                {{ dependency.name }}
                             </a>
                         {% else %}
-                            <strong>{{ dependency.name }}</strong>
+                            {{ dependency.name }}
                         {% endif %}
                     </td>
-                    <td>
+                    <td style="white-space: nowrap">
                         <span class="pill">
                             {{ dependency.version }}
                         </span>
-                    <td>
-                        {% if dependency.description is defined %}
-                            {{ dependency.description }}
+                        {% if dependency.latest != dependency.version %}
+                            <span class="pill bg-color-warning">
+                                {{ dependency.latest }}
+                            </span>
                         {% endif %}
                     </td>
                     <td>
-                        <span class="pill" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
-                            {{ dependency.time | date }}
+                        <span class="pill" style="white-space: nowrap" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
+                            {{ dependency.time | date('d.m.Y H:i:s') }}
                         </span>
+                    </td>
+                    <td>
+                        {% if dependency.description is defined %}
+                            <em>{{ dependency.description }}</em>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
