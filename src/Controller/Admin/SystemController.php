@@ -87,7 +87,6 @@ class SystemController extends AbstractController
     {
         $checks = $this->checkService->getLiipMonitorChecks()->getResults();
         $status = $this->checkService->getMonitorCheckStatus($checks);
-        dump($checks);
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),

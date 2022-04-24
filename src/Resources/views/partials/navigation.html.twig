@@ -1,27 +1,47 @@
-<nav class="system-nav">
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_monitoring' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_monitoring') }}">
-        <i class="icon-monitor mr-5"
-           aria-hidden="true"></i> {{ 'dashboard.monitoring.nav'|trans({}, 'SystemInformationBundle') }}
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_log' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_log') }}">
-        <i class="icon-info mr-5"
-           aria-hidden="true"></i> {{ 'dashboard.log.nav'|trans({}, 'SystemInformationBundle') }}
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_requirements' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_requirements') }}">
-        <i class="icon-package mr-5"
-           aria-hidden="true"></i> {{ 'dashboard.requirements.nav'|trans({}, 'SystemInformationBundle') }}
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_information' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_information') }}">
-        <i class="icon-layers mr-5"
-           aria-hidden="true"></i> {{ 'dashboard.information.nav'|trans({}, 'SystemInformationBundle') }}
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_dependencies' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_dependencies') }}">
-        <i class="icon-code mr-5"
-           aria-hidden="true"></i> {{ 'dashboard.dependencies.nav'|trans({}, 'SystemInformationBundle') }}
-    </a>
-</nav>
+<ul class="system-nav">
+    <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_monitoring' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_monitoring') }}">
+            <i class="icon-monitor mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.monitoring.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_log' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_log') }}">
+            <i class="icon-info mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.log.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_requirements' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_requirements') }}">
+            <i class="icon-package mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.requirements.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_information' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_information') }}">
+            <i class="icon-layers mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.information.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_dependencies' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_dependencies') }}">
+            <i class="icon-code mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.dependencies.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle system-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            <i class="icon-more-vertical mr-5"
+               aria-hidden="true"></i> Actions
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ path('kmi_system_information_clearcache') }}"><i class="icon-zap text-muted mr-5"></i> Clear cache</a>
+        </div>
+    </li>
+</ul>
