@@ -3,6 +3,8 @@
 namespace Kmi\SystemInformationBundle\Service;
 
 use Kmi\SystemInformationBundle\SystemInformationBundle;
+use Liip\MonitorBundle\Helper\ArrayReporter;
+use Liip\MonitorBundle\Helper\RunnerManager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -19,18 +21,18 @@ class CheckService {
     private Container $container;
 
     /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
+     * @var \Liip\MonitorBundle\Helper\RunnerManager
      */
-    protected CacheInterface $cachePool;
+    protected RunnerManager $runnerManager;
 
     /**
      * @param \Symfony\Component\DependencyInjection\Container $container
-     * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
+     * @param \Liip\MonitorBundle\Helper\RunnerManager $runnerManager
      */
-    public function __construct(Container $container, CacheInterface $cachePool)
+    public function __construct(Container $container, RunnerManager $runnerManager)
     {
         $this->container = $container;
-        $this->cachePool = $cachePool;
+        $this->runnerManager = $runnerManager;
     }
 
     /**
@@ -40,51 +42,39 @@ class CheckService {
      */
     public function getLiipMonitorChecks(bool $forceUpdate = false)
     {
-        $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
-        if ($forceUpdate) {
-            $this->cachePool->delete($cacheKey);
-        }
-
-        return $this->cachePool->get($cacheKey, function (ItemInterface $item) {
-            $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME);
-
-            $url = $this->container->get('router')->generate('liip_monitor_run_all_checks', [], UrlGeneratorInterface::ABSOLUTE_URL);
-            $client = new \GuzzleHttp\Client();
-
-            try {
-                $response = $client->get($url);
-                if ($response->getStatusCode() === 200) {
-                    return \GuzzleHttp\json_decode($response->getBody()->getContents())->checks;
-                }
-            } catch (\Exception $e) {}
-            return [];
-        });
+        $reporter = new ArrayReporter();
+        $runner = $this->runnerManager->getRunner($this->runnerManager->getDefaultGroup());
+        $runner->addReporter($reporter);
+        $checks = $runner->getChecks();
+        $runner->addChecks($checks);
+        $runner->run();
+        return $reporter;
     }
 
     /**
-     * @param array $checks
+     * @param \Liip\MonitorBundle\Helper\ArrayReporter|null $checks
      * @return int
      */
-    public function getMonitorCheckStatus(array $checks = []): int
+    public function getMonitorCheckStatus(\Liip\MonitorBundle\Helper\ArrayReporter $checks = null): int
     {
         $status = 0;
-        foreach ($checks as $check) {
-            if (intval($check->status) > $status) {
-                $status = intval($check->status);
+        foreach ($checks->getResults() as $check) {
+            if (intval($check['status']) > $status) {
+                $status = intval($check['status']);
             }
         }
         return $status;
     }
 
     /**
-     * @param array $checks
+     * @param \Liip\MonitorBundle\Helper\ArrayReporter|null $checks
      * @return int
      */
-    public function getMonitorCheckCount(array $checks = []): int
+    public function getMonitorCheckCount(\Liip\MonitorBundle\Helper\ArrayReporter $checks = null): int
     {
         $count = 0;
-        foreach ($checks as $check) {
-            if (intval($check->status) > 0) {
+        foreach ($checks->getResults() as $check) {
+            if (intval($check['status']) > 0) {
                 $count++;
             }
         }

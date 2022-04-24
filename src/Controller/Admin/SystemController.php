@@ -83,7 +83,7 @@ class SystemController extends AbstractController
         $logs = $this->logService->getLogs();
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
-            'checks' => $checks,
+            'checks' => $checks->getResults(),
             'logs' => $logs,
             'logDir' => $this->getParameter('kernel.logs_dir'),
             'information' => $this->informationService->getSystemInformation(true),
