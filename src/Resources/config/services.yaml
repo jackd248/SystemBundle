@@ -16,7 +16,6 @@ services:
   Kmi\SystemInformationBundle\Service\CheckService:
     class: Kmi\SystemInformationBundle\Service\CheckService
     arguments:
-      - '@service_container'
       - '@liip_monitor.helper.runner_manager'
 
   Kmi\SystemInformationBundle\Service\LogService:

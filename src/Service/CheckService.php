@@ -2,43 +2,30 @@
 
 namespace Kmi\SystemInformationBundle\Service;
 
-use Kmi\SystemInformationBundle\SystemInformationBundle;
 use Liip\MonitorBundle\Helper\ArrayReporter;
 use Liip\MonitorBundle\Helper\RunnerManager;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  *
  */
-class CheckService {
-
-    /**
-     * @var Container
-     */
-    private Container $container;
-
+class CheckService
+{
     /**
      * @var \Liip\MonitorBundle\Helper\RunnerManager
      */
     protected RunnerManager $runnerManager;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Liip\MonitorBundle\Helper\RunnerManager $runnerManager
      */
-    public function __construct(Container $container, RunnerManager $runnerManager)
+    public function __construct(RunnerManager $runnerManager)
     {
-        $this->container = $container;
         $this->runnerManager = $runnerManager;
     }
 
     /**
      * @param false $forceUpdate
      * @return mixed
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getLiipMonitorChecks(bool $forceUpdate = false)
     {
