@@ -246,6 +246,6 @@ class SystemController extends AbstractController
     public function removeLog(string $id): RedirectResponse
     {
         $this->logService->removeLogFile($id);
-        return $this->redirectToRoute('kmi_system_information_overview');
+        return $this->redirectToRoute('kmi_system_information_log');
     }
 }

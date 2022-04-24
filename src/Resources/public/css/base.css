@@ -527,6 +527,7 @@
     margin: 0.125rem 0 0;
     text-align: left;
     list-style: none;
+    font-size: 12px;
     background-color: #fff;
     background-clip: padding-box;
 }
