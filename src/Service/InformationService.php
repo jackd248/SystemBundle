@@ -151,14 +151,6 @@ class InformationService {
      */
     public function getFurtherSystemInformation(): array
     {
-        $entityManager = $this->container->get('doctrine')->getManager();
-        /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
-
-        $databaseVersion = null;
-        try {
-            $databaseVersion = $entityManager->getConnection()->fetchOne('SELECT @@version;');
-        } catch (Exception $e) {};
-
         return [
             $this->translator->trans('system.information.server.label', [], 'SystemInformationBundle') => [
                 $this->getServerIp(),
@@ -172,7 +164,9 @@ class InformationService {
             $this->translator->trans('system.information.php.label', [], 'SystemInformationBundle') => [
                 $this->getPhpVersion(),
                 $this->getPhpInterface(),
-                $this->getPhpLocale()
+                $this->getPhpLocale(),
+                $this->getPhpMemoryLimit(),
+                $this->getPhpMaxExecutionTime()
             ],
             $this->translator->trans('system.information.date.label', [], 'SystemInformationBundle') => [
                 $this->getDateTimezone(),
@@ -324,6 +318,26 @@ class InformationService {
         return [
             'label' => $this->translator->trans('system.information.php.locale', [], 'SystemInformationBundle'),
             'value' => Locale::getDefault()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getPhpMemoryLimit(): array {
+        return [
+            'label' => $this->translator->trans('system.information.php.memory_limit', [], 'SystemInformationBundle'),
+            'value' => ini_get("memory_limit")
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getPhpMaxExecutionTime(): array {
+        return [
+            'label' => $this->translator->trans('system.information.php.execution_time', [], 'SystemInformationBundle'),
+            'value' => ini_get("max_execution_time")
         ];
     }
 

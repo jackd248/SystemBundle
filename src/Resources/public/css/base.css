@@ -3,6 +3,7 @@
  */
 :root {
     --primary: #A0AECD;
+    --primary-dark: #324060;
     --white: #ffffff;
 }
 
@@ -198,6 +199,13 @@
  */
 .sonata-ba-content {
     margin-top: -25px;
+}
+
+a {
+    color: var(--primary);
+}
+a:hover {
+    color: var(--primary-dark);
 }
 
 .system-box {
@@ -401,7 +409,7 @@
     justify-content: space-between;
     align-items: center;
 }
-.log-results {
+.system-results {
     flex-grow: 1;
     text-align: center;
 }
@@ -527,7 +535,7 @@
     margin: 0.125rem 0 0;
     text-align: left;
     list-style: none;
-    font-size: 12px;
+    font-size: 13px;
     background-color: #fff;
     background-clip: padding-box;
 }

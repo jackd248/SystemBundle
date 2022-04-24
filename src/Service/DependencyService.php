@@ -46,6 +46,7 @@ class DependencyService
 
     /**
      *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getDependencyInformation()
     {
@@ -66,6 +67,38 @@ class DependencyService
         }
 
         return $this->mergeComposerData($json['packages'], $this->checkForUpdates());
+    }
+
+
+    /**
+     * @param array $dependencies
+     * @param string|null $search
+     * @param bool $showOnlyUpdatable
+     * @return array
+     */
+    public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false): array
+    {
+        if (is_null($search) & !$showOnlyUpdatable) return $dependencies;
+
+        $filteredDependencies = [];
+        foreach ($dependencies as $dependencyName => $dependency) {
+            $addDependency = true;
+            if (!is_null($search) && $search != '') {
+                if (strpos($dependencyName, $search) === false) {
+                    $addDependency &= false;
+                }
+            }
+
+            if ($showOnlyUpdatable) {
+                if ($dependency['latest-status'] === 'up-to-date') {
+                    $addDependency &= false;
+                }
+            }
+            if ($addDependency) {
+                $filteredDependencies[$dependencyName] = $dependency;
+            }
+        }
+        return $filteredDependencies;
     }
 
     /**
@@ -111,9 +144,10 @@ class DependencyService
      */
     protected function mergeComposerData(array $composerLock, array $composerUpdate): array
     {
-        foreach ($composerLock as &$item) {
+        foreach ($composerLock as $key => $item) {
             if (array_key_exists($item['name'], $composerUpdate)) {
-                $item = array_merge($item, $composerUpdate[$item['name']]);
+                $composerLock[$item['name']] = array_merge($item, $composerUpdate[$item['name']]);
+                unset($composerLock[$key]);
             }
         }
         return $composerLock;

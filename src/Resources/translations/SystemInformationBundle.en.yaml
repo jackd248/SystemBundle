@@ -1,6 +1,6 @@
 dashboard:
   general:
-    heading: System overview
+    heading: SystemInformationBundle
   monitoring:
     nav: Monitoring
     heading: Monitoring checks
@@ -32,7 +32,7 @@ dashboard:
       empty: All recommendations are fulfilled
       collapse: See all recommendations
   log:
-    nav: Log
+    nav: Logs
     heading: Applications logs
     description: |
       <p>
@@ -72,14 +72,29 @@ dashboard:
     heading: Composer dependencies
     description: |
       <p>
-          See all installed composer dependencies of the app. 
+          See all installed <a href="https://getcomposer.org/">composer</a> dependencies of the app with the current and latest version as well as additional information about the specific package.
       </p>
+      <p>
+        The composer file is located at <code>composerFilePath</code>.
+      </p>
+    filter:
+      search: Search
+      updatable: Show all packages which needs an update
+      submit: Submit
+      reset: Reset
+    list:
+      results: packages
+      empty: No package entries available
+      name: Package name
+      version: Installed Version / Latest Version
+      updated: Updated
+      description: Description
 viewer:
   general:
     heading: Log viewer
   detail:
     heading: Log detail
-    back: Back to system overview
+    back: Back to log overview
   filter:
     limit: Limit
     level: Level
@@ -129,6 +144,8 @@ system:
       version: PHP Version
       interface: Interface
       locale: Intl locale
+      memory_limit: Memory limit
+      execution_time: Max execution time
     date:
       label: Date
       now: Now

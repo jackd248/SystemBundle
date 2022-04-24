@@ -5,55 +5,88 @@
         </h3>
     </div>
     <div class="panel-body">
-        {{ 'dashboard.dependencies.description'|trans({}, 'SystemInformationBundle')|raw }}
+        {{ 'dashboard.dependencies.description'|trans({'composerFilePath': composerFilePath}, 'SystemInformationBundle')|raw }}
+        <form id="dependency-filter-form" class="mb-15 form-item">
+            <div class="item m-10 system-results">
+                <strong>{{ dependencies|length|number_format(0, ',', '.') }}</strong> {{ 'dashboard.dependencies.list.results'|trans({}, 'SystemInformationBundle') }}
+            </div>
+            <div class="item form-item m-10">
+                <label for="dependency-filter-form-search" class="mr-5">
+                    {{ 'dashboard.dependencies.filter.search'|trans({}, 'SystemInformationBundle') }}
+                </label>
+                <input type="text" id="dependency-filter-form-search" class="mw-200 form-control"
+                       value="{{ app.request.get('search') }}" name="search"/>
+            </div>
+            <div class="item form-item m-10">
+                <label for="dependency-filter-form-updatable"
+                       class="mr-5">{{ 'dashboard.dependencies.filter.updatable'|trans({}, 'SystemInformationBundle') }}</label>
+                <input type="checkbox" name="updatable" id="dependency-filter-form-updatable" class="mw-200" value="1"
+                        {{ showOnlyUpdatable ? 'checked' : '' }}/>
+            </div>
+            <div class="item form-item m-10">
+                <button type="submit"
+                        class="btn">{{ 'dashboard.dependencies.filter.submit'|trans({}, 'SystemInformationBundle') }}</button>
+                <a href="{{ path('kmi_system_information_dependencies') }}"
+                   class="btn">{{ 'dashboard.dependencies.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
+            </div>
+        </form>
         <table class="table table-condensed">
             <tr>
                 <th>
-                    Package name
+                    {{ 'dashboard.dependencies.list.name'|trans({}, 'SystemInformationBundle') }}
                 </th>
                 <th>
-                    Installed Version / Latest Version
+                    {{ 'dashboard.dependencies.list.version'|trans({}, 'SystemInformationBundle') }}
                 </th>
                 <th>
-                    Description
+                    {{ 'dashboard.dependencies.list.updated'|trans({}, 'SystemInformationBundle') }}
                 </th>
                 <th>
-                    Updated
+                    {{ 'dashboard.dependencies.list.description'|trans({}, 'SystemInformationBundle') }}
                 </th>
             </tr>
-            {% for dependency in dependencies %}
-                <tr>
-                    <td>
-                        {% if dependency.homepage is defined and dependency.homepage is not empty %}
-                            <a href="{{ dependency.homepage }}" target="_blank" title="{{ dependency.name }}">
-                                {{ dependency.name }}
-                            </a>
-                        {% else %}
-                            {{ dependency.name }}
-                        {% endif %}
-                    </td>
-                    <td style="white-space: nowrap">
+            {% if dependencies %}
+                {% for dependency in dependencies %}
+                    <tr>
+                        <td>
+                            {% if dependency.homepage is defined and dependency.homepage is not empty %}
+                                <a href="{{ dependency.homepage }}" target="_blank" title="{{ dependency.name }}">
+                                    {{ dependency.name|highlight(search)|raw }}
+                                </a>
+                            {% else %}
+                                {{ dependency.name|highlight(search)|raw }}
+                            {% endif %}
+                        </td>
+                        <td style="white-space: nowrap">
                         <span class="pill">
                             {{ dependency.version }}
                         </span>
-                        {% if dependency.latest != dependency.version %}
-                            <span class="pill bg-color-warning">
+                            {% if dependency.latest != dependency.version %}
+                                <span class="pill bg-color-warning">
                                 {{ dependency.latest }}
                             </span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <span class="pill" style="white-space: nowrap" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
+                            {% endif %}
+                        </td>
+                        <td>
+                        <span class="pill" style="white-space: nowrap" data-toggle="tooltip"
+                              title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
                             {{ dependency.time | date('d.m.Y H:i:s') }}
                         </span>
-                    </td>
-                    <td>
-                        {% if dependency.description is defined %}
-                            <em>{{ dependency.description }}</em>
-                        {% endif %}
+                        </td>
+                        <td>
+                            {% if dependency.description is defined %}
+                                <em>{{ dependency.description }}</em>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        {{ 'dashboard.dependencies.list.empty'|trans({}, 'SystemInformationBundle') }}
                     </td>
                 </tr>
-            {% endfor %}
+            {% endif %}
         </table>
     </div>
 </div>

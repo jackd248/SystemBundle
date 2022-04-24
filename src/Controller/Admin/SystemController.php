@@ -114,6 +114,7 @@ class SystemController extends AbstractController
      * @param string id
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function logView(string $id, Request $request): \Symfony\Component\HttpFoundation\Response
     {
@@ -172,15 +173,31 @@ class SystemController extends AbstractController
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
-     * @throws \Exception
      */
-    public function dependencies(): \Symfony\Component\HttpFoundation\Response
+    public function dependencies(Request $request): \Symfony\Component\HttpFoundation\Response
     {
+        $search = '';
+        $showOnlyUpdatable = false;
+        if ($request->query->has('search')) {
+            $search = strval($request->query->get('search'));
+        }
+        $search = $search ?: '';
+
+        if ($request->query->has('updatable')) {
+            $showOnlyUpdatable = boolval($request->query->get('updatable'));
+        }
+        $dependencies = $this->dependencyService->getDependencyInformation();
+        $dependencies = $this->dependencyService->filterDependencies($dependencies, $search, $showOnlyUpdatable);
+
         return $this->render('@SystemInformationBundle/dependencies.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),
-            'dependencies' => $this->dependencyService->getDependencyInformation()
+            'dependencies' => $dependencies,
+            'composerFilePath' => $this->getParameter('kernel.project_dir') . '/composer.json',
+            'search' => $search,
+            'showOnlyUpdatable' => $showOnlyUpdatable
         ]);
     }
 
