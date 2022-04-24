@@ -63,14 +63,14 @@ class InformationService {
     {
         $information = [];
 
-        $checks = $this->checkService->getLiipMonitorChecks($forceUpdate);
+        $checks = $this->checkService->getLiipMonitorChecks($forceUpdate)->getResults();
 
         if ($this->checkService->getMonitorCheckStatus($checks)) {
             $information['checks'] = [
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-monitor',
-                'class' => 'bg-color-error'
+                'class' => 'color-error'
             ];
         }
 
@@ -79,7 +79,7 @@ class InformationService {
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-info',
-                'class' => 'bg-color-error'
+                'class' => 'color-error'
             ];
         }
 
@@ -89,7 +89,7 @@ class InformationService {
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'bg-color-error'
+                    'class' => 'color-error'
                 ];
             }
             if ($recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
@@ -97,7 +97,7 @@ class InformationService {
                     'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'bg-color-warning'
+                    'class' => 'color-warning'
                 ];
             }
         }

@@ -85,20 +85,14 @@ class SystemController extends AbstractController
      */
     public function index(): \Symfony\Component\HttpFoundation\Response
     {
-        $requirements = $this->symfonyService->checkRequirements(true);
-        $checks = $this->checkService->getLiipMonitorChecks();
+        $checks = $this->checkService->getLiipMonitorChecks()->getResults();
         $status = $this->checkService->getMonitorCheckStatus($checks);
-        $logs = $this->logService->getLogs();
+        dump($checks);
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),
-            'checks' => $checks->getResults(),
-            'logs' => $logs,
-            'logDir' => $this->getParameter('kernel.logs_dir'),
-            'infos' => $this->informationService->getFurtherSystemInformation(),
-            'requirements' => $requirements,
+            'checks' => $checks,
             'status' => $status,
-            'bundles' => $this->bundleService->getBundleInformation()
         ]);
     }
 

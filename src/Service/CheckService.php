@@ -39,13 +39,13 @@ class CheckService
     }
 
     /**
-     * @param \Liip\MonitorBundle\Helper\ArrayReporter|null $checks
+     * @param array $checks
      * @return int
      */
-    public function getMonitorCheckStatus(\Liip\MonitorBundle\Helper\ArrayReporter $checks = null): int
+    public function getMonitorCheckStatus(array $checks = []): int
     {
         $status = 0;
-        foreach ($checks->getResults() as $check) {
+        foreach ($checks as $check) {
             if (intval($check['status']) > $status) {
                 $status = intval($check['status']);
             }
@@ -54,13 +54,13 @@ class CheckService
     }
 
     /**
-     * @param \Liip\MonitorBundle\Helper\ArrayReporter|null $checks
+     * @param array|null $checks
      * @return int
      */
-    public function getMonitorCheckCount(\Liip\MonitorBundle\Helper\ArrayReporter $checks = null): int
+    public function getMonitorCheckCount(array $checks = []): int
     {
         $count = 0;
-        foreach ($checks->getResults() as $check) {
+        foreach ($checks as $check) {
             if (intval($check['status']) > 0) {
                 $count++;
             }

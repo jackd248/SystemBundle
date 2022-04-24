@@ -2,7 +2,8 @@ dashboard:
   general:
     heading: System overview
   monitoring:
-    heading: Monitoring
+    nav: Monitoring
+    heading: Monitoring checks
     description: |
       <p>
           This service performs user defined health checks for the various services that compose an
@@ -16,7 +17,8 @@ dashboard:
       check: Check
       description: Description
   requirements:
-    heading: Requirements
+    nav: Requirements
+    heading: Symfony requirements & recommendations
     description: |
       <p>
         The <a href="https://github.com/symfony/requirements-checker">requirements checker</a> displays the the necessary symfony requirements and the optional recommendations for the application.
@@ -30,7 +32,8 @@ dashboard:
       empty: All recommendations are fulfilled
       collapse: See all recommendations
   log:
-    heading: Log overview
+    nav: Log
+    heading: Applications logs
     description: |
       <p>
           The log viewer is reading the application logs. The log directory is located at <code>logDir</code>.
@@ -51,7 +54,8 @@ dashboard:
         description: File size is too large for log viewer and analyzer
     remove_log: Remove log file
   information:
-    heading: General information
+    nav: Information
+    heading: General system information
     description: |
       <p>
           See <a href="phpInfoPath">php_info</a> for further information.
@@ -63,7 +67,13 @@ dashboard:
           The application contains <strong>bundlesCount</strong> additional bundles.
       </p>
     collapse: See all bundles
-
+  dependencies:
+    nav: Dependencies
+    heading: Composer dependencies
+    description: |
+      <p>
+          See all installed composer dependencies of the app. 
+      </p>
 viewer:
   general:
     heading: Log viewer

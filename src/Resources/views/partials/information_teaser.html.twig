@@ -1,7 +1,7 @@
 <div class="row">
     {% for info in teaser %}
         <div class="col-md-6 col-lg-4 col-xl-2">
-            <div class="system-box {{ info.class is defined ? info.class }}">
+            <div class="system-box {{ info.class is defined ? 'bg-' ~ info.class }}">
                 <div class="inner">
                     <h4><strong>{{ info.value }}</strong></h4>
                     <p class="mb-2">{{ info.description }}</p>

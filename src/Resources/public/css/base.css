@@ -216,6 +216,9 @@
     padding: 10px;
     z-index: 10;
 }
+.system-box .inner h4 {
+    font-size: 22px;
+}
 .system-box .icon {
     transition: all .3s linear;
     position: absolute;
@@ -480,7 +483,7 @@
  */
 .system-nav {
     margin-bottom: 9px;
-    margin-top: 9px;
+    margin-top: 20px;
 }
 .system-nav-link {
     background: white;

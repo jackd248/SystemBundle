@@ -2,41 +2,26 @@
     <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_monitoring' ? 'active' : '' }}"
        href="{{ path('kmi_system_information_monitoring') }}">
         <i class="icon-monitor mr-5"
-           aria-hidden="true"></i> Monitoring
+           aria-hidden="true"></i> {{ 'dashboard.monitoring.nav'|trans({}, 'SystemInformationBundle') }}
     </a>
     <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_log' ? 'active' : '' }}"
        href="{{ path('kmi_system_information_log') }}">
         <i class="icon-info mr-5"
-           aria-hidden="true"></i> Log
+           aria-hidden="true"></i> {{ 'dashboard.log.nav'|trans({}, 'SystemInformationBundle') }}
     </a>
     <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_requirements' ? 'active' : '' }}"
        href="{{ path('kmi_system_information_requirements') }}">
         <i class="icon-package mr-5"
-           aria-hidden="true"></i> Requirements
+           aria-hidden="true"></i> {{ 'dashboard.requirements.nav'|trans({}, 'SystemInformationBundle') }}
     </a>
     <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_information' ? 'active' : '' }}"
        href="{{ path('kmi_system_information_information') }}">
         <i class="icon-layers mr-5"
-           aria-hidden="true"></i> Information
+           aria-hidden="true"></i> {{ 'dashboard.information.nav'|trans({}, 'SystemInformationBundle') }}
     </a>
     <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_dependencies' ? 'active' : '' }}"
        href="{{ path('kmi_system_information_dependencies') }}">
         <i class="icon-code mr-5"
-           aria-hidden="true"></i> Dependencies
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_additional' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_additional') }}">
-        <i class="icon-help-circle mr-5"
-           aria-hidden="true"></i> Mail
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_additional' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_additional') }}">
-        <i class="icon-help-circle mr-5"
-           aria-hidden="true"></i> API
-    </a>
-    <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_additional' ? 'active' : '' }}"
-       href="{{ path('kmi_system_information_additional') }}">
-        <i class="icon-help-circle mr-5"
-           aria-hidden="true"></i> More
+           aria-hidden="true"></i> {{ 'dashboard.dependencies.nav'|trans({}, 'SystemInformationBundle') }}
     </a>
 </nav>
