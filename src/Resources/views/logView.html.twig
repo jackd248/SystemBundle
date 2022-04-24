@@ -1,29 +1,16 @@
-{% extends 'bundles/SonataAdminBundle/standard_layout.html.twig' %}
+{% extends '@SystemInformationBundle/layouts/main_layout.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/systeminformation/css/base.css') }}">
-{% endblock %}
-
-{% block sonata_page_content_header %}
-    <div class="page-header">
-        <h2>{{ 'viewer.general.heading'|trans({}, 'SystemInformationBundle') }}</h2>
-    </div>
-{% endblock %}
-
-{% block content %}
-    <div class="row">
-    <div class="col-lg-12">
+{% block main %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <i class="icon-info mr-5" aria-hidden="true"></i> {{ 'viewer.detail.heading'|trans({}, 'SystemInformationBundle') }}
             </h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="overflow: auto">
             <form id="log-filter-form" class="mb-15 form-item">
                 <div class="item m-10">
-                    <a href="{{ path('kmi_system_information_overview') }}">
+                    <a href="{{ path('kmi_system_information_log') }}">
                         {{ 'viewer.detail.back'|trans({}, 'SystemInformationBundle') }}
                     </a>
                 </div>
@@ -52,41 +39,41 @@
             <table class="table table-condensed table-striped">
                 {% if logs %}
                     {% for log in logs %}
-                    {% if log.message is not null %}
-                    {% if log.level == 'WARNING' %}
-                        {% set context = 'warning' %}
-                        {% set class = 'bg-color-warning' %}
-                    {% elseif log.level == 'ERROR' %}
-                        {% set context = 'danger' %}
-                        {% set class = 'bg-color-error' %}
-                    {% elseif log.level == 'ALERT' %}
-                        {% set context = 'danger' %}
-                        {% set class = 'bg-color-error' %}
-                    {% elseif log.level == 'CRITICAL' %}
-                        {% set context = 'danger' %}
-                        {% set class = 'bg-color-error' %}
-                    {% elseif log.level == 'EMERGENCY' %}
-                        {% set context = 'danger' %}
-                        {% set class = 'bg-color-error' %}
-                    {% else %}
-                        {% set context = 'light' %}
-                        {% set class = '' %}
-                    {% endif %}
-                    <tr class="table-{{ context }}">
-                        <td>
-                            {% if log.date is not null %}
-                                <span class="pill">{{ log.date }}</span>
+                        {% if log.message is not null %}
+                            {% if log.level == 'WARNING' %}
+                                {% set context = 'warning' %}
+                                {% set class = 'bg-color-warning' %}
+                            {% elseif log.level == 'ERROR' %}
+                                {% set context = 'danger' %}
+                                {% set class = 'bg-color-error' %}
+                            {% elseif log.level == 'ALERT' %}
+                                {% set context = 'danger' %}
+                                {% set class = 'bg-color-error' %}
+                            {% elseif log.level == 'CRITICAL' %}
+                                {% set context = 'danger' %}
+                                {% set class = 'bg-color-error' %}
+                            {% elseif log.level == 'EMERGENCY' %}
+                                {% set context = 'danger' %}
+                                {% set class = 'bg-color-error' %}
+                            {% else %}
+                                {% set context = 'light' %}
+                                {% set class = '' %}
                             {% endif %}
-                        </td>
-                        <td><span class="pill">{{ log.channel }}</span></td>
-                        <td>
-                            <span class="pill {{ class }}">{{ log.level }}</span>
-                        </td>
-                        <td>{{ log.message }}</td>
-                    </tr>
-                    {% endif %}
+                            <tr class="table-{{ context }}">
+                                <td>
+                                    {% if log.date is not null %}
+                                        <span class="pill">{{ log.date }}</span>
+                                    {% endif %}
+                                </td>
+                                <td><span class="pill">{{ log.channel }}</span></td>
+                                <td>
+                                    <span class="pill {{ class }}">{{ log.level }}</span>
+                                </td>
+                                <td>{{ log.message }}</td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
-                    {% else %}
+                {% else %}
                     <tr>
                         <td colspan="4" class="text-center">
                             {{ 'viewer.list.empty'|trans({}, 'SystemInformationBundle') }}
@@ -107,9 +94,9 @@
                         <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page, 'level':app.request.get('level') }) }}">{{ page }}</a>
                     </li>
                     {% if (page + 1) * limit < resultCount %}
-                    <li>
-                        <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}">›</a>
-                    </li>
+                        <li>
+                            <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}">›</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>

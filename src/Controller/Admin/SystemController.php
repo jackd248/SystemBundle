@@ -3,6 +3,7 @@
 namespace Kmi\SystemInformationBundle\Controller\Admin;
 
 use Kmi\SystemInformationBundle\Service\CheckService;
+use Kmi\SystemInformationBundle\Service\DependencyService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
 use Kmi\SystemInformationBundle\Service\SymfonyService;
@@ -48,6 +49,11 @@ class SystemController extends AbstractController
     private BundleService $bundleService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\DependencyService
+     */
+    private DependencyService $dependencyService;
+
+    /**
      * @var KernelInterface
      */
     private KernelInterface $kernel;
@@ -58,21 +64,23 @@ class SystemController extends AbstractController
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      * @param \Kmi\SystemInformationBundle\Service\BundleService $bundleService
+     * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, KernelInterface $kernel)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, DependencyService $dependencyService, KernelInterface $kernel)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
         $this->informationService = $informationService;
         $this->symfonyService = $symfonyService;
         $this->bundleService = $bundleService;
+        $this->dependencyService = $dependencyService;
         $this->kernel = $kernel;
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \GuzzleHttp\Exception\GuzzleException|\Psr\Cache\InvalidArgumentException
+     * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
     public function index(): \Symfony\Component\HttpFoundation\Response
@@ -83,14 +91,29 @@ class SystemController extends AbstractController
         $logs = $this->logService->getLogs();
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
             'checks' => $checks->getResults(),
             'logs' => $logs,
             'logDir' => $this->getParameter('kernel.logs_dir'),
-            'information' => $this->informationService->getSystemInformation(true),
             'infos' => $this->informationService->getFurtherSystemInformation(),
             'requirements' => $requirements,
             'status' => $status,
             'bundles' => $this->bundleService->getBundleInformation()
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception|\Psr\Cache\InvalidArgumentException
+     */
+    public function log(): \Symfony\Component\HttpFoundation\Response
+    {
+        $logs = $this->logService->getLogs();
+
+        return $this->render('@SystemInformationBundle/log.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'logs' => $logs,
+            'logDir' => $this->getParameter('kernel.logs_dir')
         ]);
     }
 
@@ -122,7 +145,61 @@ class SystemController extends AbstractController
             'logs' => $logs['result'],
             'levels' => LogService::LOG_LEVEL,
             'id' => $id,
-            'resultCount' => $logs['count']
+            'resultCount' => $logs['count'],
+            'teaser' => $this->informationService->getSystemInformation(true)
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
+     */
+    public function requirements(): \Symfony\Component\HttpFoundation\Response
+    {
+        $requirements = $this->symfonyService->checkRequirements(true);
+
+        return $this->render('@SystemInformationBundle/requirements.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'requirements' => $requirements,
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
+     */
+    public function information(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('@SystemInformationBundle/information.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'infos' => $this->informationService->getFurtherSystemInformation()
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
+     */
+    public function dependencies(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('@SystemInformationBundle/dependencies.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'dependencies' => $this->dependencyService->getDependencyInformation()
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Exception
+     */
+    public function additional(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('@SystemInformationBundle/additional.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true)
         ]);
     }
 
@@ -132,7 +209,7 @@ class SystemController extends AbstractController
      */
     public function info(): \Symfony\Component\HttpFoundation\Response
     {
-        $systemInformation = $this->informationService->getSystemInformation();
+        $systemInformation = $this->informationService->getSystemInformation(true);
 
         return $this->render('@SystemInformationBundle/info.html.twig', [
             'information' => $systemInformation

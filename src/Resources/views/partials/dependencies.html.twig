@@ -1,0 +1,54 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="icon-info mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.dependencies.heading'|trans({}, 'SystemInformationBundle') }}
+        </h3>
+    </div>
+    <div class="panel-body">
+        {{ 'dashboard.dependencies.description'|trans({}, 'SystemInformationBundle') }}
+        <table class="table table-condensed">
+            <tr>
+                <th>
+                    Package name
+                </th>
+                <th>
+                    Version
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Updated
+                </th>
+            </tr>
+            {% for dependency in dependencies %}
+                <tr>
+                    <td>
+                        {% if dependency.homepage is defined %}
+                            <a href="{{ dependency.homepage }}" target="_blank" title="{{ dependency.name }}">
+                                <strong>{{ dependency.name }}</strong>
+                            </a>
+                        {% else %}
+                            <strong>{{ dependency.name }}</strong>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="pill">
+                            {{ dependency.version }}
+                        </span>
+                    <td>
+                        {% if dependency.description is defined %}
+                            {{ dependency.description }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="pill" data-toggle="tooltip" title="{{ 'dashboard.log.list.changed'|trans({}, 'SystemInformationBundle') }}">
+                            {{ dependency.time | date }}
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

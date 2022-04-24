@@ -1,13 +1,13 @@
 <div class="row">
-    {% for info in information %}
+    {% for info in teaser %}
         <div class="col-md-6 col-lg-4 col-xl-2">
-            <div class="system-box">
-                <div>
-                    <i class="{{ info.icon }} {{ info.class is defined ? info.class }}"></i>
-                </div>
-                <div>
+            <div class="system-box {{ info.class is defined ? info.class }}">
+                <div class="inner">
                     <h4><strong>{{ info.value }}</strong></h4>
-                    <h5 class="mb-2 text-muted">{{ info.description }}</h5>
+                    <p class="mb-2">{{ info.description }}</p>
+                </div>
+                <div class="icon">
+                    <i class="{{ info.icon }}"></i>
                 </div>
             </div>
         </div>

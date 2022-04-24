@@ -70,7 +70,7 @@ class InformationService {
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-monitor',
-                'class' => 'color-error'
+                'class' => 'bg-color-error'
             ];
         }
 
@@ -79,7 +79,7 @@ class InformationService {
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-info',
-                'class' => 'color-error'
+                'class' => 'bg-color-error'
             ];
         }
 
@@ -89,7 +89,7 @@ class InformationService {
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'color-error'
+                    'class' => 'bg-color-error'
                 ];
             }
             if ($recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
@@ -97,7 +97,7 @@ class InformationService {
                     'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'color-warning'
+                    'class' => 'bg-color-warning'
                 ];
             }
         }

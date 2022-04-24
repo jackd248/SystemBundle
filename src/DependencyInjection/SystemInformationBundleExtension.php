@@ -12,11 +12,26 @@ class SystemInformationBundleExtension extends Extension
 {
 
     /**
+     * Load the configuration and inject its values
+     *
+     * @param array $configs
+     * @param ContainerBuilder $container
+     *
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $configuration = new Configuration();
+
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $loader = new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config')
+        );
         $loader->load('services.yaml');
+
+        $container->setParameter('kmi_system_information_bundle', $config);
     }
 
     /**

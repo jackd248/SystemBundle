@@ -1,6 +1,31 @@
-kmi_system_information_overview:
+kmi_system_information_monitoring:
   path: /admin/system
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:index}
+  methods:  [GET]
+
+kmi_system_information_log:
+  path: /admin/system/log
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:log}
+  methods:  [GET]
+
+kmi_system_information_requirements:
+  path: /admin/system/requirements
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:requirements}
+  methods:  [GET]
+
+kmi_system_information_information:
+  path: /admin/system/information
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:information}
+  methods:  [GET]
+
+kmi_system_information_dependencies:
+  path: /admin/system/dependencies
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:dependencies}
+  methods:  [GET]
+
+kmi_system_information_additional:
+  path: /admin/system/additional
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:additional}
   methods:  [GET]
 
 kmi_system_information_log_view:
@@ -14,16 +39,16 @@ kmi_system_information_info:
   methods:  [GET]
 
 kmi_system_information_phpinfo:
-  path: /admin/system/phpinfo
+  path: /admin/system/information/phpinfo
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:phpInfo}
   methods:  [GET]
 
 kmi_system_information_clearcache:
-  path: /admin/system/clearcache
+  path: /admin/system/action/clearcache
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:clearCache}
   methods:  [GET]
 
 kmi_system_information_removelog:
-  path: /admin/system/removelog/{id}
+  path: /admin/system/action/removelog/{id}
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:removeLog}
   methods:  [GET]

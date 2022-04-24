@@ -1,0 +1,20 @@
+{% extends 'bundles/SonataAdminBundle/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/systeminformation/css/base.css') }}">
+{% endblock %}
+
+{% block sonata_page_content_header %}
+    <div class="page-header">
+        <h2>{{ 'dashboard.general.heading'|trans({}, 'SystemInformationBundle') }}</h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% include '@SystemInformationBundle/partials/information_teaser.html.twig' with { teaser } %}
+    {% include '@SystemInformationBundle/partials/navigation.html.twig' %}
+
+    {% block main %}
+    {% endblock %}
+{% endblock %}
