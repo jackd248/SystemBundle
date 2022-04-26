@@ -133,11 +133,17 @@ class SystemController extends AbstractController
             $level = $request->query->get('level');
         }
 
+        $channel = null;
+        if ($request->query->has('channel')) {
+            $channel = $request->query->get('channel');
+        }
+
         $logs = $this->logService->getLog($id);
-        $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level);
+        $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level, $channel);
         return $this->render('@SystemInformationBundle/logView.html.twig', [
             'logs' => $logs['result'],
             'levels' => LogService::LOG_LEVEL,
+            'channels' => $this->logService->getLogChannels($logs),
             'id' => $id,
             'resultCount' => $logs['count'],
             'teaser' => $this->informationService->getSystemInformation(true)
@@ -181,6 +187,8 @@ class SystemController extends AbstractController
     {
         $search = '';
         $showOnlyUpdatable = false;
+        $showOnlyRequired = false;
+        $forceUpdate = false;
         if ($request->query->has('search')) {
             $search = strval($request->query->get('search'));
         }
@@ -189,15 +197,25 @@ class SystemController extends AbstractController
         if ($request->query->has('updatable')) {
             $showOnlyUpdatable = boolval($request->query->get('updatable'));
         }
-        $dependencies = $this->dependencyService->getDependencyInformation();
-        $dependencies = $this->dependencyService->filterDependencies($dependencies, $search, $showOnlyUpdatable);
+
+        if ($request->query->has('required')) {
+            $showOnlyRequired = boolval($request->query->get('required'));
+        }
+
+        if ($request->query->has('force')) {
+            $forceUpdate = boolval($request->query->get('force'));
+        }
+
+        $dependencies = $this->dependencyService->getDependencyInformation($forceUpdate);
+        $dependencies = $this->dependencyService->filterDependencies($dependencies, $search, $showOnlyUpdatable, $showOnlyRequired);
 
         return $this->render('@SystemInformationBundle/dependencies.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),
             'dependencies' => $dependencies,
             'composerFilePath' => $this->getParameter('kernel.project_dir') . '/composer.json',
             'search' => $search,
-            'showOnlyUpdatable' => $showOnlyUpdatable
+            'showOnlyUpdatable' => $showOnlyUpdatable,
+            'showOnlyRequired' => $showOnlyRequired
         ]);
     }
 

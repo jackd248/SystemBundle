@@ -78,8 +78,10 @@ dashboard:
         The composer file is located at <code>composerFilePath</code>.
       </p>
     filter:
+      force: Force update
       search: Search
-      updatable: Show all packages which needs an update
+      updatable: Outdated packages
+      required: Required packages
       submit: Submit
       reset: Reset
     list:
@@ -98,6 +100,7 @@ viewer:
   filter:
     limit: Limit
     level: Level
+    channel: Channel
     all: ALL
     submit: Submit
     reset: Reset

@@ -7,6 +7,10 @@
     <div class="panel-body">
         {{ 'dashboard.dependencies.description'|trans({'composerFilePath': composerFilePath}, 'SystemInformationBundle')|raw }}
         <form id="dependency-filter-form" class="mb-15 form-item">
+            <div class="item form-item m-10">
+                <a href="{{ path('kmi_system_information_dependencies', {'force': 1}) }}"
+                   class="btn">{{ 'dashboard.dependencies.filter.force'|trans({}, 'SystemInformationBundle') }}</a>
+            </div>
             <div class="item m-10 system-results">
                 <strong>{{ dependencies|length|number_format(0, ',', '.') }}</strong> {{ 'dashboard.dependencies.list.results'|trans({}, 'SystemInformationBundle') }}
             </div>
@@ -22,6 +26,12 @@
                        class="mr-5">{{ 'dashboard.dependencies.filter.updatable'|trans({}, 'SystemInformationBundle') }}</label>
                 <input type="checkbox" name="updatable" id="dependency-filter-form-updatable" class="mw-200" value="1"
                         {{ showOnlyUpdatable ? 'checked' : '' }}/>
+            </div>
+            <div class="item form-item m-10">
+                <label for="dependency-filter-form-required"
+                       class="mr-5">{{ 'dashboard.dependencies.filter.required'|trans({}, 'SystemInformationBundle') }}</label>
+                <input type="checkbox" name="required" id="dependency-filter-form-required" class="mw-200" value="1"
+                        {{ showOnlyRequired ? 'checked' : '' }}/>
             </div>
             <div class="item form-item m-10">
                 <button type="submit"
@@ -47,6 +57,17 @@
             </tr>
             {% if dependencies %}
                 {% for dependency in dependencies %}
+                    {% if dependency.status == 1 %}
+                        {% set class = 'bg-color-success--light' %}
+                    {% elseif dependency.status == 2 %}
+                        {% set class = 'bg-color-warning--light' %}
+                    {% elseif dependency.status == 3 %}
+                        {% set class = 'bg-color-warning' %}
+                    {% elseif dependency.status == 4 %}
+                        {% set class = 'bg-color-error' %}
+                    {% else %}
+                        {% set class = '' %}
+                    {% endif %}
                     <tr>
                         <td>
                             {% if dependency.homepage is defined and dependency.homepage is not empty %}
@@ -58,11 +79,11 @@
                             {% endif %}
                         </td>
                         <td style="white-space: nowrap">
-                        <span class="pill">
+                        <span class="pill {{ class }}" data-toggle="tooltip" title="{{ dependency.requiredVersion is defined ? 'Required version: ' ~ dependency.requiredVersion : '' }}">
                             {{ dependency.version }}
                         </span>
                             {% if dependency.latest != dependency.version %}
-                                <span class="pill bg-color-warning">
+                                <span class="pill {{ class }}">
                                 {{ dependency.latest }}
                             </span>
                             {% endif %}

@@ -197,15 +197,11 @@
 /*
  * Layout
  */
-.sonata-ba-content {
-    margin-top: -25px;
-}
-
-a {
-    color: var(--primary);
-}
-a:hover {
+.sib-content a {
     color: var(--primary-dark);
+}
+.sib-content a:hover {
+    color: var(--primary);
 }
 
 .system-box {
@@ -535,7 +531,7 @@ a:hover {
     margin: 0.125rem 0 0;
     text-align: left;
     list-style: none;
-    font-size: 13px;
+    font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
 }

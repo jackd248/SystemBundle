@@ -10,6 +10,7 @@ class SystemInformationBundle extends Bundle
     const BUNDLE_CONFIG_NAME = 'kmi_system';
     const CACHE_KEY = 'SystemInformationBundle';
     const CACHE_LIFETIME = 300;
+    const CACHE_LIFETIME_DEPENDENCIES = 86400;
 
     /**
      * @inheritdoc

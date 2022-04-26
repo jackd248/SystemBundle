@@ -32,6 +32,15 @@
                     </select>
                 </div>
                 <div class="item form-item m-10">
+                    <label for="log-filter-form-channel" class="mr-5">{{ 'viewer.filter.channel'|trans({}, 'SystemInformationBundle') }}</label>
+                    <select name="channel" id="log-filter-form-channel" class="mw-200">
+                        <option value="">{{ 'viewer.filter.all'|trans({}, 'SystemInformationBundle') }}</option>
+                        {% for channel in channels %}
+                            <option value="{{ channel }}" {{ app.request.get('channel') == channel ? 'selected' : '' }}>{{ channel }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="item form-item m-10">
                     <button type="submit" class="btn">{{ 'viewer.filter.submit'|trans({}, 'SystemInformationBundle') }}</button>
                     <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">{{ 'viewer.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
                 </div>

@@ -13,6 +13,7 @@ class SystemInformationBundleExtension extends Extension
 
     /**
      * Load the configuration and inject its values
+     * https://symfony.com/doc/current/bundles/configuration.html
      *
      * @param array $configs
      * @param ContainerBuilder $container

@@ -37,6 +37,7 @@ class LogService
         'EMERGENCY'
     ];
 
+    // @ToDo: make this configurable
     const PERIOD = '-1 day';
     const DATE_FORMAT = 'd.m.Y H:i:s';
     const MAX_FILE_SIZE = 20000000; // 20MB
@@ -149,9 +150,10 @@ class LogService
      * @param int $limit
      * @param int $page
      * @param null $level
+     * @param null $channel
      * @return array
      */
-    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null): array
+    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null): array
     {
         $offset = ($page - 1) * $limit;
 
@@ -159,6 +161,12 @@ class LogService
         if ($level) {
             $logs = array_filter($logs, function ($log) use ($level) {
                 return array_search($log['level'], self::LOG_LEVEL) >= array_search($level, self::LOG_LEVEL);
+            });
+        }
+
+        if ($channel) {
+            $logs = array_filter($logs, function ($log) use ($channel) {
+                return $log['channel'] === $channel;
             });
         }
         $resultCount = count($logs);
@@ -194,6 +202,21 @@ class LogService
             }
             return $countWarningsAndErrorsInLogs;
         });
+    }
+
+
+    /**
+     * @param $logs
+     * @return array
+     */
+    public function getLogChannels($logs): array
+    {
+        $channels = [];
+        dump($logs);
+        foreach ($logs['result'] as $log) {
+            $channels[] = $log['channel'];
+        }
+        return array_unique($channels);
     }
 
     /**
