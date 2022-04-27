@@ -2,18 +2,13 @@
 
 namespace Kmi\SystemInformationBundle\Service;
 
-use Composer\Semver\Semver;
-use Kmi\SystemInformationBundle\SystemInformationBundle;
-use RuntimeException;
+use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  *
@@ -31,18 +26,34 @@ class MailService
     protected CacheInterface $cachePool;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\InformationService
+     */
+    private InformationService $informationService;
+
+
+    /**
+     * @var \Symfony\Component\HttpKernel\Config\FileLocator
+     */
+    private FileLocator $fileLocator;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
+     * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      */
-    public function __construct(Container $container, CacheInterface $cachePool)
+    public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, FileLocator $fileLocator)
     {
         $this->container = $container;
         $this->cachePool = $cachePool;
+        $this->informationService = $informationService;
+        $this->fileLocator = $fileLocator;
     }
 
     /**
      * @param string $receiver
      * @return int
+     * @throws \Exception
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function sendTestMail(string $receiver): int
     {
@@ -52,10 +63,26 @@ class MailService
             $transport = (new Swift_SmtpTransport($mailerConfiguration['host'], $mailerConfiguration['port']));
             $mailer = new Swift_Mailer($transport);
 
-            $message = (new Swift_Message('Wonderful Subject'))
-                ->setFrom(['test@mail.com' => 'SystemInformationBundle'])
-                ->setTo([$receiver])
-                ->setBody('Testmessage')
+            $projectName = 'DWI DB';
+            $path = 'https://test.de';
+            $sender = 'test@mail.com';
+
+            $message = (new Swift_Message("[$projectName] SystemInformationBundle"))
+                ->setFrom([$sender => 'SystemInformationBundle'])
+                ->setTo([$receiver]);
+            $message
+                ->setBody(
+                    $this->container->get('twig')->render(
+                        '@SystemInformationBundle/mail/status.html.twig',
+                        array(
+                            'teaser' => $this->informationService->getSystemInformation(true),
+                            'project' => $projectName,
+                            'path' => $path,
+                            'logo' => $message->embed(Swift_Image::fromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg')))
+                        )
+                    ),
+                    'text/html'
+                )
             ;
             return $mailer->send($message);
         }

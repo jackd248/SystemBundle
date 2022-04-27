@@ -263,6 +263,7 @@ class DependencyService
                     $state = self::STATE_UP_TO_DATE;
                 }
             } catch (\UnexpectedValueException $e) {
+            } catch (\Symfony\Component\ErrorHandler\Error\ClassNotFoundError $e) {
 
             }
         }

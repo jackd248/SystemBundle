@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -240,7 +241,7 @@ class SystemController extends AbstractController
             $mailResult = $this->mailService->sendTestMail($receiver);
 
             if ($mailResult) {
-                $this->addFlash('success', 'Mail sent');
+                $this->addFlash('success', "Mail successfully sent to $receiver");
             }
         }
 

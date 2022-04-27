@@ -96,11 +96,11 @@ dashboard:
     heading: Mail Service
     description: |
       <p>
-          Here you can find the mailer configuration.
+          Here you can find the specific mailer configuration for the application.
       </p>
     test: |
       <p>
-          Test the e-mail configuration with a custom receiver mail address.
+          Test the e-mail configuration with a custom receiver mail address by sending the status mail.
       </p>
     form:
       submit: Submit

@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Locale;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -78,7 +79,8 @@ class InformationService {
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-monitor',
-                'class' => 'color-error'
+                'class' => 'color-error',
+                'route' => $this->container->get('router')->generate('kmi_system_information_monitoring', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
@@ -87,7 +89,8 @@ class InformationService {
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-info',
-                'class' => 'color-error'
+                'class' => 'color-error',
+                'route' => $this->container->get('router')->generate('kmi_system_information_log', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
@@ -97,7 +100,8 @@ class InformationService {
                 'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-code',
-                'class' => 'color-warning'
+                'class' => 'color-warning',
+                'route' => $this->container->get('router')->generate('kmi_system_information_dependencies', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
@@ -107,7 +111,8 @@ class InformationService {
                 'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-code',
-                'class' => 'color-error'
+                'class' => 'color-error',
+                'route' => $this->container->get('router')->generate('kmi_system_information_dependencies', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
@@ -117,7 +122,8 @@ class InformationService {
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'color-error'
+                    'class' => 'color-error',
+                    'route' => $this->container->get('router')->generate('kmi_system_information_requirements', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 ];
             }
             if ($recommendationCount = $this->symfonyService->getRequirementsCount()['recommendations']) {
@@ -125,7 +131,8 @@ class InformationService {
                     'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
                     'icon' => 'icon-package',
-                    'class' => 'color-warning'
+                    'class' => 'color-warning',
+                    'route' => $this->container->get('router')->generate('kmi_system_information_requirements', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 ];
             }
         }
@@ -133,25 +140,29 @@ class InformationService {
         $information['appVersion'] = [
             'value' => $this->getAppVersion()['value'],
             'description' => $this->translator->trans('system.items.app_version.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-command'
+            'icon' => 'icon-command',
+            'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         $information['phpVersion'] = [
             'value' => $this->getPhpVersion()['value'],
             'description' => $this->translator->trans('system.items.php.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-php'
+            'icon' => 'icon-php',
+            'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
         $information['symfonyVersion'] = [
             'value' => $this->getSymfonyVersion()['value'],
             'description' => $this->translator->trans('system.items.symfony.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-symfony'
+            'icon' => 'icon-symfony',
+            'route' => $this->container->get('router')->generate('kmi_system_information_information')
         ];
 
         if ($appEnv = $this->getAppEnvironment()['value']) {
             $information['appEnvironment'] = [
                 'value' => $appEnv,
                 'description' => $this->translator->trans('system.items.app_env.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-package'
+                'icon' => 'icon-package',
+                'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
@@ -159,14 +170,16 @@ class InformationService {
             $information['symfonyEnvironment'] = [
                 'value' => $symfonyEnv,
                 'description' => $this->translator->trans('system.items.symfony_env.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-git-branch'
+                'icon' => 'icon-git-branch',
+                'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
 
         $information['os'] = [
             'value' => $this->getServerOperating()['value'],
             'description' => $this->translator->trans('system.items.os.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-hard-drive'
+            'icon' => 'icon-hard-drive',
+            'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         return array_splice($information, 0, 6);
