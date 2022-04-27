@@ -50,6 +50,8 @@ class InformationService {
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
+     * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
+     * @param \Kmi\SystemInformationBundle\Service\MailService $mailService
      */
     public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService, SymfonyService $symfonyService, DependencyService $dependencyService)
     {
@@ -220,6 +222,12 @@ class InformationService {
             $this->translator->trans('system.information.symfony.label', [], 'SystemInformationBundle') => [
                 $this->getSymfonyVersion(),
                 $this->getSymfonyEnvironment()
+            ],
+            $this->translator->trans('system.information.mail.label', [], 'SystemInformationBundle') => [
+                $this->getMailService(),
+                $this->getMailScheme(),
+                $this->getMailHost(),
+                $this->getMailPort()
             ],
             $this->translator->trans('system.information.database.label', [], 'SystemInformationBundle') => [
                 $this->getDatabasePlatform(),
@@ -444,6 +452,46 @@ class InformationService {
 
     /**
      * @return array
+     */
+    public function getMailScheme(): array {
+        return [
+            'label' => $this->translator->trans('system.information.mail.scheme', [], 'SystemInformationBundle'),
+            'value' => $this->getMailConfiguration()['scheme']
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMailHost(): array {
+        return [
+            'label' => $this->translator->trans('system.information.mail.host', [], 'SystemInformationBundle'),
+            'value' => $this->getMailConfiguration()['host']
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMailPort(): array {
+        return [
+            'label' => $this->translator->trans('system.information.mail.port', [], 'SystemInformationBundle'),
+            'value' => $this->getMailConfiguration()['port']
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMailService(): array {
+        return [
+            'label' => $this->translator->trans('system.information.mail.service', [], 'SystemInformationBundle'),
+            'value' => $this->getMailConfiguration()['service']
+        ];
+    }
+
+    /**
+     * @return array
      * @throws \Doctrine\DBAL\Exception
      */
     public function getDatabasePlatform(): array {
@@ -523,7 +571,24 @@ class InformationService {
             'value' => $entityManager->getConnection()->getParams()['port']
         ];
     }
-
+    
+    /**
+     * @return array|false|int|string|null
+     */
+    public function getMailConfiguration() {
+        $configuration = null;
+        // Swiftmailer
+        if (array_key_exists('MAILER_URL', $_ENV) && class_exists(\Swift_Mailer::class)) {
+            $configuration = parse_url($_ENV['MAILER_URL']);
+            $configuration['service'] = 'SwiftMailer';
+        }
+        // Symfony Mailer
+        if (array_key_exists('MAILER_DSN', $_ENV) && class_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
+            $configuration = parse_url($_ENV['MAILER_DSN']);
+            $configuration['service'] = 'SymfonyMailer';
+        }
+        return $configuration;
+    }
 
 
     /**

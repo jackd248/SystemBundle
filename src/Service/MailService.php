@@ -40,6 +40,7 @@ class MailService
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
+     * @param \Symfony\Component\HttpKernel\Config\FileLocator $fileLocator
      */
     public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, FileLocator $fileLocator)
     {
@@ -55,16 +56,16 @@ class MailService
      * @throws \Exception
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function sendTestMail(string $receiver): int
+    public function sendStatusMail(string $receiver): int
     {
         // ToDo: Also use symfony mailer
         if (class_exists(\Swift_Mailer::class)) {
-            $mailerConfiguration = self::getMailConfiguration();
+            $mailerConfiguration = $this->informationService->getMailConfiguration();
             $transport = (new Swift_SmtpTransport($mailerConfiguration['host'], $mailerConfiguration['port']));
             $mailer = new Swift_Mailer($transport);
 
+            // ToDo: Make this configurable
             $projectName = 'DWI DB';
-            $path = 'https://test.de';
             $sender = 'test@mail.com';
 
             $message = (new Swift_Message("[$projectName] SystemInformationBundle"))
@@ -77,7 +78,6 @@ class MailService
                         array(
                             'teaser' => $this->informationService->getSystemInformation(true),
                             'project' => $projectName,
-                            'path' => $path,
                             'logo' => $message->embed(Swift_Image::fromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg')))
                         )
                     ),
@@ -87,24 +87,6 @@ class MailService
             return $mailer->send($message);
         }
         return 0;
-    }
-
-    /**
-     * @return array|false|int|string|null
-     */
-    public function getMailConfiguration() {
-        $configuration = null;
-        // Swiftmailer
-        if (array_key_exists('MAILER_URL', $_ENV) && class_exists(\Swift_Mailer::class)) {
-            $configuration = parse_url($_ENV['MAILER_URL']);
-            $configuration['service'] = 'SwiftMailer';
-        }
-        // Symfony Mailer
-        if (array_key_exists('MAILER_DSN', $_ENV) && class_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
-            $configuration = parse_url($_ENV['MAILER_DSN']);
-            $configuration['service'] = 'SymfonyMailer';
-        }
-        return $configuration;
     }
 
 }

@@ -258,14 +258,14 @@ class DependencyService
 
         if ($state != self::STATE_UP_TO_DATE && $required != null) {
 
-            try {
-                if (!Semver::satisfies($latest, $required)) {
-                    $state = self::STATE_UP_TO_DATE;
-                }
-            } catch (\UnexpectedValueException $e) {
-            } catch (\Symfony\Component\ErrorHandler\Error\ClassNotFoundError $e) {
-
-            }
+//            try {
+//                if (!Semver::satisfies($latest, $required)) {
+//                    $state = self::STATE_UP_TO_DATE;
+//                }
+//            } catch (\UnexpectedValueException $e) {
+//            } catch (\Symfony\Component\ErrorHandler\Error\ClassNotFoundError $e) {
+//
+//            }
         }
 
         return $state;

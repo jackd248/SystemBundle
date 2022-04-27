@@ -144,8 +144,7 @@
                                         <div style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;">
                                             <div style="background-color: #A0AECD; width: 100%; display: block; height: 40px;"></div>
                                             <h2 style="font-size: 6rem;margin: 0;">{{ project }}</h2>
-                                            <p>Hej there,</p>
-                                            <p>this is an automatically generated status mail for the application <strong>{{ project }}</strong> sending from <a href="{{ url('sonata_admin_dashboard') }}">{{ url('sonata_admin_dashboard') }}</a>.</p>
+                                            <p>This is an automatically generated status report for the application <strong>{{ project }}</strong> sending from <a href="{{ url('sonata_admin_dashboard') }}">{{ url('sonata_admin_dashboard') }}</a>.</p>
                                             {% include '@SystemInformationBundle/partials/mail_teaser.html.twig' with { teaser } %}
                                             <p>This is a short application information. For advanced information please head to the <a href="{{ url('kmi_system_information_monitoring') }}">system overview</a>.</p>
                                             <p>Have a nice day</p>

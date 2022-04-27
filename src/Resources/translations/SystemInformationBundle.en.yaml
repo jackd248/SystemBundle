@@ -103,7 +103,7 @@ dashboard:
           Test the e-mail configuration with a custom receiver mail address by sending the status mail.
       </p>
     form:
-      submit: Submit
+      submit: Send
       receiver: Receiver
     
 
@@ -180,6 +180,12 @@ system:
       label: Symfony
       version: Symfony version
       environment: Symfony environment
+    mail:
+      label: Mail
+      scheme: Scheme
+      host: Host
+      port: Port
+      service: Service
     database:
       label: Database
       platform: Database platform

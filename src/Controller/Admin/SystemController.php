@@ -238,7 +238,7 @@ class SystemController extends AbstractController
     {
         if ($request->query->has('receiver')) {
             $receiver = strval($request->query->get('receiver'));
-            $mailResult = $this->mailService->sendTestMail($receiver);
+            $mailResult = $this->mailService->sendStatusMail($receiver);
 
             if ($mailResult) {
                 $this->addFlash('success', "Mail successfully sent to $receiver");
@@ -247,7 +247,7 @@ class SystemController extends AbstractController
 
         return $this->render('@SystemInformationBundle/mail.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),
-            'config' => $this->mailService->getMailConfiguration()
+            'config' => $this->informationService->getMailConfiguration()
         ]);
     }
 
