@@ -3,8 +3,17 @@
  */
 :root {
     --primary: #A0AECD;
-    --primary-dark: #324060;
+    --primary-dark: #5A6887;
     --white: #ffffff;
+    --green: #81C784;
+    --green-light: #E8F5E9;
+    --green-dark: #3B813E;
+    --orange: #E3A550;
+    --orange-light: #FFF8E1;
+    --orange-dark: #B1731E;
+    --red: #D65B32;
+    --red-light: #FBE9E7;
+    --red-dark: #901500;
 }
 
 /**
@@ -190,7 +199,7 @@
     line-height: 40px;
     text-align: center;
     border-radius: 20px;
-    color: #fff;
+    color: var(--white);
     font-size: 20px;
 }
 
@@ -284,37 +293,37 @@
 }
 
 .color-success {
-    color: #81C784 !important;
+    color: var(--green) !important;
 }
 .color-warning {
-    color: #E3A550 !important;
+    color: var(--orange) !important;
 }
 .color-error {
-    color: #D65B32 !important;
+    color: var(--red) !important;
 }
 .bg-color-success {
-    background-color: #81C784 !important;
+    background-color: var(--green) !important;
 }
 .bg-color-warning {
-    background-color: #E3A550 !important;
+    background-color: var(--orange) !important;
 }
 .bg-color-error {
-    background-color: #D65B32 !important;
+    background-color: var(--red) !important;
 }
 .bg-color-success--light {
-    background-color: #E8F5E9 !important;
+    background-color: var(--green-light) !important;
 }
 .bg-color-warning--light {
-    background-color: #FFF8E1 !important;
+    background-color: var(--orange-light) !important;
 }
 .bg-color-error--light {
-    background-color: #FBE9E7 !important;
+    background-color: var(--red-light) !important;
 }
 .icon-hint:after {
     content: '';
     display: block;
     position: absolute;
-    background: #D65B32;
+    background: var(--red);
     width: 6px;
     bottom: 17px;
     height: 6px;
@@ -329,22 +338,22 @@
     color: #aaa;
     margin: 0 5px;
     font-size: 12px;
-    background: #fff;
+    background: var(--white);
     text-align: center;
     min-width: 25px;
 }
 .pill.bg-color-warning {
-    border-color: #E3A550;
-    color: #fff;
+    border-color: var(--orange);
+    color: var(--white);
 }
 .pill.bg-color-error {
-    border-color: #D65B32;
-    color: #fff;
+    border-color: var(--red);
+    color: var(--white);
 }
 .collapse-btn {
     width: 100%;
     text-align: left;
-    border: 1px solid#eee;
+    border: 1px solid #eee;
     padding: 10px;
     display: block;
     border-radius: 5px;
@@ -381,19 +390,19 @@
     border-top: 1px solid #dee2e6;
 }
 .table-success, .table-success>td, .table-success>th {
-    background-color: #c3e6cb;
+    background-color: var(--green-light);
 }
 .table-warning, .table-warning>td, .table-warning>th {
-    background-color: #ffeeba;
+    background-color: var(--orange-light);
 }
 .table-danger, .table-danger>td, .table-danger>th {
-    background-color: #f5c6cb;
+    background-color: var(--red-light);
 }
 .table-info, .table-info>td, .table-info>th {
     background-color: #bee5eb;
 }
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
-    border: 1px solid #fff;
+    border: 1px solid var(--white);
 }
 
 /**
@@ -498,7 +507,7 @@
     list-style: none;
 }
 .system-nav-link {
-    background: white;
+    background: var(--white);
     padding: 10px;
     margin-right: 5px;
     border: 1px solid #ddd;
@@ -564,7 +573,7 @@
 .spinner > div {
     width: 18px;
     height: 18px;
-    background-color: #E3A550;
+    background-color: var(--orange);
 
     border-radius: 100%;
     display: inline-block;

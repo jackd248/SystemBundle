@@ -91,6 +91,22 @@ dashboard:
       version: Installed Version / Latest Version
       updated: Updated
       description: Description
+  mail:
+    nav: Mail
+    heading: Mail Service
+    description: |
+      <p>
+          Here you can find the mailer configuration.
+      </p>
+    test: |
+      <p>
+          Test the e-mail configuration with a custom receiver mail address.
+      </p>
+    form:
+      submit: Submit
+      receiver: Receiver
+    
+
 viewer:
   general:
     heading: Log viewer
@@ -119,6 +135,9 @@ system:
     requirements:
       value: notes
       description: Requirements
+    dependency:
+      value: updates
+      description: Dependencies
     app_version:
       description: App version
     php:

@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{ 'dashboard.mail.heading'|trans({}, 'SystemInformationBundle') }}
+        </h3>
+    </div>
+    <div class="panel-body">
+        {{ 'dashboard.mail.description'|trans({}, 'SystemInformationBundle')|raw }}
+
+
+        {{ 'dashboard.mail.test'|trans({}, 'SystemInformationBundle')|raw }}
+        <form id="mail-form" class="mb-15 form-item">
+            <div class="item form-item m-10">
+                <label for="mail-filter-form-search" class="mr-5">
+                    {{ 'dashboard.mail.form.receiver'|trans({}, 'SystemInformationBundle') }}
+                </label>
+                <input type="text" id="mail-form-receiver" class="mw-200 form-control" value="" name="receiver"/>
+            </div>
+            <div class="item form-item m-10">
+                <button type="submit" class="btn">{{ 'dashboard.mail.form.submit'|trans({}, 'SystemInformationBundle') }}</button>
+            </div>
+        </form>
+
+        <table class="table table-condensed">
+            {% for key, value in config %}
+                <tr>
+                    <td>{{ key|capitalize }}</td>
+                    <td style="font-family: monospace, monospace;">{{ value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

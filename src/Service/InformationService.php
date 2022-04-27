@@ -39,19 +39,25 @@ class InformationService {
     private SymfonyService $symfonyService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\DependencyService
+     */
+    private DependencyService $dependencyService;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      */
-    public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService, SymfonyService $symfonyService)
+    public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService, SymfonyService $symfonyService, DependencyService $dependencyService)
     {
         $this->container = $container;
         $this->translator = $translator;
         $this->checkService = $checkService;
         $this->logService = $logService;
         $this->symfonyService = $symfonyService;
+        $this->dependencyService = $dependencyService;
     }
 
     /**
@@ -64,6 +70,8 @@ class InformationService {
         $information = [];
 
         $checks = $this->checkService->getLiipMonitorChecks($forceUpdate)->getResults();
+        $dependencies = $this->dependencyService->getDependencyInformation();
+        $dependencyStatus = $this->dependencyService->getDependencyApplicationStatus($dependencies);
 
         if ($this->checkService->getMonitorCheckStatus($checks)) {
             $information['checks'] = [
@@ -79,6 +87,26 @@ class InformationService {
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
                 'icon' => 'icon-info',
+                'class' => 'color-error'
+            ];
+        }
+
+        if ($dependencyStatus['status'] !== DependencyService::STATE_UP_TO_DATE && $dependencyStatus['status'] !== DependencyService::STATE_INSECURE) {
+            $count = count($dependencyStatus['distribution'][DependencyService::STATE_PINNED_OUT_OF_DATE]) + count($dependencyStatus['distribution'][DependencyService::STATE_OUT_OF_DATE]);
+            $information['dependency'] = [
+                'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
+                'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
+                'icon' => 'icon-code',
+                'class' => 'color-warning'
+            ];
+        }
+
+        if ($dependencyStatus['status'] == DependencyService::STATE_INSECURE) {
+            $count = count($dependencyStatus['distribution'][DependencyService::STATE_INSECURE]);
+            $information['dependency'] = [
+                'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
+                'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
+                'icon' => 'icon-code',
                 'class' => 'color-error'
             ];
         }

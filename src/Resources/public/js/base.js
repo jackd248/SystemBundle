@@ -15,22 +15,22 @@ $(document).ready(function () {
             e.stopPropagation();
         });
 
-        $('#system-indicator-extension--clear-cache').off('click').click(function (event) {
-            event.preventDefault();
-
-            let $this = $(this);
-            let ccurl = $this.attr('href');
-            let $spinner = $('#system-indicator-extension--clear-cache--spinner');
-
-            $this.removeAttr('href');
-            $spinner.css('display', 'inline');
-            $.get(ccurl, function (data, status) {
-                console.log('[SystemInformationBundle] Clear cache command result: ' + data);
-            })
-                .always(function () {
-                    $spinner.hide();
-                    $this.setAttribute('href', ccurl);
-                });
-        });
+        // $('#system-indicator-extension--clear-cache').off('click').click(function (event) {
+        //     event.preventDefault();
+        //
+        //     let $this = $(this);
+        //     let ccurl = $this.attr('href');
+        //     let $spinner = $('#system-indicator-extension--clear-cache--spinner');
+        //
+        //     $this.removeAttr('href');
+        //     $spinner.css('display', 'inline');
+        //     $.get(ccurl, function (data, status) {
+        //         console.log('[SystemInformationBundle] Clear cache command result: ' + data);
+        //     })
+        //         .always(function () {
+        //             $spinner.hide();
+        //             $this.setAttribute('href', ccurl);
+        //         });
+        // });
     });
 });

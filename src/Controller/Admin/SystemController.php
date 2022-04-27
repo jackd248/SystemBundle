@@ -6,6 +6,7 @@ use Kmi\SystemInformationBundle\Service\CheckService;
 use Kmi\SystemInformationBundle\Service\DependencyService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
+use Kmi\SystemInformationBundle\Service\MailService;
 use Kmi\SystemInformationBundle\Service\SymfonyService;
 use Kmi\SystemInformationBundle\Service\BundleService;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -54,6 +55,11 @@ class SystemController extends AbstractController
     private DependencyService $dependencyService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\MailService
+     */
+    private MailService $mailService;
+
+    /**
      * @var KernelInterface
      */
     private KernelInterface $kernel;
@@ -65,9 +71,10 @@ class SystemController extends AbstractController
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      * @param \Kmi\SystemInformationBundle\Service\BundleService $bundleService
      * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
+     * @param \Kmi\SystemInformationBundle\Service\MailService $mailService
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, DependencyService $dependencyService, KernelInterface $kernel)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, DependencyService $dependencyService, MailService $mailService, KernelInterface $kernel)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
@@ -75,6 +82,7 @@ class SystemController extends AbstractController
         $this->symfonyService = $symfonyService;
         $this->bundleService = $bundleService;
         $this->dependencyService = $dependencyService;
+        $this->mailService = $mailService;
         $this->kernel = $kernel;
     }
 
@@ -212,10 +220,33 @@ class SystemController extends AbstractController
         return $this->render('@SystemInformationBundle/dependencies.html.twig', [
             'teaser' => $this->informationService->getSystemInformation(true),
             'dependencies' => $dependencies,
+            'status' => $this->dependencyService->getDependencyApplicationStatus($dependencies),
             'composerFilePath' => $this->getParameter('kernel.project_dir') . '/composer.json',
             'search' => $search,
             'showOnlyUpdatable' => $showOnlyUpdatable,
             'showOnlyRequired' => $showOnlyRequired
+        ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function mail(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        if ($request->query->has('receiver')) {
+            $receiver = strval($request->query->get('receiver'));
+            $mailResult = $this->mailService->sendTestMail($receiver);
+
+            if ($mailResult) {
+                $this->addFlash('success', 'Mail sent');
+            }
+        }
+
+        return $this->render('@SystemInformationBundle/mail.html.twig', [
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'config' => $this->mailService->getMailConfiguration()
         ]);
     }
 
@@ -255,10 +286,10 @@ class SystemController extends AbstractController
     }
 
     /**
-     * @return JsonResponse
+     * @return JsonResponse|RedirectResponse
      * @throws \Exception
      */
-    public function clearCache(): JsonResponse
+    public function clearCache(Request $request)
     {
         $kernel = $this->kernel;
         $application = new Application($kernel);
@@ -271,7 +302,15 @@ class SystemController extends AbstractController
         // Use the NullOutput class instead of BufferedOutput.
         $output = new NullOutput();
 
-        return new JsonResponse($application->run($input, $output));
+        $result = $application->run($input, $output);
+
+        $this->addFlash('success', 'Cache cleared');
+
+        if ($request->query->has('redirect')) {
+            return $this->redirectToRoute($request->query->get('redirect'));
+        }
+
+        return new JsonResponse($result);
     }
 
     /**

@@ -114,11 +114,48 @@ class DependencyService
         return $filteredDependencies;
     }
 
+
+    /**
+     * @param array $dependencies
+     * @return array
+     */
+    public function getDependencyApplicationStatus(array $dependencies): array
+    {
+        $result = [
+            'status' => self::STATE_UP_TO_DATE,
+            'distribution' => [
+                self::STATE_UP_TO_DATE => [],
+                self::STATE_PINNED_OUT_OF_DATE => [],
+                self::STATE_OUT_OF_DATE => [],
+                self::STATE_INSECURE => []
+            ]
+        ];
+
+        foreach ($dependencies as $dependency) {
+            $result['distribution'][$dependency['status']][] = $dependency;
+        }
+
+        if (count($result['distribution'][self::STATE_PINNED_OUT_OF_DATE]) > 0) {
+            $result['status'] = self::STATE_PINNED_OUT_OF_DATE;
+        }
+
+        if (count($result['distribution'][self::STATE_OUT_OF_DATE]) > 0) {
+            $result['status'] = self::STATE_OUT_OF_DATE;
+        }
+
+        if (count($result['distribution'][self::STATE_INSECURE]) > 0) {
+            $result['status'] = self::STATE_INSECURE;
+        }
+
+        return $result;
+    }
+
     /**
      * @param string $filePath
      * @return mixed
      */
-    protected function getComposerFileContent(string $filePath) {
+    protected function getComposerFileContent(string $filePath)
+    {
         if (!is_file($filePath)) {
             throw new RuntimeException("File not found at [$filePath]");
         }
