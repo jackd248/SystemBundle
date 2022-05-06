@@ -1,6 +1,6 @@
 dashboard:
   general:
-    heading: SystemInformationBundle
+    heading: System<strong>Information</strong>Bundle
   monitoring:
     nav: Monitoring
     heading: Monitoring checks
@@ -33,10 +33,10 @@ dashboard:
       collapse: See all recommendations
   log:
     nav: Logs
-    heading: Applications logs
+    heading: Application logs
     description: |
       <p>
-          The log viewer is reading the application logs. The log directory is located at <code>logDir</code>.
+          The log viewer is reading the application logs. <br/> The log directory is located at <code>logDir</code>.
       </p>
     list:
       name: Log filename
@@ -100,7 +100,7 @@ dashboard:
       </p>
     test: |
       <p>
-          Test the e-mail configuration with a custom receiver mail address by sending the status mail.
+          Test the e-mail configuration with a custom receiver mail address by sending a status mail.
       </p>
     form:
       submit: Send
@@ -109,7 +109,7 @@ dashboard:
 
 viewer:
   general:
-    heading: Log viewer
+    heading: Application log viewer
   detail:
     heading: Log detail
     back: Back to log overview

@@ -5,6 +5,8 @@ namespace Kmi\SystemInformationBundle\Service;
 use Composer\Semver\Semver;
 use Kmi\SystemInformationBundle\SystemInformationBundle;
 use RuntimeException;
+use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\AdminBundle\SonataConfiguration;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -43,15 +45,22 @@ class DependencyService
     private TranslatorInterface $translator;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\ConfigurationLoader
+     */
+    private ConfigurationLoader $configurationLoader;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
+     * @param \Kmi\SystemInformationBundle\Service\ConfigurationLoader $configurationLoader
      */
-    public function __construct(Container $container, TranslatorInterface $translator, CacheInterface $cachePool)
+    public function __construct(Container $container, TranslatorInterface $translator, CacheInterface $cachePool, ConfigurationLoader $configurationLoader)
     {
         $this->container = $container;
         $this->translator = $translator;
         $this->cachePool = $cachePool;
+        $this->configurationLoader = $configurationLoader;
     }
 
     /**
@@ -127,12 +136,16 @@ class DependencyService
                 self::STATE_UP_TO_DATE => [],
                 self::STATE_PINNED_OUT_OF_DATE => [],
                 self::STATE_OUT_OF_DATE => [],
-                self::STATE_INSECURE => []
+                self::STATE_INSECURE => [],
+                'required' => []
             ]
         ];
 
         foreach ($dependencies as $dependency) {
             $result['distribution'][$dependency['status']][] = $dependency;
+            if (array_key_exists('requiredVersion', $dependency)) {
+                $result['distribution']['required'][] = $dependency;
+            }
         }
 
         if (count($result['distribution'][self::STATE_PINNED_OUT_OF_DATE]) > 0) {
@@ -148,6 +161,13 @@ class DependencyService
         }
 
         return $result;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSystemInformationBundleInfo() {
+        return $this->getComposerFileContent(dirname(__FILE__) . '/../../composer.json');
     }
 
     /**

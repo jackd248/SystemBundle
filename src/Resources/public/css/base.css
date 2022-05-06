@@ -5,6 +5,7 @@
     --primary: #A0AECD;
     --primary-dark: #5A6887;
     --white: #ffffff;
+    --black: #000000;
     --green: #81C784;
     --green-light: #E8F5E9;
     --green-dark: #3B813E;
@@ -208,11 +209,19 @@
  */
 .sib-content a {
     color: var(--primary-dark);
+    text-decoration: none;
+    border-bottom: 2px dotted var(--primary);
 }
-.sib-content a:hover {
+.sib-content a:hover:not(.select2-choice) {
     color: var(--primary);
+    border-bottom: 2px dotted var(--primary-dark);
 }
-
+.sib-content a.no-border {
+    border-bottom: 0;
+}
+.page-header h2 small {
+    font-size: 40%;
+}
 .system-box {
     display: flex;
     align-items: center;
@@ -224,6 +233,7 @@
     margin-bottom: 20px;
     box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
     color: white;
+    padding-bottom: 20px;
 }
 .system-box .inner {
     padding: 10px;
@@ -240,6 +250,26 @@
     z-index: 0;
     font-size: 90px;
     color: rgba(0,0,0,.15);
+}
+.system-box .small-box-footer {
+    text-align: center;
+    padding: 3px 0;
+    color: #fff;
+    color: hsla(0,0%,100%,.8);
+    display: block;
+    z-index: 10;
+    background: rgba(0,0,0,.1);
+    text-decoration: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-left: -5px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+.system-box .small-box-footer:hover {
+    color: #fff;
+    color: hsla(0,0%,100%,1);
 }
 
 .system-list {
@@ -290,6 +320,9 @@
 }
 .mw-200 {
     min-width: 200px;
+}
+.btn {
+    border-bottom: 0;
 }
 
 .color-success {
@@ -353,7 +386,7 @@
 .collapse-btn {
     width: 100%;
     text-align: left;
-    border: 1px solid #eee;
+    border: 1px solid #eee !important;
     padding: 10px;
     display: block;
     border-radius: 5px;
@@ -510,8 +543,8 @@
     background: var(--white);
     padding: 10px;
     margin-right: 5px;
-    border: 1px solid #ddd;
-    color: inherit;
+    border: 1px solid #ddd !important;
+    color: var(--black) !important;
 }
 .system-nav-link i {
     color: #aaa;
@@ -522,8 +555,8 @@
 .system-nav-link.active, .system-nav-link:hover{
     background: #f5f5f5;
     cursor: pointer;
-    color: inherit;
-    border-bottom: 0;
+    color: var(--black) !important;
+    border-bottom: 0 !important;
 }
 .system-nav-link.active i, .system-nav-link:hover i {
     color: var(--primary);

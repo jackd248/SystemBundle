@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SystemInformationBundle extends Bundle
 {
-    const BUNDLE_CONFIG_NAME = 'kmi_system';
+    const BUNDLE_CONFIG_NAME = 'system_information_bundle';
     const CACHE_KEY = 'SystemInformationBundle';
     const CACHE_LIFETIME = 300;
     const CACHE_LIFETIME_DEPENDENCIES = 86400;

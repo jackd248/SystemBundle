@@ -10,7 +10,16 @@
         {% include '@SystemInformationBundle/partials/information_teaser.html.twig' with { teaser } %}
 
         <div class="page-header">
-            <h2>{{ 'dashboard.general.heading'|trans({}, 'SystemInformationBundle') }}</h2>
+            <h2>
+                {{ 'dashboard.general.heading'|trans({}, 'SystemInformationBundle')|raw }}
+                <small>
+                    <a class="no-border" href="{{ bundleInfo.homepage }}">
+                        <i class="icon-help-circle"
+                           aria-hidden="true"></i>
+                    </a>
+                    v{{ bundleInfo.version }}
+                </small>
+            </h2>
         </div>
 
         {% include '@SystemInformationBundle/partials/navigation.html.twig' %}

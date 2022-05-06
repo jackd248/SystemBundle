@@ -16,7 +16,6 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -98,6 +97,7 @@ class SystemController extends AbstractController
         $status = $this->checkService->getMonitorCheckStatus($checks);
 
         return $this->render('@SystemInformationBundle/index.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'checks' => $checks,
             'status' => $status,
@@ -113,6 +113,7 @@ class SystemController extends AbstractController
         $logs = $this->logService->getLogs();
 
         return $this->render('@SystemInformationBundle/log.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'logs' => $logs,
             'logDir' => $this->getParameter('kernel.logs_dir')
@@ -155,6 +156,7 @@ class SystemController extends AbstractController
             'channels' => $this->logService->getLogChannels($logs),
             'id' => $id,
             'resultCount' => $logs['count'],
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true)
         ]);
     }
@@ -169,6 +171,7 @@ class SystemController extends AbstractController
         $requirements = $this->symfonyService->checkRequirements(true);
 
         return $this->render('@SystemInformationBundle/requirements.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'requirements' => $requirements,
         ]);
@@ -182,6 +185,7 @@ class SystemController extends AbstractController
     public function information(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('@SystemInformationBundle/information.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'infos' => $this->informationService->getFurtherSystemInformation()
         ]);
@@ -219,6 +223,7 @@ class SystemController extends AbstractController
         $dependencies = $this->dependencyService->filterDependencies($dependencies, $search, $showOnlyUpdatable, $showOnlyRequired);
 
         return $this->render('@SystemInformationBundle/dependencies.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'dependencies' => $dependencies,
             'status' => $this->dependencyService->getDependencyApplicationStatus($dependencies),
@@ -236,9 +241,10 @@ class SystemController extends AbstractController
      */
     public function mail(Request $request): \Symfony\Component\HttpFoundation\Response
     {
+        $teaser = $this->informationService->getSystemInformation(true);
         if ($request->query->has('receiver')) {
             $receiver = strval($request->query->get('receiver'));
-            $mailResult = $this->mailService->sendStatusMail($receiver);
+            $mailResult = $this->mailService->sendStatusMail([$receiver], $teaser);
 
             if ($mailResult) {
                 $this->addFlash('success', "Mail successfully sent to $receiver");
@@ -246,7 +252,8 @@ class SystemController extends AbstractController
         }
 
         return $this->render('@SystemInformationBundle/mail.html.twig', [
-            'teaser' => $this->informationService->getSystemInformation(true),
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
+            'teaser' => $teaser,
             'config' => $this->informationService->getMailConfiguration()
         ]);
     }
@@ -259,6 +266,7 @@ class SystemController extends AbstractController
     public function additional(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('@SystemInformationBundle/additional.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true)
         ]);
     }

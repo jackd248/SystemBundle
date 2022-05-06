@@ -3,6 +3,7 @@
   "description": "Simple sonata admin bundle for system information",
   "type": "symfony-bundle",
   "version": "1.2.3",
+  "homepage": "https://github.com/jackd248/SystemInformationBundle",
   "license": "MIT",
   "authors": [
     {

@@ -6,9 +6,10 @@ use Kmi\SystemInformationBundle\SystemInformationBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class SystemInformationBundleExtension extends Extension
+class SystemInformationBundleExtension extends ConfigurableExtension
 {
 
     /**
@@ -20,19 +21,26 @@ class SystemInformationBundleExtension extends Extension
      *
      * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function loadInternal(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-
-        $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(dirname(__DIR__) . '/Resources/config')
         );
         $loader->load('services.yaml');
 
-        $container->setParameter('kmi_system_information_bundle', $config);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+//        $container->setParameter(
+//            'acme_hello.my_service_type',
+//            $config
+//        );
+
+//        $definition = $container->getDefinition('kmi_system_information_bundle.configuration_loader');
+//        $definition->replaceArgument(0, $config);
+
+        $container->setParameter(SystemInformationBundle::BUNDLE_CONFIG_NAME, $config);
     }
 
     /**

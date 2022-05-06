@@ -60,3 +60,8 @@ services:
     class: Kmi\SystemInformationBundle\Twig\SystemIndicatorExtension
     tags:
       - { name: twig.extension }
+
+  kmi_system_information_bundle.configuration_loader:
+    class: Kmi\SystemInformationBundle\Service\ConfigurationLoader
+    arguments:
+      - ~

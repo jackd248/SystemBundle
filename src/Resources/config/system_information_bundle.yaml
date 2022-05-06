@@ -1,0 +1,19 @@
+system_information_bundle:
+
+  # Default cache lifetime for system checks
+  default_cache_lifetime: 300
+
+  # Default cache lifetime for dependency checks
+  dependency_cache_lifetime: 86400
+
+  # Period for log analysis
+  log_analyse_period:   '-1 day'
+
+  # Date format for application log
+  log_date_format:      'd.m.Y H:i:s'
+
+  # Default cache lifetime for dependency checks
+  log_max_file_size:    20000000
+
+  # Sender mail address
+  mail_sender:          ~

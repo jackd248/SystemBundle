@@ -212,7 +212,6 @@ class LogService
     public function getLogChannels($logs): array
     {
         $channels = [];
-        dump($logs);
         foreach ($logs['result'] as $log) {
             $channels[] = $log['channel'];
         }
