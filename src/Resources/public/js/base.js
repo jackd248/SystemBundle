@@ -4,6 +4,8 @@ $(document).ready(function () {
      */
     let $el = $('#system-indicator-extension');
     let url = $el.data('url');
+    let $spinner = $('#system-indicator-extension--clear-cache--spinner');
+
     $.get(url, function (data, status) {
         $el.html(data);
 
@@ -14,6 +16,8 @@ $(document).ready(function () {
         $el.click(function (e) {
             e.stopPropagation();
         });
+
+        $spinner.css('display', 'none');
 
         // $('#system-indicator-extension--clear-cache').off('click').click(function (event) {
         //     event.preventDefault();

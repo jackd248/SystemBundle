@@ -36,7 +36,10 @@ dashboard:
     heading: Application logs
     description: |
       <p>
-          The log viewer is reading the application logs. <br/> The log directory is located at <code>logDir</code>.
+          The log viewer is reading the application logs.
+      </p>
+      <p>
+        The log directory is located at <code>logDir</code>.
       </p>
     list:
       name: Log filename
@@ -80,8 +83,8 @@ dashboard:
     filter:
       force: Force update
       search: Search
-      updatable: Outdated packages
-      required: Required packages
+      updatable: Outdated
+      required: Required
       submit: Submit
       reset: Reset
     list:

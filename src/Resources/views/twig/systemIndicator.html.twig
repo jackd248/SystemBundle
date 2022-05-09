@@ -4,4 +4,12 @@
 <a data-toggle="dropdown" href="#" class="navbar-link">
     <i id="system-indicator-extension--icon" class="icon-settings" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
 </a>
-<div id="system-indicator-extension" class="dropdown-menu multi-column dropdown-system-indicator" data-url="{{ path('kmi_system_information_info') }}"></div>
+<div id="system-indicator-extension" class="dropdown-menu multi-column dropdown-system-indicator sib-content" data-url="{{ path('kmi_system_information_info') }}">
+    <div id="system-indicator-extension--clear-cache--spinner">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>

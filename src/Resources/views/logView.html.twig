@@ -47,7 +47,7 @@
                 </div>
                 <div class="item form-item m-10">
                     <button type="submit" class="btn">{{ 'viewer.filter.submit'|trans({}, 'SystemInformationBundle') }}</button>
-                    <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn no-border">{{ 'viewer.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
+                    <a href="{{ path('kmi_system_information_log_view', {'id':id }) }}" class="btn">{{ 'viewer.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
                 </div>
             </form>
             <table class="table table-condensed table-striped">
@@ -79,7 +79,7 @@
                                         <span class="pill">{{ log.date }}</span>
                                     {% endif %}
                                 </td>
-                                <td><span class="pill">{{ log.channel }}</span></td>
+                                <td><strong>{{ log.channel }}</strong></td>
                                 <td>
                                     <span class="pill {{ class }}">{{ log.level }}</span>
                                 </td>
@@ -104,9 +104,11 @@
                             <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page-1, 'level':app.request.get('level') }) }}">‹</a>
                         </li>
                     {% endif %}
+                    {% if resultCount > limit %}
                     <li>
                         <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page, 'level':app.request.get('level') }) }}">{{ page }}</a>
                     </li>
+                    {% endif %}
                     {% if (page + 1) * limit < resultCount %}
                         <li>
                             <a href="{{ path('kmi_system_information_log_view', {'id':id , 'limit':app.request.get('limit')|default(100), 'page': page+1, 'level':app.request.get('level') }) }}">›</a>
