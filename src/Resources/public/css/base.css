@@ -318,6 +318,9 @@
 .mx-5 {
     margin: 0 15px;
 }
+.mw-100 {
+    min-width: 100px;
+}
 .mw-200 {
     min-width: 200px;
 }

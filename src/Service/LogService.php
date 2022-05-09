@@ -151,9 +151,10 @@ class LogService
      * @param int $page
      * @param null $level
      * @param null $channel
+     * @param null $search
      * @return array
      */
-    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null): array
+    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null, string $search = null): array
     {
         $offset = ($page - 1) * $limit;
 
@@ -169,6 +170,14 @@ class LogService
                 return $log['channel'] === $channel;
             });
         }
+
+
+        if ($search) {
+            $logs = array_filter($logs, function ($log) use ($search) {
+                return strpos($log['message'], $search) !== false;
+            });
+        }
+
         $resultCount = count($logs);
         // Slice array
         $logs = array_slice($logs, $offset, $limit);

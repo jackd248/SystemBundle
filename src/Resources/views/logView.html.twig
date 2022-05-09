@@ -18,13 +18,18 @@
                     <strong>{{ resultCount|number_format(0, ',', '.') }}</strong> {{ 'viewer.list.results'|trans({}, 'SystemInformationBundle') }}
                 </div>
                 <div class="item form-item m-10">
+                    <label for="log-filter-form-search" class="mr-5">{{ 'viewer.filter.search'|trans({}, 'SystemInformationBundle') }}</label>
+                    <input type="text" id="log-filter-form-search" class="mw-200 form-control"
+                           value="{{ app.request.get('search') }}" name="search"/>
+                </div>
+                <div class="item form-item m-10">
                     <label for="log-filter-form-limit" class="mr-5">{{ 'viewer.filter.limit'|trans({}, 'SystemInformationBundle') }}</label>
-                    <input type="number" id="log-filter-form-limit" class="mw-200 form-control"
+                    <input type="number" id="log-filter-form-limit" class="mw-100 form-control"
                            value="{{ app.request.get('limit')|default(100) }}" name="limit"/>
                 </div>
                 <div class="item form-item m-10">
                     <label for="log-filter-form-level" class="mr-5">{{ 'viewer.filter.level'|trans({}, 'SystemInformationBundle') }}</label>
-                    <select name="level" id="log-filter-form-level" class="mw-200">
+                    <select name="level" id="log-filter-form-level" class="mw-100">
                         <option value="">{{ 'viewer.filter.all'|trans({}, 'SystemInformationBundle') }}</option>
                         {% for level in levels %}
                             <option value="{{ level }}" {{ app.request.get('level') == level ? 'selected' : '' }}>{{ level }}</option>
@@ -33,7 +38,7 @@
                 </div>
                 <div class="item form-item m-10">
                     <label for="log-filter-form-channel" class="mr-5">{{ 'viewer.filter.channel'|trans({}, 'SystemInformationBundle') }}</label>
-                    <select name="channel" id="log-filter-form-channel" class="mw-200">
+                    <select name="channel" id="log-filter-form-channel" class="mw-100">
                         <option value="">{{ 'viewer.filter.all'|trans({}, 'SystemInformationBundle') }}</option>
                         {% for channel in channels %}
                             <option value="{{ channel }}" {{ app.request.get('channel') == channel ? 'selected' : '' }}>{{ channel }}</option>
@@ -78,7 +83,7 @@
                                 <td>
                                     <span class="pill {{ class }}">{{ log.level }}</span>
                                 </td>
-                                <td>{{ log.message }}</td>
+                                <td>{{ log.message|highlight(search)|raw }}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}

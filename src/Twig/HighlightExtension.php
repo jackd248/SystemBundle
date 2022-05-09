@@ -19,10 +19,10 @@ class HighlightExtension extends AbstractExtension
 
     /**
      * @param string $string
-     * @param string $searchWord
+     * @param string|null $searchWord
      * @return string
      */
-    public function highlightSearchWord(string $string, string $searchWord = '')
+    public function highlightSearchWord(string $string, ?string $searchWord = '')
     {
         if ($searchWord != null) {
             if (intval(mb_strpos($string, $searchWord)) !== false) {

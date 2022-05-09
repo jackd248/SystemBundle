@@ -114,6 +114,7 @@ viewer:
     heading: Log detail
     back: Back to log overview
   filter:
+    search: Search
     limit: Limit
     level: Level
     channel: Channel

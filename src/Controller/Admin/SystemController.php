@@ -148,8 +148,13 @@ class SystemController extends AbstractController
             $channel = $request->query->get('channel');
         }
 
+        $search = null;
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        }
+
         $logs = $this->logService->getLog($id);
-        $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level, $channel);
+        $logs = $this->logService->filterLogEntryList($logs, $limit, $page, $level, $channel, $search);
         return $this->render('@SystemInformationBundle/logView.html.twig', [
             'logs' => $logs['result'],
             'levels' => LogService::LOG_LEVEL,
@@ -157,7 +162,8 @@ class SystemController extends AbstractController
             'id' => $id,
             'resultCount' => $logs['count'],
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
-            'teaser' => $this->informationService->getSystemInformation(true)
+            'teaser' => $this->informationService->getSystemInformation(true),
+            'search' => $search
         ]);
     }
 
