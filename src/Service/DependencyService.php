@@ -74,13 +74,24 @@ class DependencyService
             $this->cachePool->delete($cacheKey);
         }
 
-        return $this->cachePool->get($cacheKey, function (ItemInterface $item) {
-            $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME_DEPENDENCIES);
+        $metadata = null;
 
-            $composerLockContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.lock');
-            $composerContent = $this->mergeComposerData($composerLockContent['packages'], $this->checkForUpdates());
-            return $this->addAdvancedInformation($composerContent);
-        });
+        $result = [
+            'dependencies' => $this->cachePool->get($cacheKey, function (ItemInterface $item) {
+                $item->expiresAfter(SystemInformationBundle::CACHE_LIFETIME_DEPENDENCIES);
+
+                $composerLockContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.lock');
+                $composerContent = $this->mergeComposerData($composerLockContent['packages'], $this->checkForUpdates());
+                return $this->addAdvancedInformation($composerContent);
+            }, null, $metadata)
+        ];
+
+        if ($metadata) {
+            $metadata['created'] = round($metadata['expiry'] - SystemInformationBundle::CACHE_LIFETIME_DEPENDENCIES);
+        }
+
+        $result['metadata'] = $metadata;
+        return $result;
     }
 
 

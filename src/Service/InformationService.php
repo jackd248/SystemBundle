@@ -73,7 +73,7 @@ class InformationService {
         $information = [];
 
         $checks = $this->checkService->getLiipMonitorChecks($forceUpdate)->getResults();
-        $dependencies = $this->dependencyService->getDependencyInformation();
+        $dependencies = $this->dependencyService->getDependencyInformation()['dependencies'];
         $dependencyStatus = $this->dependencyService->getDependencyApplicationStatus($dependencies);
 
         if ($this->checkService->getMonitorCheckStatus($checks)) {

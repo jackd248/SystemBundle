@@ -7,10 +7,6 @@
     <div class="panel-body">
         {{ 'dashboard.dependencies.description'|trans({'composerFilePath': composerFilePath}, 'SystemInformationBundle')|raw }}
         <form id="dependency-filter-form" class="mb-15 form-item">
-            <div class="item form-item m-10">
-                <a href="{{ path('kmi_system_information_dependencies', {'force': 1}) }}"
-                   class="btn no-border">{{ 'dashboard.dependencies.filter.force'|trans({}, 'SystemInformationBundle') }}</a>
-            </div>
             <div class="item m-10 system-results">
                 <strong>{{ dependencies|length|number_format(0, ',', '.') }}</strong> {{ 'dashboard.dependencies.list.results'|trans({}, 'SystemInformationBundle') }}
             </div>
@@ -37,7 +33,9 @@
                 <button type="submit"
                         class="btn">{{ 'dashboard.dependencies.filter.submit'|trans({}, 'SystemInformationBundle') }}</button>
                 <a href="{{ path('kmi_system_information_dependencies') }}"
-                   class="btn no-border">{{ 'dashboard.dependencies.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
+                   class="btn">{{ 'dashboard.dependencies.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
+                <a href="{{ path('kmi_system_information_dependencies', {'force': 1}) }}"
+                   class="btn" title="last updated {{ metadata.created | date('d.m.Y H:i:s') }}">{{ 'dashboard.dependencies.filter.force'|trans({}, 'SystemInformationBundle') }}</a>
             </div>
         </form>
         <table class="table table-condensed">

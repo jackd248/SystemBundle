@@ -225,8 +225,9 @@ class SystemController extends AbstractController
             $forceUpdate = boolval($request->query->get('force'));
         }
 
-        $dependencies = $this->dependencyService->getDependencyInformation($forceUpdate);
-        $dependencies = $this->dependencyService->filterDependencies($dependencies, $search, $showOnlyUpdatable, $showOnlyRequired);
+        $dependencyInformation = $this->dependencyService->getDependencyInformation($forceUpdate);
+        $metadata = $dependencyInformation['metadata'];
+        $dependencies = $this->dependencyService->filterDependencies($dependencyInformation['dependencies'], $search, $showOnlyUpdatable, $showOnlyRequired);
 
         return $this->render('@SystemInformationBundle/dependencies.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
@@ -236,7 +237,8 @@ class SystemController extends AbstractController
             'composerFilePath' => $this->getParameter('kernel.project_dir') . '/composer.json',
             'search' => $search,
             'showOnlyUpdatable' => $showOnlyUpdatable,
-            'showOnlyRequired' => $showOnlyRequired
+            'showOnlyRequired' => $showOnlyRequired,
+            'metadata' => $metadata
         ]);
     }
 
