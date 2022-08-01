@@ -298,7 +298,7 @@ class SystemController extends AbstractController
     public function phpInfo(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('@SystemInformationBundle/phpInfo.html.twig', [
-            'info' => phpinfo()
+            'info' => \phpinfo()
         ]);
     }
 
