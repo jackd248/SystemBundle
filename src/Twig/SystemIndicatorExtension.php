@@ -65,12 +65,9 @@ class SystemIndicatorExtension extends AbstractExtension
      */
     public function getSystemInformationIndicator(Environment $twig)
     {
-        $systemInformation = $this->informationService->getSystemInformation();
 
         try {
-            return $twig->render('@SystemInformationBundle/twig/systemIndicator.html.twig', [
-                'information' => $systemInformation
-            ]);
+            return $twig->render('@SystemInformationBundle/twig/systemIndicator.html.twig');
         } catch (LoaderError | RuntimeError $e) {
         } catch (SyntaxError $e) {
         }
