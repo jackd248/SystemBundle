@@ -252,7 +252,7 @@ class DependencyService
      * @param array $composerUpdate
      * @return array
      */
-    protected function mergeComposerData(array $composerLock, array $composerUpdate): array
+    protected function mergeComposerData(array $composerLock, array $composerUpdate = []): array
     {
         foreach ($composerLock as $key => $item) {
             if (array_key_exists($item['name'], $composerUpdate)) {
