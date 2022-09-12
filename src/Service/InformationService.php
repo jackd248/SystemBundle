@@ -235,7 +235,9 @@ class InformationService {
                 $this->getDatabaseHost(),
                 $this->getDatabaseName(),
                 $this->getDatabaseUser(),
-                $this->getDatabasePort()
+                $this->getDatabasePort(),
+                $this->getDatabaseCharacterSet(),
+                $this->getDatabaseCollaction()
             ]
         ];
     }
@@ -569,6 +571,40 @@ class InformationService {
         return [
             'label' => $this->translator->trans('system.information.database.platform', [], 'SystemInformationBundle'),
             'value' => $entityManager->getConnection()->getParams()['port']
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getDatabaseCharacterSet(): array {
+        $entityManager = $this->container->get('doctrine')->getManager();
+        /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
+        $characterSet = null;
+        try {
+            $characterSet = $entityManager->getConnection()->fetchOne('SELECT @@character_set_database;');
+        } catch (Exception $e) {}
+        return [
+            'label' => $this->translator->trans('system.information.database.character_set', [], 'SystemInformationBundle'),
+            'value' => $characterSet
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getDatabaseCollaction(): array {
+        $entityManager = $this->container->get('doctrine')->getManager();
+        /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
+        $collation = null;
+        try {
+            $collation = $entityManager->getConnection()->fetchOne('SELECT @@collation_database;');
+        } catch (Exception $e) {}
+        return [
+            'label' => $this->translator->trans('system.information.database.collation', [], 'SystemInformationBundle'),
+            'value' => $collation
         ];
     }
     

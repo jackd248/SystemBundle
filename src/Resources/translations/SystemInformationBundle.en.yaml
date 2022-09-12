@@ -198,6 +198,8 @@ system:
       name: Database name
       user: Database user
       port: Database port
+      character_set: Database character set
+      collation: Database collation
 extension:
   indicator:
     description: |
