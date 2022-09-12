@@ -9,6 +9,9 @@ use Swift_Message;
 use Swift_SmtpTransport;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Config\FileLocator;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
@@ -74,9 +77,9 @@ class MailService
     {
         $projectName = $this->sonataConfiguration->getTitle();
         $projectLogo = $this->sonataConfiguration->getLogo();
-        // ToDo: Also use symfony mailer
+        $mailerConfiguration = $this->informationService->getMailConfiguration();
+
         if (class_exists(\Swift_Mailer::class)) {
-            $mailerConfiguration = $this->informationService->getMailConfiguration();
             $transport = (new Swift_SmtpTransport($mailerConfiguration['host'], $mailerConfiguration['port']));
             $mailer = new Swift_Mailer($transport);
 
@@ -100,6 +103,33 @@ class MailService
                     'text/html'
                 );
             return $mailer->send($message);
+        } elseif (interface_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
+            $mailer = new Mailer(Transport::fromDsn($_ENV['MAILER_DSN']));
+
+            $email = (new Email())
+                ->from($this->getSenderMail())
+                ->subject("[$projectName] SystemInformationBundle Status Update")
+                ->html(
+                    $this->container->get('twig')->render(
+                        '@SystemInformationBundle/mail/status.html.twig',
+                        array(
+                            'teaser' => $teaser,
+                            'project' => $projectName,
+                            'projectLogo' => $projectLogo,
+                            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
+                            'logo' => ''
+                        )
+                    ),
+                )
+                ->embedFromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg'),'logo')
+            ;
+
+            foreach ($receiver as $to) {
+                $email->addTo($to);
+            }
+
+            $mailer->send($email);
+            return 1;
         }
         return 0;
     }
@@ -108,7 +138,7 @@ class MailService
      * @return mixed
      * @throws \Exception
      */
-    private function getSenderMail()
+    private function getSenderMail(): mixed
     {
         if (!array_key_exists('SYSTEM_INFORMATION_BUNDLE_SENDER_MAIL', $_ENV)) {
             throw new \Exception('Missing environment variable "SYSTEM_INFORMATION_BUNDLE_SENDER_MAIL" for system_information_bundle sender mail address');

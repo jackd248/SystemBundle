@@ -583,7 +583,7 @@ class InformationService {
             $configuration['service'] = 'SwiftMailer';
         }
         // Symfony Mailer
-        if (array_key_exists('MAILER_DSN', $_ENV) && class_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
+        if (array_key_exists('MAILER_DSN', $_ENV) && interface_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
             $configuration = parse_url($_ENV['MAILER_DSN']);
             $configuration['service'] = 'SymfonyMailer';
         }
