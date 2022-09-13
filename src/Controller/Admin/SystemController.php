@@ -288,8 +288,20 @@ class SystemController extends AbstractController
             'teaser' => $teaser,
             'config' => $this->databaseService->getConfig(),
             'tables' => $tables,
-            'relevantTablesBySize' => $this->databaseService->getRelevantTablesBySize($tables),
-            'relevantTablesByCount' => $this->databaseService->getRelevantTablesByCount($tables),
+            'relevantTablesBySize' =>
+                $this->databaseService->getRelevantTablesByProperty(
+                    $tables,
+                    'size',
+                    $this->databaseService->getTotal()['size'],
+                    DatabaseService::SIZE_THRESHOLD
+                ),
+            'relevantTablesByCount' =>
+                $this->databaseService->getRelevantTablesByProperty(
+                    $tables,
+                    'count',
+                    $this->databaseService->getTotal()['count'],
+                    DatabaseService::COUNT_THRESHOLD
+                ),
         ]);
     }
 

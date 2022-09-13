@@ -122,8 +122,6 @@ class DatabaseService
     {
         $this->container = $container;
         $this->translator = $translator;
-        $this->checkService = $checkService;
-        $this->logService = $logService;
         $this->informationService = $informationService;
     }
 
@@ -202,64 +200,34 @@ class DatabaseService
 
     /**
      * @param $tables
+     * @param $property
+     * @param $max
+     * @param $threshold
      * @return array
-     * @throws \Exception
      */
-    public function getRelevantTablesBySize($tables) {
+    public function getRelevantTablesByProperty($tables, $property, $max, $threshold): array
+    {
         $result = [];
         $others = 0.0;
         //usort($tables, fn($a, $b) => $a['size'] <=> $b['size']);
 
-        $sizeThreshold = (float)$this->getTotal()['size'] / 100 * self::SIZE_THRESHOLD;
+        $propertyThreshold = (float)$max / 100 * $threshold;
         foreach ($tables as $key => $table) {
-            if ((float)$table['size'] > $sizeThreshold) {
+            if ((float)$table[$property] > $propertyThreshold) {
                 $result[] = [
-                    'table' => $table['table'],
-                    'size' => $table['size'],
+                    'name' => $table['table'],
+                    'value' => $table[$property],
                     'color' => self::COLORS_SIZE[$key],
                 ];
             } else {
-                $others += (float)$table['size'];
+                $others += (float)$table[$property];
             }
         }
 
         if ($others) {
             $result[] = [
-                'table' => 'Others',
-                'size' => $others,
-                'color' => self::COLOR_OTHERS,
-            ];
-        }
-        return $result;
-    }
-
-    /**
-     * @param $tables
-     * @return array
-     * @throws \Exception
-     */
-    public function getRelevantTablesByCount($tables) {
-        $result = [];
-        $others = 0.0;
-        //usort($tables, fn($a, $b) => $a['count'] <=> $b['count']);
-
-        $countThreshold = (float)$this->getTotal()['count'] / 100 * self::COUNT_THRESHOLD;
-        foreach ($tables as $key => $table) {
-            if ((float)$table['count'] > $countThreshold) {
-                $result[] = [
-                    'table' => $table['table'],
-                    'count' => $table['count'],
-                    'color' => self::COLORS_SIZE[$key],
-                ];
-            } else {
-                $others += (float)$table['count'];
-            }
-        }
-
-        if ($others) {
-            $result[] = [
-                'table' => 'Others',
-                'count' => $others,
+                'name' => 'Others',
+                'value' => $others,
                 'color' => self::COLOR_OTHERS,
             ];
         }

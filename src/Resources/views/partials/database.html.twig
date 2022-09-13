@@ -22,11 +22,11 @@
                 {
                     type: 'doughnut',
                     data: {
-                        labels: [{% for value in relevantTablesBySize %}'{{ value.table }}',{% endfor %}],
+                        labels: [{% for item in relevantTablesBySize %}'{{ item.name }}',{% endfor %}],
                         datasets: [{
                             label: 'Table sizes',
-                            data: [{% for value in relevantTablesBySize %}{{ value.size }},{% endfor %}],
-                            backgroundColor: [{% for value in relevantTablesBySize %}'{{ value.color }}',{% endfor %}],
+                            data: [{% for item in relevantTablesBySize %}{{ item.value }},{% endfor %}],
+                            backgroundColor: [{% for item in relevantTablesBySize %}'{{ item.color }}',{% endfor %}],
                         }]
                     },
                     options: {
@@ -49,11 +49,11 @@
                 {
                     type: 'doughnut',
                     data: {
-                        labels: [{% for value in relevantTablesByCount %}'{{ value.table }}',{% endfor %}],
+                        labels: [{% for item in relevantTablesByCount %}'{{ item.name }}',{% endfor %}],
                         datasets: [{
                             label: 'Table sizes',
-                            data: [{% for value in relevantTablesByCount %}{{ value.count }},{% endfor %}],
-                            backgroundColor: [{% for value in relevantTablesByCount %}'{{ value.color }}',{% endfor %}],
+                            data: [{% for item in relevantTablesByCount %}{{ item.value }},{% endfor %}],
+                            backgroundColor: [{% for item in relevantTablesByCount %}'{{ item.color }}',{% endfor %}],
                         }]
                     },
                     options: {
