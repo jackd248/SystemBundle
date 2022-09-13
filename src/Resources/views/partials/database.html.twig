@@ -1,0 +1,124 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{ 'dashboard.database.heading'|trans({}, 'SystemInformationBundle') }}
+        </h3>
+    </div>
+    <div class="panel-body">
+        {{ 'dashboard.database.description'|trans({}, 'SystemInformationBundle')|raw }}
+
+        <div class="wrap" style="display: flex;justify-content: space-evenly;">
+            <div style="width: 300px">
+                <canvas id="tableSizesChart"></canvas>
+            </div>
+            <div style="width: 300px">
+                <canvas id="tableCountChart"></canvas>
+            </div>
+        </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            let tableSizesChart = new Chart(
+                document.getElementById('tableSizesChart'),
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: [{% for value in relevantTablesBySize %}'{{ value.table }}',{% endfor %}],
+                        datasets: [{
+                            label: 'Table sizes',
+                            data: [{% for value in relevantTablesBySize %}{{ value.size }},{% endfor %}],
+                            backgroundColor: [{% for value in relevantTablesBySize %}'{{ value.color }}',{% endfor %}],
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Table sizes (in MB)'
+                            },
+                        }
+                    }
+                }
+            );
+        </script>
+        <script>
+            let tableCountChart = new Chart(
+                document.getElementById('tableCountChart'),
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: [{% for value in relevantTablesByCount %}'{{ value.table }}',{% endfor %}],
+                        datasets: [{
+                            label: 'Table sizes',
+                            data: [{% for value in relevantTablesByCount %}{{ value.count }},{% endfor %}],
+                            backgroundColor: [{% for value in relevantTablesByCount %}'{{ value.color }}',{% endfor %}],
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Table entities count'
+                            },
+                        }
+                    }
+                }
+            );
+        </script>
+
+        <h4>
+            {{ 'dashboard.database.overview.heading'|trans({}, 'SystemInformationBundle')|raw }}
+        </h4>
+        <table class="table table-condensed">
+            {% for value in config %}
+                <tr>
+                    <td>{{ value.label|capitalize }}</td>
+                    <td style="font-family: monospace, monospace;">{{ value.value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h4>
+            {{ 'dashboard.database.tables.heading'|trans({}, 'SystemInformationBundle')|raw }}
+        </h4>
+        <a class="collapse-btn" data-toggle="collapse" href="#database-tables" role="button" aria-expanded="false"
+           aria-controls="database-tables">
+            {{ 'dashboard.database.tables.collapse'|trans({}, 'SystemInformationBundle')|raw }}
+        </a>
+        <div class="collapse" id="database-tables">
+            <table class="table table-condensed" id="database-tables-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Count</th>
+                        <th>Size</th>
+                        <th>Collation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for table in tables %}
+                        <tr>
+                            <td style="font-family: monospace, monospace;">{{ table.table }}</td>
+                            <td>{{ table.count }}</td>
+                            <td>{{ table.size }} MB</td>
+                            <td>{{ table.collation }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/jquery.dataTables.min.js></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap.min.js></script>
+        <script>
+            $(document).ready(function() {
+                $('#database-tables-table').DataTable();
+            });
+        </script>
+    </div>
+</div>

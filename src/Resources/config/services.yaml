@@ -46,6 +46,11 @@ services:
       - '@file_locator'
       - '@sonata.admin.configuration'
 
+  Kmi\SystemInformationBundle\Service\DatabaseService:
+    class: Kmi\SystemInformationBundle\Service\DatabaseService
+    arguments:
+      - '@service_container'
+
   Kmi\SystemInformationBundle\Twig\SystemExtension:
     class: Kmi\SystemInformationBundle\Twig\SystemExtension
     tags:

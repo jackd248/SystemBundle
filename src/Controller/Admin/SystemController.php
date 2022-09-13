@@ -3,6 +3,7 @@
 namespace Kmi\SystemInformationBundle\Controller\Admin;
 
 use Kmi\SystemInformationBundle\Service\CheckService;
+use Kmi\SystemInformationBundle\Service\DatabaseService;
 use Kmi\SystemInformationBundle\Service\DependencyService;
 use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
@@ -60,6 +61,11 @@ class SystemController extends AbstractController
     private MailService $mailService;
 
     /**
+     * @var \Kmi\SystemInformationBundle\Service\DatabaseService
+     */
+    private DatabaseService $databaseService;
+
+    /**
      * @var KernelInterface
      */
     private KernelInterface $kernel;
@@ -72,9 +78,10 @@ class SystemController extends AbstractController
      * @param \Kmi\SystemInformationBundle\Service\BundleService $bundleService
      * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
      * @param \Kmi\SystemInformationBundle\Service\MailService $mailService
+     * @param \Kmi\SystemInformationBundle\Service\DatabaseService $databaseService
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, DependencyService $dependencyService, MailService $mailService, KernelInterface $kernel)
+    public function __construct(CheckService $checkService, LogService $logService, InformationService $informationService, SymfonyService $symfonyService, BundleService $bundleService, DependencyService $dependencyService, MailService $mailService, DatabaseService $databaseService, KernelInterface $kernel)
     {
         $this->checkService = $checkService;
         $this->logService = $logService;
@@ -83,6 +90,7 @@ class SystemController extends AbstractController
         $this->bundleService = $bundleService;
         $this->dependencyService = $dependencyService;
         $this->mailService = $mailService;
+        $this->databaseService = $databaseService;
         $this->kernel = $kernel;
     }
 
@@ -263,6 +271,25 @@ class SystemController extends AbstractController
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $teaser,
             'config' => $this->informationService->getMailConfiguration()
+        ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function database(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $teaser = $this->informationService->getSystemInformation(true);
+        $tables = $this->databaseService->getTables();
+        return $this->render('@SystemInformationBundle/database.html.twig', [
+            'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
+            'teaser' => $teaser,
+            'config' => $this->databaseService->getConfig(),
+            'tables' => $tables,
+            'relevantTablesBySize' => $this->databaseService->getRelevantTablesBySize($tables),
+            'relevantTablesByCount' => $this->databaseService->getRelevantTablesByCount($tables),
         ]);
     }
 

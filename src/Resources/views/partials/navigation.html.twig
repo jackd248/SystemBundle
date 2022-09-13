@@ -35,6 +35,13 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_database' ? 'active' : '' }}"
+           href="{{ path('kmi_system_information_database') }}">
+            <i class="icon-database mr-5"
+               aria-hidden="true"></i> {{ 'dashboard.database.nav'|trans({}, 'SystemInformationBundle') }}
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="system-nav-link {{ app.request.attributes.get('_route') == 'kmi_system_information_mail' ? 'active' : '' }}"
            href="{{ path('kmi_system_information_mail') }}">
             <i class="icon-send mr-5"

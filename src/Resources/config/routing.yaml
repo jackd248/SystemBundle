@@ -28,6 +28,11 @@ kmi_system_information_mail:
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:mail}
   methods:  [GET]
 
+kmi_system_information_database:
+  path: /admin/system/database
+  defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:database}
+  methods:  [GET]
+
 kmi_system_information_additional:
   path: /admin/system/additional
   defaults: {_controller: Kmi\SystemInformationBundle\Controller\Admin\SystemController:additional}

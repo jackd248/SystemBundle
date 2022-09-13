@@ -515,7 +515,7 @@ class InformationService {
         $databaseVersion = null;
         try {
             $databaseVersion = $entityManager->getConnection()->fetchOne('SELECT @@version;');
-        } catch (Exception $e) {};
+        } catch (Exception $e) {}
         return [
             'label' => $this->translator->trans('system.information.database.version', [], 'SystemInformationBundle'),
             'value' => $databaseVersion
@@ -556,7 +556,7 @@ class InformationService {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
         return [
-            'label' => $this->translator->trans('system.information.database.platform', [], 'SystemInformationBundle'),
+            'label' => $this->translator->trans('system.information.database.user', [], 'SystemInformationBundle'),
             'value' => $entityManager->getConnection()->getParams()['user']
         ];
     }
@@ -569,7 +569,7 @@ class InformationService {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
         return [
-            'label' => $this->translator->trans('system.information.database.platform', [], 'SystemInformationBundle'),
+            'label' => $this->translator->trans('system.information.database.port', [], 'SystemInformationBundle'),
             'value' => $entityManager->getConnection()->getParams()['port']
         ];
     }

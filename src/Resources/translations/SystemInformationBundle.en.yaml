@@ -108,7 +108,15 @@ dashboard:
     form:
       submit: Send
       receiver: Receiver
-    
+  database:
+    nav: Database
+    heading: Database Service
+    description: This is a database overview with relevant information.
+    overview:
+      heading: Overview
+    tables:
+      heading: Tables
+      collapse: All database tables
 
 viewer:
   general:
@@ -200,6 +208,8 @@ system:
       port: Database port
       character_set: Database character set
       collation: Database collation
+      size: Size (in MB)
+      count: Count
 extension:
   indicator:
     description: |
