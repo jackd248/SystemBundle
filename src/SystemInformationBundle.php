@@ -3,6 +3,7 @@
 namespace Kmi\SystemInformationBundle;
 
 use Kmi\SystemInformationBundle\DependencyInjection\SystemInformationBundleExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SystemInformationBundle extends Bundle
@@ -15,7 +16,7 @@ class SystemInformationBundle extends Bundle
     /**
      * @inheritdoc
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new SystemInformationBundleExtension();
