@@ -21,7 +21,7 @@
  * Fonts
  */
 @font-face {
-    font-family: 'icomoon';
+    font-family: 'system-information-bundle';
     src:  url('../fonts/icomoon.eot?bi1smt');
     src:  url('../fonts/icomoon.eot?bi1smt#iefix') format('embedded-opentype'),
     url('../fonts/icomoon.ttf?bi1smt') format('truetype'),
@@ -32,9 +32,9 @@
     font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-sib-"], [class*=" icon-sib-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
+    font-family: 'system-information-bundle' !important;
     speak: never;
     font-style: normal;
     font-weight: normal;
@@ -46,154 +46,154 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.icon-trash-2:before {
+.icon-sib-trash-2:before {
     content: "\e1032";
 }
-.icon-x:before {
+.icon-sib-x:before {
     content: "\e1029";
 }
-.icon-x-circle:before {
+.icon-sib-x-circle:before {
     content: "\e1031";
 }
-.icon-zap:before {
+.icon-sib-zap:before {
     content: "\e1030";
 }
-.icon-php:before {
+.icon-sib-php:before {
     content: "\e1026";
 }
-.icon-symfony:before {
+.icon-sib-symfony:before {
     content: "\e1027";
 }
-.icon-activity:before {
+.icon-sib-activity:before {
     content: "\e1000";
 }
-.icon-alert-circle:before {
+.icon-sib-alert-circle:before {
     content: "\e1001";
 }
-.icon-alert-triangle:before {
+.icon-sib-alert-triangle:before {
     content: "\e1002";
 }
-.icon-bell:before {
+.icon-sib-bell:before {
     content: "\e1003";
 }
-.icon-check:before {
+.icon-sib-check:before {
     content: "\e101a";
 }
-.icon-clock:before {
+.icon-sib-clock:before {
     content: "\e1004";
 }
-.icon-code:before {
+.icon-sib-code:before {
     content: "\e1005";
 }
-.icon-codepen:before {
+.icon-sib-codepen:before {
     content: "\e1006";
 }
-.icon-codesandbox:before {
+.icon-sib-codesandbox:before {
     content: "\e1007";
 }
-.icon-command:before {
+.icon-sib-command:before {
     content: "\e1008";
 }
-.icon-cpu:before {
+.icon-sib-cpu:before {
     content: "\e101b";
 }
-.icon-database:before {
+.icon-sib-database:before {
     content: "\e1009";
 }
-.icon-filter:before {
+.icon-sib-filter:before {
     content: "\e100a";
 }
-.icon-flag:before {
+.icon-sib-flag:before {
     content: "\e101c";
 }
-.icon-git-branch:before {
+.icon-sib-git-branch:before {
     content: "\e101d";
 }
-.icon-git-commit:before {
+.icon-sib-git-commit:before {
     content: "\e101e";
 }
-.icon-git-merge:before {
+.icon-sib-git-merge:before {
     content: "\e101f";
 }
-.icon-git-pull-request:before {
+.icon-sib-git-pull-request:before {
     content: "\e100b";
 }
-.icon-globe:before {
+.icon-sib-globe:before {
     content: "\e1020";
 }
-.icon-hard-drive:before {
+.icon-sib-hard-drive:before {
     content: "\e100c";
 }
-.icon-help-circle:before {
+.icon-sib-help-circle:before {
     content: "\e100d";
 }
-.icon-info:before {
+.icon-sib-info:before {
     content: "\e100e";
 }
-.icon-layers:before {
+.icon-sib-layers:before {
     content: "\e100f";
 }
-.icon-list:before {
+.icon-sib-list:before {
     content: "\e1021";
 }
-.icon-menu:before {
+.icon-sib-menu:before {
     content: "\e1022";
 }
-.icon-monitor:before {
+.icon-sib-monitor:before {
     content: "\e1023";
 }
-.icon-more-horizontal:before {
+.icon-sib-more-horizontal:before {
     content: "\e1010";
 }
-.icon-more-vertical:before {
+.icon-sib-more-vertical:before {
     content: "\e1011";
 }
-.icon-package:before {
+.icon-sib-package:before {
     content: "\e1012";
 }
-.icon-power:before {
+.icon-sib-power:before {
     content: "\e1024";
 }
-.icon-save:before {
+.icon-sib-save:before {
     content: "\e1013";
 }
-.icon-send:before {
+.icon-sib-send:before {
     content: "\e1025";
 }
-.icon-server:before {
+.icon-sib-server:before {
     content: "\e1014";
 }
-.icon-settings:before {
+.icon-sib-settings:before {
     content: "\e1015";
 }
-.icon-sliders:before {
+.icon-sib-sliders:before {
     content: "\e1016";
 }
-.icon-terminal:before {
+.icon-sib-terminal:before {
     content: "\e1017";
 }
-.icon-tool:before {
+.icon-sib-tool:before {
     content: "\e1018";
 }
-.icon-triangle:before {
+.icon-sib-triangle:before {
     content: "\e1019";
 }
-.icon-alert-octagon:before {
+.icon-sib-alert-octagon:before {
     content: "\e1028";
 }
-/*.icon-x:before {*/
+/*.icon-sib-x:before {*/
 /*    content: "\e1029";*/
 /*}*/
-/*.icon-x-circle:before {*/
+/*.icon-sib-x-circle:before {*/
 /*    content: "\e1030";*/
 /*}*/
-/*.icon-x-octagon:before {*/
+/*.icon-sib-x-octagon:before {*/
 /*    content: "\e1031";*/
 /*}*/
-/*.icon-x-square:before {*/
+/*.icon-sib-x-square:before {*/
 /*    content: "\e1032";*/
 /*}*/
-.icon-box-round {
+.icon-sib-box-round {
     width: 40px;
     height: 40px;
     display: inline-block;

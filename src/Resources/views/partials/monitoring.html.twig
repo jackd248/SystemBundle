@@ -10,21 +10,21 @@
             {% for check in checks %}
                 {% if check.status == 0 %}
                     {% set item_class = '' %}
-                    {% set icon_class = 'icon-check bg-color-success' %}
+                    {% set icon_class = 'icon-sib-check bg-color-success' %}
                 {% elseif check.status == 1 %}
                     {% set item_class = 'bg-color-warning--light' %}
-                    {% set icon_class = 'icon-x bg-color-warning' %}
+                    {% set icon_class = 'icon-sib-x bg-color-warning' %}
                 {% elseif check.status == 2 %}
                     {% set item_class = 'bg-color-error--light' %}
-                    {% set icon_class = 'icon-x bg-color-error' %}
+                    {% set icon_class = 'icon-sib-x bg-color-error' %}
                 {% elseif check.status == 3 %}
                     {% set item_class = 'bg-color-error--light' %}
-                    {% set icon_class = 'icon-x bg-color-error' %}
+                    {% set icon_class = 'icon-sib-x bg-color-error' %}
                 {% endif %}
 
                 <div class="system-list_item system-list_item--icon mb-10 {{ item_class }}">
                     <div class="system-list_item-element">
-                        <i class="{{ icon_class}} icon-box-round mr-10" aria-hidden="true"></i>
+                        <i class="{{ icon_class}} icon-sib-box-round mr-10" aria-hidden="true"></i>
                     </div>
                     <div class="system-list_item-element mr-10">
                         <strong>{{ check.checkName }}</strong>

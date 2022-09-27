@@ -91,8 +91,8 @@ class SystemExtension extends AbstractExtension
             return $result;
         });
 
-        $checkStatus = $status['checkStatus'] ? '<i class="icon-alert-triangle" style="margin-right: 5px;"></i>' : '';
-        $logStatus = $status['logStatus'] ? '<i class="icon-alert-circle" style="margin-right: 5px;"></i>' : '';
+        $checkStatus = $status['checkStatus'] ? '<i class="icon-sib-alert-triangle" style="margin-right: 5px;"></i>' : '';
+        $logStatus = $status['logStatus'] ? '<i class="icon-sib-alert-circle" style="margin-right: 5px;"></i>' : '';
 
         return '<ul class="sidebar-menu" data-widget="tree"><li class="' . ($isActive ? 'active ': ''). 'first"><a href="' . $url . '"><i class="fa fa-cogs" aria-hidden="true"></i>System<div style="float:right; margin-right: 5px; opacity: .4;">' . $logStatus . $checkStatus . '</div></a></li>';
     }

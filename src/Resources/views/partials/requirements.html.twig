@@ -13,7 +13,7 @@
             {% if requirements.requirements.error is empty %}
                 <div class="system-list_item">
                     <div class="system-list_item-element">
-                        <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                        <i class="icon-sib-check icon-sib-box-round bg-color-success mr-10" aria-hidden="true"></i>
                     </div>
                     <div class="system-list_item-element">
                         {{ 'dashboard.requirements.requirements.empty'|trans({}, 'SystemInformationBundle')|raw }}
@@ -23,7 +23,7 @@
             {% for req in requirements.requirements.error %}
                 <div class="system-list_item system-list_item--icon bg-color-error--light">
                     <div class="system-list_item-element">
-                        <i class="icon-x icon-box-round bg-color-error mr-10" aria-hidden="true"></i>
+                        <i class="icon-sib-x icon-sib-box-round bg-color-error mr-10" aria-hidden="true"></i>
                     </div>
                     <div class="system-list_item-element">
                         {{ req.test }}
@@ -40,7 +40,7 @@
                 {% for req in requirements.requirements.success %}
                     <div class="system-list_item">
                         <div class="system-list_item-element">
-                            <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                            <i class="icon-sib-check icon-sib-box-round bg-color-success mr-10" aria-hidden="true"></i>
                         </div>
                         <div class="system-list_item-element">
                             {{ req.help }}
@@ -56,7 +56,7 @@
             {% if requirements.recommendations.warning is empty %}
                 <div class="system-list_item">
                     <div class="system-list_item-element">
-                        <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                        <i class="icon-sib-check icon-sib-box-round bg-color-success mr-10" aria-hidden="true"></i>
                     </div>
                     <div class="system-list_item-element">
                         {{ 'dashboard.requirements.recommendations.empty'|trans({}, 'SystemInformationBundle')|raw }}
@@ -66,7 +66,7 @@
             {% for req in requirements.recommendations.warning %}
                 <div class="system-list_item system-list_item--icon bg-color-warning--light">
                     <div class="system-list_item-element">
-                        <i class="icon-x icon-box-round bg-color-warning mr-10" aria-hidden="true"></i>
+                        <i class="icon-sib-x icon-sib-box-round bg-color-warning mr-10" aria-hidden="true"></i>
                     </div>
                     <div class="system-list_item-element">
                         {{ req.test }}
@@ -82,7 +82,7 @@
                 {% for req in requirements.recommendations.success %}
                     <div class="system-list_item">
                         <div class="system-list_item-element">
-                            <i class="icon-check icon-box-round bg-color-success mr-10" aria-hidden="true"></i>
+                            <i class="icon-sib-check icon-sib-box-round bg-color-success mr-10" aria-hidden="true"></i>
                         </div>
                         <div class="system-list_item-element">
                             {{ req.help }}

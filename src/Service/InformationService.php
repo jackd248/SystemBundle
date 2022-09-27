@@ -80,7 +80,7 @@ class InformationService {
             $information['checks'] = [
                 'value' => $this->checkService->getMonitorCheckCount($checks) . ' ' . $this->translator->trans('system.items.check.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.check.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-monitor',
+                'icon' => 'icon-sib-monitor',
                 'class' => 'color-error',
                 'route' => $this->container->get('router')->generate('kmi_system_information_monitoring', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
@@ -90,7 +90,7 @@ class InformationService {
             $information['logs'] = [
                 'value' => $errorCount . ' ' . $this->translator->trans('system.items.logs.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.logs.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-info',
+                'icon' => 'icon-sib-info',
                 'class' => 'color-error',
                 'route' => $this->container->get('router')->generate('kmi_system_information_log', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
@@ -101,7 +101,7 @@ class InformationService {
             $information['dependency'] = [
                 'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-code',
+                'icon' => 'icon-sib-code',
                 'class' => 'color-warning',
                 'route' => $this->container->get('router')->generate('kmi_system_information_dependencies', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
@@ -112,7 +112,7 @@ class InformationService {
             $information['dependency'] = [
                 'value' => $count . ' ' . $this->translator->trans('system.items.dependency.value', [], 'SystemInformationBundle'),
                 'description' => $this->translator->trans('system.items.dependency.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-code',
+                'icon' => 'icon-sib-code',
                 'class' => 'color-error',
                 'route' => $this->container->get('router')->generate('kmi_system_information_dependencies', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
@@ -123,7 +123,7 @@ class InformationService {
                 $information['requirements'] = [
                     'value' => $requirementsCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
-                    'icon' => 'icon-package',
+                    'icon' => 'icon-sib-package',
                     'class' => 'color-error',
                     'route' => $this->container->get('router')->generate('kmi_system_information_requirements', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 ];
@@ -132,7 +132,7 @@ class InformationService {
                 $information['requirements'] = [
                     'value' => $recommendationCount . ' ' . $this->translator->trans('system.items.requirements.value', [], 'SystemInformationBundle'),
                     'description' => $this->translator->trans('system.items.requirements.description', [], 'SystemInformationBundle'),
-                    'icon' => 'icon-package',
+                    'icon' => 'icon-sib-package',
                     'class' => 'color-warning',
                     'route' => $this->container->get('router')->generate('kmi_system_information_requirements', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 ];
@@ -142,20 +142,20 @@ class InformationService {
         $information['appVersion'] = [
             'value' => $this->getAppVersion()['value'],
             'description' => $this->translator->trans('system.items.app_version.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-command',
+            'icon' => 'icon-sib-command',
             'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
         $information['phpVersion'] = [
             'value' => $this->getPhpVersion()['value'],
             'description' => $this->translator->trans('system.items.php.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-php',
+            'icon' => 'icon-sib-php',
             'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
         $information['symfonyVersion'] = [
             'value' => $this->getSymfonyVersion()['value'],
             'description' => $this->translator->trans('system.items.symfony.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-symfony',
+            'icon' => 'icon-sib-symfony',
             'route' => $this->container->get('router')->generate('kmi_system_information_information')
         ];
 
@@ -163,7 +163,7 @@ class InformationService {
             $information['appEnvironment'] = [
                 'value' => $appEnv,
                 'description' => $this->translator->trans('system.items.app_env.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-package',
+                'icon' => 'icon-sib-package',
                 'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
@@ -172,7 +172,7 @@ class InformationService {
             $information['symfonyEnvironment'] = [
                 'value' => $symfonyEnv,
                 'description' => $this->translator->trans('system.items.symfony_env.description', [], 'SystemInformationBundle'),
-                'icon' => 'icon-git-branch',
+                'icon' => 'icon-sib-git-branch',
                 'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ];
         }
@@ -180,7 +180,7 @@ class InformationService {
         $information['os'] = [
             'value' => $this->getServerOperating()['value'],
             'description' => $this->translator->trans('system.items.os.description', [], 'SystemInformationBundle'),
-            'icon' => 'icon-hard-drive',
+            'icon' => 'icon-sib-hard-drive',
             'route' => $this->container->get('router')->generate('kmi_system_information_information', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
