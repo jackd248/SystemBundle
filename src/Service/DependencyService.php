@@ -254,7 +254,9 @@ class DependencyService
             if (array_key_exists($item['name'], $composerUpdate)) {
                 $composerLock[$item['name']] = array_merge($item, $composerUpdate[$item['name']]);
                 $composerLock[$item['name']]['version'] = ltrim($composerLock[$item['name']]['version'], 'v');
-                $composerLock[$item['name']]['latest'] = ltrim($composerLock[$item['name']]['latest'], 'v');
+                if (array_key_exists('latest', $composerLock[$item['name']])) {
+                    $composerLock[$item['name']]['latest'] = ltrim($composerLock[$item['name']]['latest'], 'v');
+                }
                 unset($composerLock[$key]);
             }
         }
