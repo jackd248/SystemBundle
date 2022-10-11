@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Twig;
 
@@ -8,11 +10,9 @@ use Twig\TwigFunction;
 
 /**
  * Class EnvironmentExtension
- * @package Kmi\SystemInformationBundle\Twig
  */
 class EnvironmentExtension extends AbstractExtension
 {
-
     /**
      * Constants
      */
@@ -29,7 +29,8 @@ class EnvironmentExtension extends AbstractExtension
     /**
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      */
-    public function __construct(InformationService $informationService) {
+    public function __construct(InformationService $informationService)
+    {
         $this->informationService = $informationService;
     }
 
@@ -50,7 +51,9 @@ class EnvironmentExtension extends AbstractExtension
     {
         $environment = $_ENV['SYMFONY_ENVIRONMENT'] ?? $_ENV['APP_ENV'];
 
-        if (in_array(mb_strtolower($environment), self::ENV_PROD)) return '';
+        if (in_array(mb_strtolower($environment), self::ENV_PROD)) {
+            return '';
+        }
 
         $color = '#F39C12';
         if (in_array(mb_strtolower($environment), self::ENV_DEV)) {

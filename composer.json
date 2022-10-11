@@ -25,7 +25,17 @@
     "symfony/http-kernel": "^4.4 || ^5.3",
     "symfony/framework-bundle": "^4.4 || ^5.3",
     "symfony/phpunit-bridge": "^4.4 || ^5.3",
-    "symfony/browser-kit": "^4.4 || ^5.3"
+    "symfony/browser-kit": "^4.4 || ^5.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+    "friendsofphp/php-cs-fixer": "^3.11",
+    "pheromone/phpcs-security-audit": "^2.0",
+    "phpstan/phpstan-symfony": "^1.2"
+  },
+  "scripts": {
+    "php:lint": "find *.php . -name '*.php' ! -path './vendor/*' ! -path './var/*' -print0 | xargs -0 -n 1 -P 4 php -l",
+    "php:fix": "@php vendor/bin/php-cs-fixer fix --show-progress=dots",
+    "php:stan": "@php vendor/bin/phpstan analyse -c phpstan.neon",
+    "php:audit": "@php vendor/bin/phpcs --extensions=php,inc,lib,module,info --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml src/"
   },
   "autoload": {
     "psr-4": {
@@ -35,6 +45,11 @@
   "autoload-dev": {
     "psr-4": {
       "Kmi\\SystemInformationBundle\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }

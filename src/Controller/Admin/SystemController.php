@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Controller\Admin;
 
+use Kmi\SystemInformationBundle\Service\BundleService;
 use Kmi\SystemInformationBundle\Service\CheckService;
 use Kmi\SystemInformationBundle\Service\DatabaseService;
 use Kmi\SystemInformationBundle\Service\DependencyService;
@@ -9,7 +12,6 @@ use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
 use Kmi\SystemInformationBundle\Service\MailService;
 use Kmi\SystemInformationBundle\Service\SymfonyService;
-use Kmi\SystemInformationBundle\Service\BundleService;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -21,7 +23,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class SystemController
- * @package App\Controller
  */
 class SystemController extends AbstractController
 {
@@ -124,7 +125,7 @@ class SystemController extends AbstractController
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
             'logs' => $logs,
-            'logDir' => $this->getParameter('kernel.logs_dir')
+            'logDir' => $this->getParameter('kernel.logs_dir'),
         ]);
     }
 
@@ -138,12 +139,12 @@ class SystemController extends AbstractController
     {
         $limit = 100;
         if ($request->query->has('limit')) {
-            $limit = intval($request->query->get('limit'));
+            $limit = (int)($request->query->get('limit'));
         }
 
         $page = 1;
         if ($request->query->has('page')) {
-            $page = intval($request->query->get('page'));
+            $page = (int)($request->query->get('page'));
         }
 
         $level = null;
@@ -171,7 +172,7 @@ class SystemController extends AbstractController
             'resultCount' => $logs['count'],
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
-            'search' => $search
+            'search' => $search,
         ]);
     }
 
@@ -201,7 +202,7 @@ class SystemController extends AbstractController
         return $this->render('@SystemInformationBundle/information.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $this->informationService->getSystemInformation(true),
-            'infos' => $this->informationService->getFurtherSystemInformation()
+            'infos' => $this->informationService->getFurtherSystemInformation(),
         ]);
     }
 
@@ -217,20 +218,20 @@ class SystemController extends AbstractController
         $showOnlyRequired = false;
         $forceUpdate = false;
         if ($request->query->has('search')) {
-            $search = strval($request->query->get('search'));
+            $search = (string)($request->query->get('search'));
         }
         $search = $search ?: '';
 
         if ($request->query->has('updatable')) {
-            $showOnlyUpdatable = boolval($request->query->get('updatable'));
+            $showOnlyUpdatable = (bool)($request->query->get('updatable'));
         }
 
         if ($request->query->has('required')) {
-            $showOnlyRequired = boolval($request->query->get('required'));
+            $showOnlyRequired = (bool)($request->query->get('required'));
         }
 
         if ($request->query->has('force')) {
-            $forceUpdate = boolval($request->query->get('force'));
+            $forceUpdate = (bool)($request->query->get('force'));
         }
 
         $dependencyInformation = $this->dependencyService->getDependencyInformation($forceUpdate);
@@ -246,7 +247,7 @@ class SystemController extends AbstractController
             'search' => $search,
             'showOnlyUpdatable' => $showOnlyUpdatable,
             'showOnlyRequired' => $showOnlyRequired,
-            'metadata' => $metadata
+            'metadata' => $metadata,
         ]);
     }
 
@@ -259,7 +260,7 @@ class SystemController extends AbstractController
     {
         $teaser = $this->informationService->getSystemInformation(true);
         if ($request->query->has('receiver')) {
-            $receiver = strval($request->query->get('receiver'));
+            $receiver = (string)($request->query->get('receiver'));
             $mailResult = $this->mailService->sendStatusMail([$receiver], $teaser);
 
             if ($mailResult) {
@@ -270,7 +271,7 @@ class SystemController extends AbstractController
         return $this->render('@SystemInformationBundle/mail.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $teaser,
-            'config' => $this->informationService->getMailConfiguration()
+            'config' => $this->informationService->getMailConfiguration(),
         ]);
     }
 
@@ -314,7 +315,7 @@ class SystemController extends AbstractController
     {
         return $this->render('@SystemInformationBundle/additional.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
-            'teaser' => $this->informationService->getSystemInformation(true)
+            'teaser' => $this->informationService->getSystemInformation(true),
         ]);
     }
 
@@ -327,7 +328,7 @@ class SystemController extends AbstractController
         $systemInformation = $this->informationService->getSystemInformation(true);
 
         return $this->render('@SystemInformationBundle/info.html.twig', [
-            'information' => $systemInformation
+            'information' => $systemInformation,
         ]);
     }
 
@@ -337,7 +338,7 @@ class SystemController extends AbstractController
     public function phpInfo(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('@SystemInformationBundle/phpInfo.html.twig', [
-            'info' => \phpinfo()
+            'info' => \phpinfo(),
         ]);
     }
 
@@ -351,9 +352,9 @@ class SystemController extends AbstractController
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput(array(
-            'command' => 'cache:clear'
-        ));
+        $input = new ArrayInput([
+            'command' => 'cache:clear',
+        ]);
 
         // Use the NullOutput class instead of BufferedOutput.
         $output = new NullOutput();

@@ -1,12 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
-/**
- *
- */
-class ConfigurationLoader {
-
+class ConfigurationLoader
+{
     /**
      * @var array|null
      */
@@ -15,14 +14,13 @@ class ConfigurationLoader {
     /**
      * @param array|null $config
      */
-    public function __construct(?array $config = null) {
+    public function __construct(?array $config = null)
+    {
         $this->config = $config;
     }
 
-    /**
-     * @return void
-     */
-    private function verifyConfiguration() {
+    private function verifyConfiguration()
+    {
         // ToDo:
     }
 

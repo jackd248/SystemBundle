@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Twig;
 
@@ -8,7 +10,6 @@ use Twig\TwigFunction;
 
 /**
  * Class VersionExtension
- * @package Kmi\SystemInformationBundle\Twig
  */
 class VersionExtension extends AbstractExtension
 {
@@ -20,7 +21,8 @@ class VersionExtension extends AbstractExtension
     /**
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      */
-    public function __construct(InformationService $informationService) {
+    public function __construct(InformationService $informationService)
+    {
         $this->informationService = $informationService;
     }
 

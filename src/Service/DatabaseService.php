@@ -1,20 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
-use DateTime;
 use Exception;
-use Locale;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- *
- */
 class DatabaseService
 {
-
     public const SIZE_THRESHOLD = 1.5;
     public const COUNT_THRESHOLD = 1.5;
     public const COLORS = [
@@ -34,7 +29,7 @@ class DatabaseService
         '#673AB7',
         '#9C27B0',
         '#E91E63',
-        '#F44336'
+        '#F44336',
     ];
 
     public const COLORS_SIZE = [
@@ -142,12 +137,12 @@ class DatabaseService
             $this->informationService->getDatabaseCollaction(),
             [
                 'label' => $this->translator->trans('system.information.database.size', [], 'SystemInformationBundle'),
-                'value' => $this->getTotal()['size']
+                'value' => $this->getTotal()['size'],
             ],
             [
                 'label' => $this->translator->trans('system.information.database.count', [], 'SystemInformationBundle'),
-                'value' => $this->getTotal()['count']
-            ]
+                'value' => $this->getTotal()['count'],
+            ],
         ];
     }
 

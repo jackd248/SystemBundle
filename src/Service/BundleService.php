@@ -1,15 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- *
- */
-class BundleService {
-
+class BundleService
+{
     /**
      * @var Container
      */
@@ -30,9 +29,6 @@ class BundleService {
         $this->translator = $translator;
     }
 
-    /**
-     *
-     */
     public function getBundleInformation()
     {
         return $this->container->getParameter('kernel.bundles');

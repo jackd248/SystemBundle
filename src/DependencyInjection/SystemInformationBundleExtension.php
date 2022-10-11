@@ -7,11 +7,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SystemInformationBundleExtension extends ConfigurableExtension
 {
-
     /**
      * Load the configuration and inject its values
      * https://symfony.com/doc/current/bundles/configuration.html

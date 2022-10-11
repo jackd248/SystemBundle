@@ -1,13 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
 use Liip\MonitorBundle\Helper\ArrayReporter;
 use Liip\MonitorBundle\Helper\RunnerManager;
 
-/**
- *
- */
 class CheckService
 {
     /**
@@ -46,8 +45,8 @@ class CheckService
     {
         $status = 0;
         foreach ($checks as $check) {
-            if (intval($check['status']) > $status) {
-                $status = intval($check['status']);
+            if ((int)($check['status']) > $status) {
+                $status = (int)($check['status']);
             }
         }
         return $status;
@@ -61,7 +60,7 @@ class CheckService
     {
         $count = 0;
         foreach ($checks as $check) {
-            if (intval($check['status']) > 0) {
+            if ((int)($check['status']) > 0) {
                 $count++;
             }
         }

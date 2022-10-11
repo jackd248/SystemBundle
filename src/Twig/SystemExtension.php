@@ -1,16 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Twig;
 
 use Kmi\SystemInformationBundle\Service\CheckService;
-use Kmi\SystemInformationBundle\Service\InformationService;
 use Kmi\SystemInformationBundle\Service\LogService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Twig\Extension\AbstractExtension;
@@ -18,11 +16,9 @@ use Twig\TwigFunction;
 
 /**
  * Class SystemController
- * @package App\Controller
  */
 class SystemExtension extends AbstractExtension
 {
-
     const CACHE_KEY = 'SystemInformationBundle_SystemExtension';
     const CACHE_LIFETIME = 300;
 
@@ -94,6 +90,6 @@ class SystemExtension extends AbstractExtension
         $checkStatus = $status['checkStatus'] ? '<i class="icon-sib-alert-triangle" style="margin-right: 5px;"></i>' : '';
         $logStatus = $status['logStatus'] ? '<i class="icon-sib-alert-circle" style="margin-right: 5px;"></i>' : '';
 
-        return '<ul class="sidebar-menu" data-widget="tree"><li class="' . ($isActive ? 'active ': ''). 'first"><a href="' . $url . '"><i class="fa fa-cogs" aria-hidden="true"></i>System<div style="float:right; margin-right: 5px; opacity: .4;">' . $logStatus . $checkStatus . '</div></a></li>';
+        return '<ul class="sidebar-menu" data-widget="tree"><li class="' . ($isActive ? 'active ': '') . 'first"><a href="' . $url . '"><i class="fa fa-cogs" aria-hidden="true"></i>System<div style="float:right; margin-right: 5px; opacity: .4;">' . $logStatus . $checkStatus . '</div></a></li>';
     }
 }

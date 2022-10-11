@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Twig;
 
@@ -15,7 +17,6 @@ use Twig\TwigFunction;
 
 /**
  * Class SystemController
- * @package App\Controller
  */
 class SystemIndicatorExtension extends AbstractExtension
 {
@@ -65,7 +66,6 @@ class SystemIndicatorExtension extends AbstractExtension
      */
     public function getSystemInformationIndicator(Environment $twig)
     {
-
         try {
             return $twig->render('@SystemInformationBundle/twig/systemIndicator.html.twig');
         } catch (LoaderError | RuntimeError $e) {

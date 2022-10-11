@@ -1,12 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
 use Composer\Semver\Semver;
 use Kmi\SystemInformationBundle\SystemInformationBundle;
 use RuntimeException;
-use Sonata\AdminBundle\SonataAdminBundle;
-use Sonata\AdminBundle\SonataConfiguration;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -14,12 +14,8 @@ use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- *
- */
 class DependencyService
 {
-
     /**
      * State constants
      * @var int
@@ -64,7 +60,6 @@ class DependencyService
     }
 
     /**
-     *
      * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getDependencyInformation(bool $forceUpdate = false): array
@@ -83,7 +78,7 @@ class DependencyService
                 $composerLockContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.lock');
                 $composerContent = $this->mergeComposerData($composerLockContent['packages'], $this->checkForUpdates());
                 return $this->addAdvancedInformation($composerContent);
-            }, null, $metadata)
+            }, null, $metadata),
         ];
 
         if ($metadata) {
@@ -94,7 +89,6 @@ class DependencyService
         return $result;
     }
 
-
     /**
      * @param array $dependencies
      * @param string|null $search
@@ -104,7 +98,9 @@ class DependencyService
      */
     public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false, bool $showOnlyRequired = false): array
     {
-        if (is_null($search) & !$showOnlyUpdatable) return $dependencies;
+        if (is_null($search) & !$showOnlyUpdatable) {
+            return $dependencies;
+        }
 
         $filteredDependencies = [];
         foreach ($dependencies as $dependencyName => $dependency) {
@@ -134,7 +130,6 @@ class DependencyService
         return $filteredDependencies;
     }
 
-
     /**
      * @param array $dependencies
      * @return array
@@ -148,8 +143,8 @@ class DependencyService
                 self::STATE_PINNED_OUT_OF_DATE => [],
                 self::STATE_OUT_OF_DATE => [],
                 self::STATE_INSECURE => [],
-                'required' => []
-            ]
+                'required' => [],
+            ],
         ];
 
         foreach ($dependencies as $dependency) {
@@ -177,8 +172,9 @@ class DependencyService
     /**
      * @return mixed
      */
-    public function getSystemInformationBundleInfo() {
-        return $this->getComposerFileContent(dirname(__FILE__) . '/../../composer.json');
+    public function getSystemInformationBundleInfo()
+    {
+        return $this->getComposerFileContent(__DIR__ . '/../../composer.json');
     }
 
     /**
@@ -192,13 +188,13 @@ class DependencyService
         }
 
         if (!($fileContent = file_get_contents($filePath))) {
-            throw new RuntimeException("Unable to read file");
+            throw new RuntimeException('Unable to read file');
         }
 
         $json = \json_decode($fileContent, true);
 
         if (is_null($json)) {
-            throw new RuntimeException("Invalid composer file format");
+            throw new RuntimeException('Invalid composer file format');
         }
 
         return $json;
@@ -283,12 +279,11 @@ class DependencyService
         if (explode('.', $stable)[0] != explode('.', $latest)[0] ||
             (isset(explode('.', $stable)[1]) && isset(explode('.', $latest)[1]) && explode('.', $stable)[1] != explode('.', $latest)[1])) {
             $state = self::STATE_OUT_OF_DATE;
-        } else if (isset(explode('.', $stable)[2]) && isset(explode('.', $latest)[2]) && explode('.', $stable)[2] != explode('.', $latest)[2]) {
+        } elseif (isset(explode('.', $stable)[2]) && isset(explode('.', $latest)[2]) && explode('.', $stable)[2] != explode('.', $latest)[2]) {
             $state = self::STATE_PINNED_OUT_OF_DATE;
         }
 
         if ($state != self::STATE_UP_TO_DATE && $required != null) {
-
 //            try {
 //                if (!Semver::satisfies($latest, $required)) {
 //                    $state = self::STATE_UP_TO_DATE;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
@@ -10,12 +12,8 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Requirements\ProjectRequirements;
 use Symfony\Requirements\SymfonyRequirements;
 
-/**
- *
- */
 class SymfonyService
 {
-
     /**
      * @var Container
      */
@@ -60,12 +58,12 @@ class SymfonyService
             $results = [
                 'requirements' => [
                     'success' => [],
-                    'error' => []
+                    'error' => [],
                 ],
                 'recommendations' => [
                     'success' => [],
-                    'error' => []
-                ]
+                    'error' => [],
+                ],
             ];
 
             foreach ($requirements as $req) {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
@@ -14,9 +16,6 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Cache\CacheInterface;
 
-/**
- *
- */
 class MailService
 {
     /**
@@ -92,18 +91,19 @@ class MailService
                 ->setBody(
                     $this->container->get('twig')->render(
                         '@SystemInformationBundle/mail/status.html.twig',
-                        array(
+                        [
                             'teaser' => $teaser,
                             'project' => $projectName,
                             'projectLogo' => $projectLogo,
                             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
-                            'logo' => $message->embed(Swift_Image::fromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg')))
-                        )
+                            'logo' => $message->embed(Swift_Image::fromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg'))),
+                        ]
                     ),
                     'text/html'
                 );
             return $mailer->send($message);
-        } elseif (interface_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
+        }
+        if (interface_exists(\Symfony\Component\Mailer\MailerInterface::class)) {
             $mailer = new Mailer(Transport::fromDsn($_ENV['MAILER_DSN']));
 
             $email = (new Email())
@@ -112,16 +112,16 @@ class MailService
                 ->html(
                     $this->container->get('twig')->render(
                         '@SystemInformationBundle/mail/status.html.twig',
-                        array(
+                        [
                             'teaser' => $teaser,
                             'project' => $projectName,
                             'projectLogo' => $projectLogo,
                             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
-                            'logo' => ''
-                        )
+                            'logo' => '',
+                        ]
                     ),
                 )
-                ->embedFromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg'),'logo')
+                ->embedFromPath($this->fileLocator->locate('@SystemInformationBundle/Resources/public/images/settings.svg'), 'logo')
             ;
 
             foreach ($receiver as $to) {
@@ -145,5 +145,4 @@ class MailService
         }
         return $_ENV['SYSTEM_INFORMATION_BUNDLE_SENDER_MAIL'];
     }
-
 }

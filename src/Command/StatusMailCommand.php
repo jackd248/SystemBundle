@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Command;
 
@@ -44,14 +46,11 @@ class StatusMailCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * @return void
-     */
     protected function configure(): void
     {
         $this
             ->addArgument('receiver', InputArgument::REQUIRED, 'Status mail receiver addresses, e.g. test@mail.com,test2@mail.com')
-            ->addOption('force', 'f',  InputOption::VALUE_OPTIONAL, 'Forcing the mail send process', 0)
+            ->addOption('force', 'f', InputOption::VALUE_OPTIONAL, 'Forcing the mail send process', 0)
         ;
     }
 
@@ -71,7 +70,6 @@ class StatusMailCommand extends Command
         /**
          * ToDo: Save result in cache to avoid to many status mails being send
          */
-
         $receiver = explode(',', $input->getArgument('receiver'));
         $teaser = $this->informationService->getSystemInformation(true);
 
@@ -108,6 +106,6 @@ class StatusMailCommand extends Command
 //            ]);
 //        }
 
-        return intval(!$result);
+        return (int)(!$result);
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kmi\SystemInformationBundle\Service;
 
@@ -9,21 +11,18 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-/**
- *
- */
 class LogService
 {
     const LOG_TYPE = [
         'WARNING' => [
-            'WARNING'
+            'WARNING',
         ],
         'ERROR' => [
             'ERROR',
             'ALERT',
             'CRITICAL',
-            'EMERGENCY'
-        ]
+            'EMERGENCY',
+        ],
     ];
 
     const LOG_LEVEL = [
@@ -34,7 +33,7 @@ class LogService
         'ERROR',
         'ALERT',
         'CRITICAL',
-        'EMERGENCY'
+        'EMERGENCY',
     ];
 
     // @ToDo: make this configurable
@@ -61,7 +60,6 @@ class LogService
         $this->container = $container;
         $this->cachePool = $cachePool;
     }
-
 
     /**
      * @return array
@@ -104,7 +102,7 @@ class LogService
             throw new FileNotFoundException();
         }
 
-        $fn = fopen($absolutePath, "r");
+        $fn = fopen($absolutePath, 'r');
         $lines = [];
 
         while (!feof($fn)) {
@@ -119,12 +117,12 @@ class LogService
             if (!isset($data['date'])) {
                 continue;
             }
-            $array = array(
+            $array = [
                 'date' => date(self::DATE_FORMAT, strtotime($data['date'])),
                 'channel' => $data['channel'],
                 'level' => $data['level'],
-                'message' => $data['message']
-            );
+                'message' => $data['message'],
+            ];
 
             $lines[] = $array;
         }
@@ -171,7 +169,6 @@ class LogService
             });
         }
 
-
         if ($search) {
             $logs = array_filter($logs, function ($log) use ($search) {
                 return strpos($log['message'], $search) !== false;
@@ -184,7 +181,7 @@ class LogService
 
         return [
             'result' => $logs,
-            'count' => $resultCount
+            'count' => $resultCount,
         ];
     }
 
@@ -195,7 +192,6 @@ class LogService
      */
     public function getErrorCount(bool $forceUpdate = false)
     {
-
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
             $this->cachePool->delete($cacheKey);
@@ -212,7 +208,6 @@ class LogService
             return $countWarningsAndErrorsInLogs;
         });
     }
-
 
     /**
      * @param $logs
@@ -276,9 +271,15 @@ class LogService
      */
     private function isReadable($absoluteFilePath): bool
     {
-        if (!is_readable($absoluteFilePath)) return false;
-        if (str_ends_with($absoluteFilePath, '.gz')) return false;
-        if ($this->fileSizeTooLarge($absoluteFilePath)) return false;
+        if (!is_readable($absoluteFilePath)) {
+            return false;
+        }
+        if (str_ends_with($absoluteFilePath, '.gz')) {
+            return false;
+        }
+        if ($this->fileSizeTooLarge($absoluteFilePath)) {
+            return false;
+        }
 
         return true;
     }
@@ -289,8 +290,12 @@ class LogService
      */
     private function isCountable($absoluteFilePath): bool
     {
-        if ($this->fileSizeTooLarge($absoluteFilePath)) return false;
-        if ((new DateTime())->setTimestamp(filemtime($absoluteFilePath)) <= new \DateTime(self::PERIOD)) return false;
+        if ($this->fileSizeTooLarge($absoluteFilePath)) {
+            return false;
+        }
+        if ((new DateTime())->setTimestamp(filemtime($absoluteFilePath)) <= new \DateTime(self::PERIOD)) {
+            return false;
+        }
         return true;
     }
 

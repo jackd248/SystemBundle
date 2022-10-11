@@ -1,0 +1,8 @@
+parameters:
+  level: 2
+
+  paths:
+    - %currentWorkingDirectory%/src
+
+  excludePaths:
+    - %currentWorkingDirectory%/vendor

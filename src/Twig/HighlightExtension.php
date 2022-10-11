@@ -9,7 +9,6 @@ use Twig\TwigFilter;
 
 class HighlightExtension extends AbstractExtension
 {
-
     public function getFilters()
     {
         return [
@@ -25,11 +24,11 @@ class HighlightExtension extends AbstractExtension
     public function highlightSearchWord(string $string, ?string $searchWord = '')
     {
         if ($searchWord != null) {
-            if (intval(mb_strpos($string, $searchWord)) !== false) {
+            if ((int)(mb_strpos($string, $searchWord)) !== false) {
                 $strings = [];
-                array_push($strings, substr($string, 0, intval(mb_strpos($string, $searchWord))));
+                array_push($strings, substr($string, 0, (int)(mb_strpos($string, $searchWord))));
                 array_push($strings, '<mark>' . $searchWord . '</mark>');
-                array_push($strings, substr($string, intval(intval(mb_strpos($string, $searchWord))) + intval(mb_strlen($searchWord))));
+                array_push($strings, substr($string, (int)((int)(mb_strpos($string, $searchWord))) + (int)(mb_strlen($searchWord))));
 
                 $string = implode('', $strings);
             }
