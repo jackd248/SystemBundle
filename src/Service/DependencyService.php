@@ -36,27 +36,13 @@ class DependencyService
     protected CacheInterface $cachePool;
 
     /**
-     * @var \Symfony\Contracts\Translation\TranslatorInterface
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * @var \Kmi\SystemInformationBundle\Service\ConfigurationLoader
-     */
-    private ConfigurationLoader $configurationLoader;
-
-    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
-     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
-     * @param \Kmi\SystemInformationBundle\Service\ConfigurationLoader $configurationLoader
      */
-    public function __construct(Container $container, TranslatorInterface $translator, CacheInterface $cachePool, ConfigurationLoader $configurationLoader)
+    public function __construct(Container $container, CacheInterface $cachePool)
     {
         $this->container = $container;
-        $this->translator = $translator;
         $this->cachePool = $cachePool;
-        $this->configurationLoader = $configurationLoader;
     }
 
     /**
@@ -209,22 +195,24 @@ class DependencyService
         $composerFileContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.json');
         $requiredPackages = $composerFileContent['require'];
         foreach ($composerContent as &$package) {
-            if (in_array($package['name'], array_keys($requiredPackages))) {
+            if (array_key_exists($package['name'], $requiredPackages)) {
                 $package['requiredVersion'] = $requiredPackages[$package['name']];
             }
 
-            $package['status'] = $this->compareVersions($package['version'], $package['latest'], array_key_exists('requiredVersion', $package) ?? $package['requiredVersion']);
+            if (array_key_exists('latest', $package)) {
+                $package['status'] = $this->compareVersions($package['version'], $package['latest'], array_key_exists('requiredVersion', $package) ?? $package['requiredVersion']);
+            }
         }
         return $composerContent;
     }
 
     /**
      * @param bool $forceUpdate
-     * @return mixed
+     * @return array
      */
-    protected function checkForUpdates(bool $forceUpdate = false)
+    protected function checkForUpdates(bool $forceUpdate = false): array
     {
-        $result = null;
+        $result = [];
         $process = new Process(['composer', 'show', '--latest', '--minor-only', '--format', 'json', '-d', $this->container->getParameter('kernel.project_dir')]);
 
         try {

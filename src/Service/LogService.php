@@ -13,7 +13,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class LogService
 {
-    const LOG_TYPE = [
+    public const LOG_TYPE = [
         'WARNING' => [
             'WARNING',
         ],
@@ -25,7 +25,7 @@ class LogService
         ],
     ];
 
-    const LOG_LEVEL = [
+    public const LOG_LEVEL = [
         'DEBUG',
         'INFO',
         'NOTICE',
@@ -37,9 +37,9 @@ class LogService
     ];
 
     // @ToDo: make this configurable
-    const PERIOD = '-1 day';
-    const DATE_FORMAT = 'd.m.Y H:i:s';
-    const MAX_FILE_SIZE = 20000000; // 20MB
+    public const PERIOD = '-1 day';
+    public const DATE_FORMAT = 'd.m.Y H:i:s';
+    public const MAX_FILE_SIZE = 20000000; // 20MB
 
     /**
      * @var ContainerInterface
@@ -102,7 +102,7 @@ class LogService
             throw new FileNotFoundException();
         }
 
-        $fn = fopen($absolutePath, 'r');
+        $fn = fopen($absolutePath, 'rb');
         $lines = [];
 
         while (!feof($fn)) {
@@ -149,7 +149,7 @@ class LogService
      * @param int $page
      * @param null $level
      * @param null $channel
-     * @param null $search
+     * @param string|null $search
      * @return array
      */
     public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null, string $search = null): array
@@ -158,8 +158,8 @@ class LogService
 
         // Filter upwards by level
         if ($level) {
-            $logs = array_filter($logs, function ($log) use ($level) {
-                return array_search($log['level'], self::LOG_LEVEL) >= array_search($level, self::LOG_LEVEL);
+            $logs = array_filter($logs, static function ($log) use ($level) {
+                return array_search($log['level'], self::LOG_LEVEL, true) >= array_search($level, self::LOG_LEVEL, true);
             });
         }
 
@@ -171,7 +171,7 @@ class LogService
 
         if ($search) {
             $logs = array_filter($logs, function ($log) use ($search) {
-                return strpos($log['message'], $search) !== false;
+                return str_contains($log['message'], $search);
             });
         }
 
@@ -190,7 +190,7 @@ class LogService
      * @return mixed
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getErrorCount(bool $forceUpdate = false)
+    public function getErrorCount(bool $forceUpdate = false): mixed
     {
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -250,7 +250,7 @@ class LogService
      * @param int $precision
      * @return string
      */
-    private function formatBytes($bytes, $precision = 2): string
+    private function formatBytes($bytes, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
@@ -259,7 +259,7 @@ class LogService
         $pow = min($pow, count($units) - 1);
 
         // Uncomment one of the following alternatives
-        $bytes /= pow(1024, $pow);
+        $bytes /= 1024 ** $pow;
         // $bytes /= (1 << (10 * $pow));
 
         return round($bytes, $precision) . ' ' . $units[$pow];

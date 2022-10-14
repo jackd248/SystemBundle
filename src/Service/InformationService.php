@@ -50,7 +50,6 @@ class InformationService
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\SymfonyService $symfonyService
      * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
-     * @param \Kmi\SystemInformationBundle\Service\MailService $mailService
      */
     public function __construct(Container $container, TranslatorInterface $translator, CheckService $checkService, LogService $logService, SymfonyService $symfonyService, DependencyService $dependencyService)
     {
