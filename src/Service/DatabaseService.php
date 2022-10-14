@@ -12,67 +12,9 @@ class DatabaseService
 {
     public const SIZE_THRESHOLD = 1.5;
     public const COUNT_THRESHOLD = 1.5;
-    public const COLORS = [
-        '#FF8A65',
-        '#FF9800',
-        '#FFC107',
-        '#FFEB3B',
-        '#CDDC39',
-        '#8BC34A',
-        '#4CAF50',
-        '#009688',
-        '#00BCD4',
-        '#03A9F4',
-        '#2196F3',
-        '#3F51B5',
-        '#673AB7',
-        '#673AB7',
-        '#9C27B0',
-        '#E91E63',
-        '#F44336',
-    ];
 
-    public const COLORS_SIZE = [
-        '#004D40',
-        '#006064',
-        '#00695C',
-        '#00838F',
-        '#00796B',
-        '#0097A7',
-        '#00897B',
-        '#00ACC1',
-        '#009688',
-        '#00BCD4',
-        '#26A69A',
-        '#4DB6AC',
-        '#4DD0E1',
-        '#80CBC4',
-        '#80DEEA',
-        '#B2DFDB',
-        '#B2EBF2',
-        '#E0F2F1',
-        '#E0F7FA',
-        '#004D40',
-        '#006064',
-        '#00695C',
-        '#00838F',
-        '#00796B',
-        '#0097A7',
-        '#00897B',
-        '#00ACC1',
-        '#009688',
-        '#00BCD4',
-        '#26A69A',
-        '#4DB6AC',
-        '#4DD0E1',
-        '#80CBC4',
-        '#80DEEA',
-        '#B2DFDB',
-        '#B2EBF2',
-        '#E0F2F1',
-        '#E0F7FA',
-    ];
-    public const COLOR_OTHERS = '#B0BEC5';
+    public const COLOR_START = '1A2B4F';
+    public const COLOR_END = 'D8DFF0';
 
     /**
      * @var Container
@@ -204,7 +146,7 @@ class DatabaseService
     {
         $result = [];
         $others = 0.0;
-        //usort($tables, fn($a, $b) => $a['size'] <=> $b['size']);
+        usort($tables, fn($a, $b) => $b[$property] <=> $a[$property]);
 
         $propertyThreshold = (float)$max / 100 * $threshold;
         foreach ($tables as $key => $table) {
@@ -212,7 +154,6 @@ class DatabaseService
                 $result[] = [
                     'name' => $table['table'],
                     'value' => $table[$property],
-                    'color' => self::COLORS_SIZE[$key],
                 ];
             } else {
                 $others += (float)$table[$property];
@@ -223,8 +164,66 @@ class DatabaseService
             $result[] = [
                 'name' => 'Others',
                 'value' => $others,
-                'color' => self::COLOR_OTHERS,
             ];
+        }
+
+        $colors = $this->generateGradients('0x' . $this::COLOR_START,'0x' . $this::COLOR_END, count($result));
+
+        foreach ($result as $key => &$item) {
+            $item['color'] = $colors[$key];
+        }
+        return $result;
+    }
+
+    /**
+     * @param $pBegin
+     * @param $pEnd
+     * @param $pStep
+     * @param $pMax
+     * @return float|int
+     */
+    private function generateGradientsInterpolate($pBegin, $pEnd, $pStep, $pMax): float|int
+    {
+        if ($pBegin < $pEnd) {
+            return (($pEnd - $pBegin) * ($pStep / $pMax)) + $pBegin;
+        }
+
+        return (($pBegin - $pEnd) * (1 - ($pStep / $pMax))) + $pEnd;
+    }
+
+    /**
+     * @param $theColorBegin
+     * @param $theColorEnd
+     * @param $theNumSteps
+     * @return array
+     */
+    public function generateGradients($theColorBegin=0x000000,$theColorEnd=0xffffff,$theNumSteps=10): array
+    {
+        //transform to hex, and get rid of # if exists
+        $theColorBegin = hexdec(str_replace('#','',$theColorBegin));
+        $theColorEnd = hexdec(str_replace('#','',$theColorEnd));
+
+        //failsafe color codes
+        $theColorBegin = (($theColorBegin >= 0x000000) && ($theColorBegin <= 0xffffff)) ? $theColorBegin : 0x000000;
+        $theColorEnd = (($theColorEnd >= 0x000000) && ($theColorEnd <= 0xffffff)) ? $theColorEnd : 0xffffff;
+        $theNumSteps = (($theNumSteps > 0) && ($theNumSteps < 256)) ? $theNumSteps : 16;
+
+        $theR0 = ($theColorBegin & 0xff0000) >> 16;
+        $theG0 = ($theColorBegin & 0x00ff00) >> 8;
+        $theB0 = ($theColorBegin & 0x0000ff) >> 0;
+
+        $theR1 = ($theColorEnd & 0xff0000) >> 16;
+        $theG1 = ($theColorEnd & 0x00ff00) >> 8;
+        $theB1 = ($theColorEnd & 0x0000ff) >> 0;
+
+        $result = array();
+
+        for ($i = 0; $i <= $theNumSteps; $i++) {
+            $theR = $this->generateGradientsInterpolate($theR0, $theR1, $i, $theNumSteps);
+            $theG = $this->generateGradientsInterpolate($theG0, $theG1, $i, $theNumSteps);
+            $theB = $this->generateGradientsInterpolate($theB0, $theB1, $i, $theNumSteps);
+            $theVal = ((($theR << 8) | $theG) << 8) | $theB;
+            $result[] = sprintf("#%06X",$theVal);//strtoupper(str_pad(dechex($theVal),6,'0'))
         }
         return $result;
     }
