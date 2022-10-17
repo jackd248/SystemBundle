@@ -284,10 +284,13 @@ class SystemController extends AbstractController
     {
         $teaser = $this->informationService->getSystemInformation(true);
         $tables = $this->databaseService->getTables();
+        $total = $this->databaseService->getTotal();
         return $this->render('@SystemInformationBundle/database.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
             'teaser' => $teaser,
             'config' => $this->databaseService->getConfig(),
+            'size' => $total['size'],
+            'count' => $total['count'],
             'tables' => $tables,
             'relevantTablesBySize' =>
                 $this->databaseService->getRelevantTablesByProperty(
