@@ -49,12 +49,11 @@
         </a>
     </li>
     <li class="nav-item dropdown">
-        <a class="dropdown-toggle system-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-           aria-expanded="false">
+        <a class="dropdown-toggle system-nav-link" href="#" role="button" id="system-nav-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="icon-sib-more-vertical mr-5"
                aria-hidden="true"></i> Actions
         </a>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu" aria-labelledby="system-nav-dropdown">
             <a class="dropdown-item no-border" href="{{ path('kmi_system_information_clearcache', {'redirect': app.request.attributes.get('_route')}) }}"><i class="icon-sib-zap text-muted mr-5"></i> Clear cache</a>
         </div>
     </li>
