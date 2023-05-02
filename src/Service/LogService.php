@@ -65,7 +65,7 @@ class LogService
      * @return array
      * @throws \Exception
      */
-    public function getLogs(): array
+    public function getLogs()
     {
         $files = [];
         $logDir = $this->container->getParameter('kernel.logs_dir');
@@ -93,7 +93,7 @@ class LogService
      * @param $id
      * @return array
      */
-    public function getLog($id): array
+    public function getLog($id)
     {
         $logDir = $this->container->getParameter('kernel.logs_dir');
         $absolutePath = $logDir . '/' . $id;
@@ -135,7 +135,7 @@ class LogService
      * @param string $id
      * @return bool
      */
-    public function removeLogFile(string $id): bool
+    public function removeLogFile(string $id)
     {
         $logDir = $this->container->getParameter('kernel.logs_dir');
         $absolutePath = $logDir . '/' . $id;
@@ -152,7 +152,7 @@ class LogService
      * @param string|null $search
      * @return array
      */
-    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null, string $search = null): array
+    public function filterLogEntryList($logs, int $limit = 100, int $page = 1, $level = null, $channel = null, string $search = null)
     {
         $offset = ($page - 1) * $limit;
 
@@ -190,7 +190,7 @@ class LogService
      * @return mixed
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getErrorCount(bool $forceUpdate = false): mixed
+    public function getErrorCount(bool $forceUpdate = false)
     {
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -213,7 +213,7 @@ class LogService
      * @param $logs
      * @return array
      */
-    public function getLogChannels($logs): array
+    public function getLogChannels($logs)
     {
         $channels = [];
         foreach ($logs['result'] as $log) {
@@ -229,7 +229,7 @@ class LogService
      * @return int
      * @throws \Exception
      */
-    private function countLogTypeByPeriod($logs, array $type = self::LOG_TYPE['ERROR'], string $period = self::PERIOD): int
+    private function countLogTypeByPeriod($logs, array $type = self::LOG_TYPE['ERROR'], string $period = self::PERIOD)
     {
         $count = 0;
         foreach ($logs as $log) {
@@ -269,7 +269,7 @@ class LogService
      * @param $absoluteFilePath
      * @return bool
      */
-    private function isReadable($absoluteFilePath): bool
+    private function isReadable($absoluteFilePath)
     {
         if (!is_readable($absoluteFilePath)) {
             return false;
@@ -288,7 +288,7 @@ class LogService
      * @param $absoluteFilePath
      * @return bool
      */
-    private function isCountable($absoluteFilePath): bool
+    private function isCountable($absoluteFilePath)
     {
         if ($this->fileSizeTooLarge($absoluteFilePath)) {
             return false;
@@ -303,7 +303,7 @@ class LogService
      * @param $absoluteFilePath
      * @return bool
      */
-    private function fileSizeTooLarge($absoluteFilePath): bool
+    private function fileSizeTooLarge($absoluteFilePath)
     {
         return filesize($absoluteFilePath) > self::MAX_FILE_SIZE;
     }

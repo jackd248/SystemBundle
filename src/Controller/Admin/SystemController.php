@@ -92,7 +92,7 @@ class SystemController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
-    public function index(): \Symfony\Component\HttpFoundation\Response
+    public function index()
     {
         $checks = $this->checkService->getLiipMonitorChecks()->getResults();
         $status = $this->checkService->getMonitorCheckStatus($checks);
@@ -109,7 +109,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception|\Psr\Cache\InvalidArgumentException
      */
-    public function log(): \Symfony\Component\HttpFoundation\Response
+    public function log()
     {
         $logs = $this->logService->getLogs();
 
@@ -127,7 +127,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function logView(string $id, Request $request): \Symfony\Component\HttpFoundation\Response
+    public function logView(string $id, Request $request)
     {
         $limit = 100;
         if ($request->query->has('limit')) {
@@ -173,7 +173,7 @@ class SystemController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
-    public function requirements(): \Symfony\Component\HttpFoundation\Response
+    public function requirements()
     {
         $requirements = $this->symfonyService->checkRequirements(true);
 
@@ -189,7 +189,7 @@ class SystemController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
-    public function information(): \Symfony\Component\HttpFoundation\Response
+    public function information()
     {
         return $this->render('@SystemInformationBundle/information.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
@@ -203,7 +203,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function dependencies(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function dependencies(Request $request)
     {
         $search = '';
         $showOnlyUpdatable = false;
@@ -248,7 +248,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function mail(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function mail(Request $request)
     {
         $teaser = $this->informationService->getSystemInformation(true);
         if ($request->query->has('receiver')) {
@@ -272,7 +272,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function database(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function database(Request $request)
     {
         $teaser = $this->informationService->getSystemInformation(true);
         $tables = $this->databaseService->getTables();
@@ -306,7 +306,7 @@ class SystemController extends AbstractController
      * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
-    public function additional(): \Symfony\Component\HttpFoundation\Response
+    public function additional()
     {
         return $this->render('@SystemInformationBundle/additional.html.twig', [
             'bundleInfo' => $this->dependencyService->getSystemInformationBundleInfo(),
@@ -318,7 +318,7 @@ class SystemController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function info(): \Symfony\Component\HttpFoundation\Response
+    public function info()
     {
         $systemInformation = $this->informationService->getSystemInformation(true);
 
@@ -330,7 +330,7 @@ class SystemController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function phpInfo(): \Symfony\Component\HttpFoundation\Response
+    public function phpInfo()
     {
         return $this->render('@SystemInformationBundle/phpInfo.html.twig', [
             'info' => \phpinfo(),
@@ -369,7 +369,7 @@ class SystemController extends AbstractController
      * @param string $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeLog(string $id): RedirectResponse
+    public function removeLog(string $id)
     {
         $this->logService->removeLogFile($id);
         return $this->redirectToRoute('kmi_system_information_log');

@@ -18,7 +18,7 @@ class SystemInformationBundle extends Bundle
     /**
      * @inheritdoc
      */
-    public function getContainerExtension(): ?ExtensionInterface
+    public function getContainerExtension()
     {
         if (null === $this->extension) {
             $this->extension = new SystemInformationBundleExtension();

@@ -41,7 +41,7 @@ class CheckService
      * @param array $checks
      * @return int
      */
-    public function getMonitorCheckStatus(array $checks = []): int
+    public function getMonitorCheckStatus(array $checks = [])
     {
         $status = 0;
         foreach ($checks as $check) {
@@ -56,7 +56,7 @@ class CheckService
      * @param array|null $checks
      * @return int
      */
-    public function getMonitorCheckCount(array $checks = []): int
+    public function getMonitorCheckCount(array $checks = [])
     {
         $count = 0;
         foreach ($checks as $check) {

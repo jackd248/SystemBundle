@@ -58,7 +58,7 @@ class SystemInformationBundleExtension extends ConfigurableExtension
     /**
      * @return string
      */
-    public function getAlias(): string
+    public function getAlias()
     {
         return SystemInformationBundle::BUNDLE_CONFIG_NAME;
     }

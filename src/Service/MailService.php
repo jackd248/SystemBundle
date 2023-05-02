@@ -44,26 +44,19 @@ class MailService
     private FileLocator $fileLocator;
 
     /**
-     * @var \Sonata\AdminBundle\SonataConfiguration
-     */
-    private SonataConfiguration $sonataConfiguration;
-
-    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
      * @param \Symfony\Component\HttpKernel\Config\FileLocator $fileLocator
-     * @param \Sonata\AdminBundle\SonataConfiguration $sonataConfiguration
      */
-    public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, DependencyService $dependencyService, FileLocator $fileLocator, SonataConfiguration $sonataConfiguration)
+    public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, DependencyService $dependencyService, FileLocator $fileLocator)
     {
         $this->container = $container;
         $this->cachePool = $cachePool;
         $this->informationService = $informationService;
         $this->dependencyService = $dependencyService;
         $this->fileLocator = $fileLocator;
-        $this->sonataConfiguration = $sonataConfiguration;
     }
 
     /**
@@ -74,8 +67,9 @@ class MailService
      */
     public function sendStatusMail(array $receiver, array $teaser = null): int
     {
-        $projectName = $this->sonataConfiguration->getTitle();
-        $projectLogo = $this->sonataConfiguration->getLogo();
+        $sonataConfiguration = $this->container->get('sonata.admin.configuration') ?: $this->container->get('sonata.admin.pool');
+        $projectName = $sonataConfiguration->getTitle();
+        $projectLogo = $sonataConfiguration->getLogo();
         $mailerConfiguration = $this->informationService->getMailConfiguration();
 
         if (class_exists(\Swift_Mailer::class)) {

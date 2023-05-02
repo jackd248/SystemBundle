@@ -19,7 +19,7 @@ class ConfigurationLoader
         $this->config = $config;
     }
 
-    private function verifyConfiguration(): void
+    private function verifyConfiguration()
     {
         // ToDo:
     }
@@ -27,7 +27,7 @@ class ConfigurationLoader
     /**
      * @return array|null
      */
-    public function getConfig(): ?array
+    public function getConfig()
     {
         return $this->config;
     }

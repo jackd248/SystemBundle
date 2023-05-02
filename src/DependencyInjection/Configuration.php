@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
-    public function getConfigTreeBuilder(): TreeBuilder
+    public function getConfigTreeBuilder()
     {
         $treeBuilder = $this->createTreeBuilderClass(SystemInformationBundle::BUNDLE_CONFIG_NAME);
 
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
      *
      * @return TreeBuilder
      */
-    public function createTreeBuilderClass(string $path): TreeBuilder
+    public function createTreeBuilderClass(string $path)
     {
         return new TreeBuilder($path);
     }

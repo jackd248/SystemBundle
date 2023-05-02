@@ -48,7 +48,7 @@ class DependencyService
     /**
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getDependencyInformation(bool $forceUpdate = false): array
+    public function getDependencyInformation(bool $forceUpdate = false)
     {
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -82,7 +82,7 @@ class DependencyService
      * @param bool $showOnlyRequired
      * @return array
      */
-    public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false, bool $showOnlyRequired = false): array
+    public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false, bool $showOnlyRequired = false)
     {
         if (is_null($search) & !$showOnlyUpdatable) {
             return $dependencies;
@@ -120,7 +120,7 @@ class DependencyService
      * @param array $dependencies
      * @return array
      */
-    public function getDependencyApplicationStatus(array $dependencies): array
+    public function getDependencyApplicationStatus(array $dependencies)
     {
         $result = [
             'status' => self::STATE_UP_TO_DATE,
@@ -190,7 +190,7 @@ class DependencyService
      * @param array $composerContent
      * @return array
      */
-    protected function addAdvancedInformation(array $composerContent): array
+    protected function addAdvancedInformation(array $composerContent)
     {
         $composerFileContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.json');
         $requiredPackages = $composerFileContent['require'];
@@ -210,7 +210,7 @@ class DependencyService
      * @param bool $forceUpdate
      * @return array
      */
-    protected function checkForUpdates(bool $forceUpdate = false): array
+    protected function checkForUpdates(bool $forceUpdate = false)
     {
         $result = [];
         $process = new Process(['composer', 'show', '--latest', '--minor-only', '--format', 'json', '-d', $this->container->getParameter('kernel.project_dir')]);
@@ -236,7 +236,7 @@ class DependencyService
      * @param array $composerUpdate
      * @return array
      */
-    protected function mergeComposerData(array $composerLock, array $composerUpdate = []): array
+    protected function mergeComposerData(array $composerLock, array $composerUpdate = [])
     {
         foreach ($composerLock as $key => $item) {
             if (array_key_exists($item['name'], $composerUpdate)) {
@@ -262,7 +262,7 @@ class DependencyService
      * @param $required
      * @return int
      */
-    protected function compareVersions($stable, $latest, $required = null): int
+    protected function compareVersions($stable, $latest, $required = null)
     {
         $state = self::STATE_UP_TO_DATE;
 

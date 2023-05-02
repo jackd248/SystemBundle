@@ -36,11 +36,6 @@ services:
     class: Kmi\SystemInformationBundle\Service\MailService
     arguments:
       - '@service_container'
-      - '@cache.app'
-      - '@Kmi\SystemInformationBundle\Service\InformationService'
-      - '@Kmi\SystemInformationBundle\Service\DependencyService'
-      - '@file_locator'
-      - '@sonata.admin.configuration'
 
   Kmi\SystemInformationBundle\Service\DatabaseService:
     class: Kmi\SystemInformationBundle\Service\DatabaseService
