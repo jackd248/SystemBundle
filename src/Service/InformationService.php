@@ -475,7 +475,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.mail.scheme', [], 'SystemInformationBundle'),
-            'value' => $this->getMailConfiguration()['scheme'],
+            'value' => $this->getMailConfiguration() ? $this->getMailConfiguration()['scheme'] : '',
         ];
     }
 
@@ -486,7 +486,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.mail.host', [], 'SystemInformationBundle'),
-            'value' => $this->getMailConfiguration()['host'],
+            'value' => $this->getMailConfiguration() ? $this->getMailConfiguration()['host'] : '',
         ];
     }
 
@@ -497,7 +497,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.mail.port', [], 'SystemInformationBundle'),
-            'value' => $this->getMailConfiguration()['port'],
+            'value' => $this->getMailConfiguration() ? $this->getMailConfiguration()['port'] : '',
         ];
     }
 
@@ -508,7 +508,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.mail.service', [], 'SystemInformationBundle'),
-            'value' => $this->getMailConfiguration()['service'],
+            'value' => $this->getMailConfiguration() ? $this->getMailConfiguration()['service'] : '',
         ];
     }
 
