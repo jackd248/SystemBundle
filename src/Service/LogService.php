@@ -84,7 +84,7 @@ class LogService
         }
 
         usort($files, function ($a, $b) {
-            return $a['changeDate'] < $b['changeDate'];
+            return $a['changeDate'] <=> $b['changeDate'];
         });
         return $files;
     }
