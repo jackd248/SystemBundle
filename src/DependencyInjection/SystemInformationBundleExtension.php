@@ -14,12 +14,12 @@ class SystemInformationBundleExtension extends ConfigurableExtension
      * Load the configuration and inject its values
      * https://symfony.com/doc/current/bundles/configuration.html
      *
-     * @param array $configs
+     * @param array $mergedConfig
      * @param ContainerBuilder $container
      *
      * @throws \Exception
      */
-    public function loadInternal(array $configs, ContainerBuilder $container)
+    public function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader(
             $container,
@@ -28,7 +28,7 @@ class SystemInformationBundleExtension extends ConfigurableExtension
         $loader->load('services.yaml');
 
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $mergedConfig);
 
 //        $container->setParameter(
 //            'acme_hello.my_service_type',
@@ -44,7 +44,7 @@ class SystemInformationBundleExtension extends ConfigurableExtension
     /**
      * https://stackoverflow.com/a/64614381
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $thirdPartyBundlesViewFileLocator = (new FileLocator(__DIR__ . '/../Resources/views/bundles'));
 
@@ -58,7 +58,7 @@ class SystemInformationBundleExtension extends ConfigurableExtension
     /**
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return SystemInformationBundle::BUNDLE_CONFIG_NAME;
     }
