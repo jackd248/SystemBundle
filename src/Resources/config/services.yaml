@@ -20,6 +20,8 @@ services:
 
   Kmi\SystemInformationBundle\Service\LogService:
     class: Kmi\SystemInformationBundle\Service\LogService
+    arguments:
+      - '@service_container'
 
   Kmi\SystemInformationBundle\Service\InformationService:
     class: Kmi\SystemInformationBundle\Service\InformationService
