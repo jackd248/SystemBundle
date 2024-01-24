@@ -23,6 +23,12 @@ services:
     arguments:
       - '@service_container'
 
+
+  Kmi\SystemInformationBundle\Service\SymfonyService:
+    class: Kmi\SystemInformationBundle\Service\SymfonyService
+    arguments:
+      - '@service_container'
+
   Kmi\SystemInformationBundle\Service\InformationService:
     class: Kmi\SystemInformationBundle\Service\InformationService
     arguments:
