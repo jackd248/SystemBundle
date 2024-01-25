@@ -54,6 +54,8 @@ services:
     class: Kmi\SystemInformationBundle\Twig\SystemExtension
     tags:
       - { name: twig.extension }
+    arguments:
+      - '@service_container'
 
   Kmi\SystemInformationBundle\Twig\VersionExtension:
     class: Kmi\SystemInformationBundle\Twig\VersionExtension

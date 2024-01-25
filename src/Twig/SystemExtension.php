@@ -25,7 +25,7 @@ class SystemExtension extends AbstractExtension
     /**
      * @var Container
      */
-    private $container;
+    private Container $container;
 
     /**
      * @var \Symfony\Contracts\Cache\CacheInterface
@@ -35,7 +35,7 @@ class SystemExtension extends AbstractExtension
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * @var \Kmi\SystemInformationBundle\Service\LogService
@@ -49,6 +49,7 @@ class SystemExtension extends AbstractExtension
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
      * @param \Kmi\SystemInformationBundle\Service\LogService $logService
      * @param \Kmi\SystemInformationBundle\Service\CheckService $checkService
      */
