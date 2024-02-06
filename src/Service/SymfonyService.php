@@ -39,7 +39,7 @@ class SymfonyService
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function checkRequirements(bool $forceUpdate = false)
+    public function checkRequirements(bool $forceUpdate = false): array
     {
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -97,7 +97,7 @@ class SymfonyService
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getRequirementsCount()
+    public function getRequirementsCount(): array
     {
         $requirements = $this->checkRequirements();
         return [

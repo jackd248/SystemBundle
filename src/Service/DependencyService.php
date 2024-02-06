@@ -48,7 +48,7 @@ class DependencyService
     /**
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getDependencyInformation(bool $forceUpdate = false)
+    public function getDependencyInformation(bool $forceUpdate = false): array
     {
         $cacheKey = SystemInformationBundle::CACHE_KEY . '-' . __FUNCTION__;
         if ($forceUpdate) {
@@ -82,7 +82,7 @@ class DependencyService
      * @param bool $showOnlyRequired
      * @return array
      */
-    public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false, bool $showOnlyRequired = false)
+    public function filterDependencies(array $dependencies, string $search = null, bool $showOnlyUpdatable = false, bool $showOnlyRequired = false): array
     {
         if (is_null($search) & !$showOnlyUpdatable) {
             return $dependencies;
@@ -120,7 +120,7 @@ class DependencyService
      * @param array $dependencies
      * @return array
      */
-    public function getDependencyApplicationStatus(array $dependencies)
+    public function getDependencyApplicationStatus(array $dependencies): array
     {
         $result = [
             'status' => self::STATE_UP_TO_DATE,
@@ -158,7 +158,7 @@ class DependencyService
     /**
      * @return mixed
      */
-    public function getSystemInformationBundleInfo()
+    public function getSystemInformationBundleInfo(): mixed
     {
         return $this->getComposerFileContent(__DIR__ . '/../../composer.json');
     }
@@ -167,7 +167,7 @@ class DependencyService
      * @param string $filePath
      * @return mixed
      */
-    protected function getComposerFileContent(string $filePath)
+    protected function getComposerFileContent(string $filePath): mixed
     {
         if (!is_file($filePath)) {
             throw new RuntimeException("File not found at [$filePath]");
@@ -190,7 +190,7 @@ class DependencyService
      * @param array $composerContent
      * @return array
      */
-    protected function addAdvancedInformation(array $composerContent)
+    protected function addAdvancedInformation(array $composerContent): array
     {
         $composerFileContent = $this->getComposerFileContent($this->container->getParameter('kernel.project_dir') . '/composer.json');
         $requiredPackages = $composerFileContent['require'];
@@ -210,7 +210,7 @@ class DependencyService
      * @param bool $forceUpdate
      * @return array
      */
-    protected function checkForUpdates(bool $forceUpdate = false)
+    protected function checkForUpdates(bool $forceUpdate = false): array
     {
         $result = [];
         $process = new Process(['composer', 'show', '--latest', '--minor-only', '--format', 'json', '-d', $this->container->getParameter('kernel.project_dir')]);
@@ -236,7 +236,7 @@ class DependencyService
      * @param array $composerUpdate
      * @return array
      */
-    protected function mergeComposerData(array $composerLock, array $composerUpdate = [])
+    protected function mergeComposerData(array $composerLock, array $composerUpdate = []): array
     {
         foreach ($composerLock as $key => $item) {
             if (array_key_exists($item['name'], $composerUpdate)) {
@@ -262,7 +262,7 @@ class DependencyService
      * @param $required
      * @return int
      */
-    protected function compareVersions($stable, $latest, $required = null)
+    protected function compareVersions($stable, $latest, $required = null): int
     {
         $state = self::STATE_UP_TO_DATE;
 

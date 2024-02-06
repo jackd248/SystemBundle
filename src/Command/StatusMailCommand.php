@@ -46,7 +46,7 @@ class StatusMailCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('receiver', InputArgument::REQUIRED, 'Status mail receiver addresses, e.g. test@mail.com,test2@mail.com')
@@ -58,7 +58,7 @@ class StatusMailCommand extends Command
      * @throws \Psr\Cache\InvalidArgumentException
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $result = 0;
         $output->writeln([

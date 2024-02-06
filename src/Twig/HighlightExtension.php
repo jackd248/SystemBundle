@@ -9,7 +9,7 @@ use Twig\TwigFilter;
 
 class HighlightExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('highlight', [$this, 'highlightSearchWord']),
@@ -21,7 +21,7 @@ class HighlightExtension extends AbstractExtension
      * @param string|null $searchWord
      * @return string
      */
-    public function highlightSearchWord(string $string, ?string $searchWord = '')
+    public function highlightSearchWord(string $string, ?string $searchWord = ''): string
     {
         if ($searchWord != null) {
             if ((int)(mb_strpos($string, $searchWord)) !== false) {
@@ -37,7 +37,7 @@ class HighlightExtension extends AbstractExtension
         return $string;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'highlight';
     }

@@ -52,7 +52,7 @@ class SystemIndicatorExtension extends AbstractExtension
         $this->informationService = $informationService;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('system_information_indicator', [$this, 'getSystemInformationIndicator'], ['needs_environment' => true]),
@@ -64,7 +64,7 @@ class SystemIndicatorExtension extends AbstractExtension
      * @return string|null
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getSystemInformationIndicator(Environment $twig)
+    public function getSystemInformationIndicator(Environment $twig): ?string
     {
         try {
             return $twig->render('@SystemInformationBundle/twig/systemIndicator.html.twig');

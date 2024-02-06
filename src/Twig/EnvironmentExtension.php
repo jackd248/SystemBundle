@@ -37,7 +37,7 @@ class EnvironmentExtension extends AbstractExtension
     /**
      * @return \Twig\TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('environment', [$this, 'getEnvironmentTemplate']),
@@ -47,7 +47,7 @@ class EnvironmentExtension extends AbstractExtension
     /**
      * @return string
      */
-    public function getEnvironmentTemplate()
+    public function getEnvironmentTemplate(): string
     {
         $environment = $_ENV['SYMFONY_ENVIRONMENT'] ?? $_ENV['APP_ENV'];
 

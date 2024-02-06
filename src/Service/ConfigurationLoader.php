@@ -27,7 +27,7 @@ class ConfigurationLoader
     /**
      * @return array|null
      */
-    public function getConfig()
+    public function getConfig(): ?array
     {
         return $this->config;
     }

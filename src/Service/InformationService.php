@@ -66,7 +66,7 @@ class InformationService
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getSystemInformation(bool $forceUpdate = false)
+    public function getSystemInformation(bool $forceUpdate = false): array
     {
         $information = [];
 
@@ -189,7 +189,7 @@ class InformationService
      * @return array
      * @throws \Exception
      */
-    public function getFurtherSystemInformation()
+    public function getFurtherSystemInformation(): array
     {
         return [
             $this->translator->trans('system.information.server.label', [], 'SystemInformationBundle') => [
@@ -243,7 +243,7 @@ class InformationService
      * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getSystemStatus()
+    public function getSystemStatus(): bool
     {
         $countWarningsAndErrorsInLogs = 0;
         $logList = $this->logService->getLogs();
@@ -256,7 +256,7 @@ class InformationService
     /**
      * @return mixed|null
      */
-    public function readAppVersion()
+    public function readAppVersion(): mixed
     {
         $composerFile = file_get_contents($this->container->getParameter('kernel.project_dir') . '/composer.json');
         if ($composerFile) {
@@ -273,7 +273,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerIp()
+    public function getServerIp(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.ip', [], 'SystemInformationBundle'),
@@ -284,7 +284,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerName()
+    public function getServerName(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.name', [], 'SystemInformationBundle'),
@@ -295,7 +295,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerProtocol()
+    public function getServerProtocol(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.protocol', [], 'SystemInformationBundle'),
@@ -306,7 +306,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerWeb()
+    public function getServerWeb(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.web', [], 'SystemInformationBundle'),
@@ -317,7 +317,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerOperating()
+    public function getServerOperating(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.operating', [], 'SystemInformationBundle'),
@@ -328,7 +328,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerDistribution()
+    public function getServerDistribution(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.distribution', [], 'SystemInformationBundle'),
@@ -339,7 +339,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getServerDescription()
+    public function getServerDescription(): array
     {
         return [
             'label' => $this->translator->trans('system.information.server.description', [], 'SystemInformationBundle'),
@@ -350,7 +350,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getPhpVersion()
+    public function getPhpVersion(): array
     {
         return [
             'label' => $this->translator->trans('system.information.php.version', [], 'SystemInformationBundle'),
@@ -361,7 +361,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getPhpInterface()
+    public function getPhpInterface(): array
     {
         return [
             'label' => $this->translator->trans('system.information.php.interface', [], 'SystemInformationBundle'),
@@ -372,7 +372,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getPhpLocale()
+    public function getPhpLocale(): array
     {
         return [
             'label' => $this->translator->trans('system.information.php.locale', [], 'SystemInformationBundle'),
@@ -383,7 +383,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getPhpMemoryLimit()
+    public function getPhpMemoryLimit(): array
     {
         return [
             'label' => $this->translator->trans('system.information.php.memory_limit', [], 'SystemInformationBundle'),
@@ -394,7 +394,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getPhpMaxExecutionTime()
+    public function getPhpMaxExecutionTime(): array
     {
         return [
             'label' => $this->translator->trans('system.information.php.execution_time', [], 'SystemInformationBundle'),
@@ -405,7 +405,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getDateTimezone()
+    public function getDateTimezone(): array
     {
         return [
             'label' => $this->translator->trans('system.information.date.timezone', [], 'SystemInformationBundle'),
@@ -416,7 +416,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getDateNow()
+    public function getDateNow(): array
     {
         return [
             'label' => $this->translator->trans('system.information.date.now', [], 'SystemInformationBundle'),
@@ -427,7 +427,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getAppVersion()
+    public function getAppVersion(): array
     {
         return [
             'label' => $this->translator->trans('system.information.app.version', [], 'SystemInformationBundle'),
@@ -438,7 +438,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getAppEnvironment()
+    public function getAppEnvironment(): array
     {
         return [
             'label' => $this->translator->trans('system.information.app.environment', [], 'SystemInformationBundle'),
@@ -449,7 +449,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getSymfonyVersion()
+    public function getSymfonyVersion(): array
     {
         return [
             'label' => $this->translator->trans('system.information.symfony.version', [], 'SystemInformationBundle'),
@@ -460,7 +460,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getSymfonyEnvironment()
+    public function getSymfonyEnvironment(): array
     {
         return [
             'label' => $this->translator->trans('system.information.symfony.environment', [], 'SystemInformationBundle'),
@@ -471,7 +471,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getMailScheme()
+    public function getMailScheme(): array
     {
         return [
             'label' => $this->translator->trans('system.information.mail.scheme', [], 'SystemInformationBundle'),
@@ -493,7 +493,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getMailPort()
+    public function getMailPort(): array
     {
         return [
             'label' => $this->translator->trans('system.information.mail.port', [], 'SystemInformationBundle'),
@@ -504,7 +504,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getMailService()
+    public function getMailService(): array
     {
         return [
             'label' => $this->translator->trans('system.information.mail.service', [], 'SystemInformationBundle'),
@@ -516,7 +516,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabasePlatform()
+    public function getDatabasePlatform(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -530,7 +530,7 @@ class InformationService
      * @return array
      * @throws \Exception
      */
-    public function getDatabaseVersion()
+    public function getDatabaseVersion(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -549,7 +549,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabaseHost()
+    public function getDatabaseHost(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -563,7 +563,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabaseName()
+    public function getDatabaseName(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -577,7 +577,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabaseUser()
+    public function getDatabaseUser(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -591,7 +591,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabasePort()
+    public function getDatabasePort(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -605,7 +605,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabaseCharacterSet()
+    public function getDatabaseCharacterSet(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -624,7 +624,7 @@ class InformationService
      * @return array
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getDatabaseCollaction()
+    public function getDatabaseCollaction(): array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -642,7 +642,7 @@ class InformationService
     /**
      * @return array|false|int|string|null
      */
-    public function getMailConfiguration()
+    public function getMailConfiguration(): array
     {
         $configuration = null;
         // Swiftmailer
@@ -662,7 +662,7 @@ class InformationService
      * https://stackoverflow.com/a/42397673
      * @return array|false|null
      */
-    private function getOSInformation()
+    private function getOSInformation(): ?array
     {
         try {
             if (false == function_exists('shell_exec') || false == is_readable('/etc/os-release')) {

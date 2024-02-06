@@ -26,7 +26,7 @@ class CheckService
      * @param false $forceUpdate
      * @return mixed
      */
-    public function getLiipMonitorChecks(bool $forceUpdate = false)
+    public function getLiipMonitorChecks(bool $forceUpdate = false): mixed
     {
         $reporter = new ArrayReporter();
         $runner = $this->runnerManager->getRunner($this->runnerManager->getDefaultGroup());
@@ -41,7 +41,7 @@ class CheckService
      * @param array $checks
      * @return int
      */
-    public function getMonitorCheckStatus(array $checks = [])
+    public function getMonitorCheckStatus(array $checks = []): int
     {
         $status = 0;
         foreach ($checks as $check) {
@@ -56,7 +56,7 @@ class CheckService
      * @param array|null $checks
      * @return int
      */
-    public function getMonitorCheckCount(array $checks = [])
+    public function getMonitorCheckCount(array $checks = []): int
     {
         $count = 0;
         foreach ($checks as $check) {

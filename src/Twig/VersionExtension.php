@@ -29,7 +29,7 @@ class VersionExtension extends AbstractExtension
     /**
      * @return \Twig\TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('version', [$this, 'getComposerVersion']),
@@ -39,7 +39,7 @@ class VersionExtension extends AbstractExtension
     /**
      * @return mixed|null
      */
-    public function getComposerVersion()
+    public function getComposerVersion(): mixed
     {
         return $this->informationService->readAppVersion();
     }

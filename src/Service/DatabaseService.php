@@ -66,7 +66,7 @@ class DatabaseService
      * /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return [
             $this->informationService->getDatabasePlatform(),
@@ -92,7 +92,7 @@ class DatabaseService
      * @return array
      * @throws \Exception
      */
-    public function getTables()
+    public function getTables(): ?array
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         /* @var $entityManager \Doctrine\ORM\EntityManagerInterface */
@@ -142,7 +142,7 @@ class DatabaseService
      * @param $threshold
      * @return array
      */
-    public function getRelevantTablesByProperty($tables, $property, $max, $threshold)
+    public function getRelevantTablesByProperty($tables, $property, $max, $threshold): array
     {
         $result = [];
         $others = 0.0;
@@ -182,7 +182,7 @@ class DatabaseService
      * @param $pMax
      * @return float
      */
-    private function generateGradientsInterpolate($pBegin, $pEnd, $pStep, $pMax)
+    private function generateGradientsInterpolate($pBegin, $pEnd, $pStep, $pMax): float|int
     {
         if ($pBegin < $pEnd) {
             return (($pEnd - $pBegin) * ($pStep / $pMax)) + $pBegin;
@@ -197,7 +197,7 @@ class DatabaseService
      * @param $theNumSteps
      * @return array
      */
-    public function generateGradients($theColorBegin=0x000000,$theColorEnd=0xffffff,$theNumSteps=10)
+    public function generateGradients($theColorBegin=0x000000,$theColorEnd=0xffffff,$theNumSteps=10): array
     {
         //transform to hex, and get rid of # if exists
         $theColorBegin = hexdec(str_replace('#','',$theColorBegin));

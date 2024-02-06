@@ -61,7 +61,7 @@ class SystemExtension extends AbstractExtension
         $this->checkService = $checkService;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('system_information', [$this, 'getSystemInformationStatus']),
@@ -72,7 +72,7 @@ class SystemExtension extends AbstractExtension
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getSystemInformationStatus()
+    public function getSystemInformationStatus(): string
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $path = $request->getRequestUri();
