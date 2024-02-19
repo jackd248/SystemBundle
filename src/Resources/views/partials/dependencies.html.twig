@@ -19,13 +19,16 @@
             </div>
             <div class="item form-item m-10">
                 <label for="dependency-filter-form-updatable"
-                       class="mr-5">{{ 'dashboard.dependencies.filter.updatable'|trans({}, 'SystemInformationBundle') }} ({{ status.distribution.2|length + status.distribution.3|length + status.distribution.4|length}})</label>
+                       class="mr-5">{{ 'dashboard.dependencies.filter.updatable'|trans({}, 'SystemInformationBundle') }}
+                    ({{ status.distribution.2|length + status.distribution.3|length + status.distribution.4|length }}
+                    )</label>
                 <input type="checkbox" name="updatable" id="dependency-filter-form-updatable" value="1"
                         {{ showOnlyUpdatable ? 'checked' : '' }}/>
             </div>
             <div class="item form-item m-10">
                 <label for="dependency-filter-form-required"
-                       class="mr-5">{{ 'dashboard.dependencies.filter.required'|trans({}, 'SystemInformationBundle') }} ({{ status.distribution.required|length}})</label>
+                       class="mr-5">{{ 'dashboard.dependencies.filter.required'|trans({}, 'SystemInformationBundle') }}
+                    ({{ status.distribution.required|length }})</label>
                 <input type="checkbox" name="required" id="dependency-filter-form-required" value="1"
                         {{ showOnlyRequired ? 'checked' : '' }}/>
             </div>
@@ -35,7 +38,8 @@
                 <a href="{{ path('kmi_system_information_dependencies') }}"
                    class="btn">{{ 'dashboard.dependencies.filter.reset'|trans({}, 'SystemInformationBundle') }}</a>
                 <a href="{{ path('kmi_system_information_dependencies', {'force': 1}) }}"
-                   class="btn" title="last updated {{ metadata.created | date('d.m.Y H:i:s') }}">{{ 'dashboard.dependencies.filter.force'|trans({}, 'SystemInformationBundle') }}</a>
+                   class="btn"
+                   title="last updated {{ metadata.created | date('d.m.Y H:i:s') }}">{{ 'dashboard.dependencies.filter.force'|trans({}, 'SystemInformationBundle') }}</a>
             </div>
         </form>
         <table class="table table-condensed">
@@ -55,14 +59,18 @@
             </tr>
             {% if dependencies %}
                 {% for dependency in dependencies %}
-                    {% if dependency.status == 1 %}
-                        {% set class = 'bg-color-success--light' %}
-                    {% elseif dependency.status == 2 %}
-                        {% set class = 'bg-color-warning--light' %}
-                    {% elseif dependency.status == 3 %}
-                        {% set class = 'bg-color-warning' %}
-                    {% elseif dependency.status == 4 %}
-                        {% set class = 'bg-color-error' %}
+                    {% if dependency.status is defined %}
+                        {% if dependency.status == 1 %}
+                            {% set class = 'bg-color-success--light' %}
+                        {% elseif dependency.status == 2 %}
+                            {% set class = 'bg-color-warning--light' %}
+                        {% elseif dependency.status == 3 %}
+                            {% set class = 'bg-color-warning' %}
+                        {% elseif dependency.status == 4 %}
+                            {% set class = 'bg-color-error' %}
+                        {% else %}
+                            {% set class = '' %}
+                        {% endif %}
                     {% else %}
                         {% set class = '' %}
                     {% endif %}
@@ -80,10 +88,12 @@
                         <span class="pill {{ class }}" {{ dependency.requiredVersion is defined ? 'data-toggle="tooltip"' : '' }} title="{{ dependency.requiredVersion is defined ? 'Required version: ' ~ dependency.requiredVersion : '' }}">
                             {{ dependency.version }}
                         </span>
-                            {% if dependency.latest != dependency.version %}
-                                <span class="pill {{ class }}">
+                            {% if dependency.latest is defined %}
+                                {% if dependency.latest != dependency.version %}
+                                    <span class="pill {{ class }}">
                                 {{ dependency.latest }}
                             </span>
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td>

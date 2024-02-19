@@ -134,9 +134,11 @@ class DependencyService
         ];
 
         foreach ($dependencies as $dependency) {
-            $result['distribution'][$dependency['status']][] = $dependency;
-            if (array_key_exists('requiredVersion', $dependency)) {
-                $result['distribution']['required'][] = $dependency;
+            if (array_key_exists('status', $dependency)) {
+                $result['distribution'][$dependency['status']][] = $dependency;
+                if (array_key_exists('requiredVersion', $dependency)) {
+                    $result['distribution']['required'][] = $dependency;
+                }
             }
         }
 
