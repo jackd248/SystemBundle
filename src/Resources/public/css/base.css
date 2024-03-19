@@ -243,6 +243,7 @@
     padding-bottom: 20px;
 }
 .system-box .inner {
+    width: 100%;
     padding: 10px;
     z-index: 10;
 }
@@ -439,6 +440,7 @@ label:hover {
 /* Tables */
 .sib-content .table td, .sib-content .table th {
     padding: 0.75rem;
+    white-space: nowrap;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
