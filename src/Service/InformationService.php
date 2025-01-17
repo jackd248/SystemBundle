@@ -254,9 +254,9 @@ class InformationService
     }
 
     /**
-     * @return mixed|null
+     * @return string|null
      */
-    public function readAppVersion(): mixed
+    public function readAppVersion(): ?string
     {
         $composerFile = file_get_contents($this->container->getParameter('kernel.project_dir') . '/composer.json');
         if ($composerFile) {
@@ -332,7 +332,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.server.distribution', [], 'SystemInformationBundle'),
-            'value' => $this->getOSInformation()['pretty_name'] ?? 'Unknown',
+            'value' => $this->getOSInformation()['pretty_name'] ?? $this->translator->trans('system.information.server.error', [], 'SystemInformationBundle'),
         ];
     }
 
@@ -431,7 +431,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.app.version', [], 'SystemInformationBundle'),
-            'value' => $this->readAppVersion(),
+            'value' => $this->readAppVersion() ?? $this->translator->trans('system.information.app.error', [], 'SystemInformationBundle'),
         ];
     }
 
@@ -482,7 +482,7 @@ class InformationService
     /**
      * @return array
      */
-    public function getMailHost()
+    public function getMailHost(): array
     {
         return [
             'label' => $this->translator->trans('system.information.mail.host', [], 'SystemInformationBundle'),
@@ -640,9 +640,9 @@ class InformationService
     }
 
     /**
-     * @return array|false|int|string|null
+     * @return array|null
      */
-    public function getMailConfiguration(): array
+    public function getMailConfiguration(): ?array
     {
         $configuration = null;
         // Swiftmailer
@@ -655,12 +655,12 @@ class InformationService
             $configuration = parse_url($_ENV['MAILER_DSN']);
             $configuration['service'] = 'SymfonyMailer';
         }
-        return $configuration;
+        return $configuration ?: null;
     }
 
     /**
      * https://stackoverflow.com/a/42397673
-     * @return array|false|null
+     * @return array|null
      */
     private function getOSInformation(): ?array
     {
