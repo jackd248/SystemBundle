@@ -37,9 +37,9 @@ class VersionExtension extends AbstractExtension
     }
 
     /**
-     * @return mixed|null
+     * @return string|null
      */
-    public function getComposerVersion(): mixed
+    public function getComposerVersion(): ?string
     {
         return $this->informationService->readAppVersion();
     }
