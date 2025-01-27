@@ -332,7 +332,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.server.distribution', [], 'SystemInformationBundle'),
-            'value' => $this->getOSInformation()['pretty_name'],
+            'value' => $this->getOSInformation()['pretty_name'] ?? $this->translator->trans('system.information.server.error', [], 'SystemInformationBundle'),
         ];
     }
 
@@ -431,7 +431,7 @@ class InformationService
     {
         return [
             'label' => $this->translator->trans('system.information.app.version', [], 'SystemInformationBundle'),
-            'value' => $this->readAppVersion(),
+            'value' => $this->readAppVersion() ?? $this->translator->trans('system.information.app.error', [], 'SystemInformationBundle'),
         ];
     }
 
