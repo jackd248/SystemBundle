@@ -16,6 +16,7 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Twig\Environment;
 
 class MailService
 {
@@ -50,14 +51,20 @@ class MailService
     private SonataConfiguration $sonataConfiguration;
 
     /**
+     * @var \Twig\Environment
+     */
+    private Environment $twig;
+
+    /**
      * @param \Symfony\Component\DependencyInjection\Container $container
      * @param \Symfony\Contracts\Cache\CacheInterface $cachePool
      * @param \Kmi\SystemInformationBundle\Service\InformationService $informationService
      * @param \Kmi\SystemInformationBundle\Service\DependencyService $dependencyService
      * @param \Symfony\Component\HttpKernel\Config\FileLocator $fileLocator
      * @param \Sonata\AdminBundle\SonataConfiguration $sonataConfiguration
+     * @param \Twig\Environment $twig
      */
-    public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, DependencyService $dependencyService, FileLocator $fileLocator, #[Autowire(service: 'sonata.admin.configuration')] SonataConfiguration $sonataConfiguration)
+    public function __construct(Container $container, CacheInterface $cachePool, InformationService $informationService, DependencyService $dependencyService, FileLocator $fileLocator, #[Autowire(service: 'sonata.admin.configuration')] SonataConfiguration $sonataConfiguration, Environment $twig)
     {
         $this->container = $container;
         $this->cachePool = $cachePool;
@@ -65,6 +72,7 @@ class MailService
         $this->dependencyService = $dependencyService;
         $this->fileLocator = $fileLocator;
         $this->sonataConfiguration = $sonataConfiguration;
+        $this->twig = $twig;
     }
 
     /**
@@ -90,7 +98,7 @@ class MailService
                 ->setTo($receiver);
             $message
                 ->setBody(
-                    $this->container->get('twig')->render(
+                    $this->twig->render(
                         '@SystemInformationBundle/mail/status.html.twig',
                         [
                             'teaser' => $teaser,
@@ -111,7 +119,7 @@ class MailService
                 ->from($this->getSenderMail())
                 ->subject("[$projectName] SystemInformationBundle Status Update")
                 ->html(
-                    $this->container->get('twig')->render(
+                    $this->twig->render(
                         '@SystemInformationBundle/mail/status.html.twig',
                         [
                             'teaser' => $teaser,
