@@ -118,7 +118,7 @@ class LogService
                 continue;
             }
             $array = [
-                'date' => date(self::DATE_FORMAT, strtotime($data['date'])),
+                'date' => date(self::DATE_FORMAT, strtotime($data['date']) ?: 0),
                 'channel' => $data['channel'],
                 'level' => $data['level'],
                 'message' => $data['message'],
